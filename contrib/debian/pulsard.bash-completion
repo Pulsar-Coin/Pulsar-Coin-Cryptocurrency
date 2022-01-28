@@ -1,0 +1,3 @@
+contrib/pulsard.bash-completion	pulsard
+contrib/pulsar-cli.bash-completion	pulsar-cli
+contrib/pulsar-tx.bash-completion	pulsar-tx

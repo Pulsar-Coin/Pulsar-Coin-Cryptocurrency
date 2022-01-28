@@ -1,0 +1,62 @@
+Source: pulsar
+Section: utils
+Priority: optional
+Maintainer: Peerchemist <peerchemist@protonmail.ch>
+Build-Depends: debhelper,
+ devscripts,
+ automake,
+ libtool,
+ bash-completion,
+ libdb++-dev,
+ libssl-dev,
+ pkg-config,
+ libevent-dev,
+ libboost-system1.48-dev | libboost-system-dev (>> 1.47),
+ libboost-filesystem1.48-dev | libboost-filesystem-dev (>> 1.47),
+ libboost-program-options1.48-dev | libboost-program-options-dev (>> 1.47),
+ libboost-thread1.48-dev | libboost-thread-dev (>> 1.47),
+ libboost-test1.48-dev | libboost-test-dev (>> 1.47),
+ libboost-chrono1.48-dev | libboost-chrono-dev (>> 1.47),
+ libminiupnpc8-dev | libminiupnpc-dev,
+ qt4-qmake, libqt4-dev,
+ qttools5-dev-tools, qttools5-dev,
+ libqrencode-dev,
+ libprotobuf-dev, protobuf-compiler,
+ python,
+ libzmq3-dev
+Standards-Version: 3.9.2
+Homepage: https://www.pulsar.net/
+Vcs-Git: git://github.com/vnetizen/pulsar.git
+Vcs-Browser: https://github.com/vnetizen/pulsar
+
+Package: pulsard
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer network based digital currency - daemon
+ Pulsar is a crypto-currency project forked from Bitcoin with aim to achieve
+ energy-efficiency and keep as much as possible the original Bitcoin's
+ preferable properties.
+ .
+ This package provides the daemon, pulsard, and the CLI tool
+ pulsar-cli to interact with the daemon.
+
+Package: pulsar-qt
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer network based digital currency - Qt GUI
+ Pulsar is a crypto-currency project forked from Bitcoin with aim to achieve
+ energy-efficiency and keep as much as possible the original Bitcoin's
+ preferable properties.
+ .
+ This package provides Pulsar-Qt, a GUI client for Pulsar based on Qt.
+
+Package: pulsar-tx
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer digital currency - standalone transaction tool
+ Pulsar is a crypto-currency project forked from Bitcoin with aim to achieve
+ energy-efficiency and keep as much as possible the original Bitcoin's
+ preferable properties.
+ This package provides pulsar-tx, a command-line transaction creation
+ tool which can be used without a pulsar daemon.  Some means of
+ exchanging minimal transaction data with peers is still required.

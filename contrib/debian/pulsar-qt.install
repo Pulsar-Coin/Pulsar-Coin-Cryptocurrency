@@ -1,0 +1,11 @@
+usr/local/bin/pulsar-qt usr/bin
+share/pixmaps/pulsar16.png usr/share/pixmaps
+share/pixmaps/pulsar32.png usr/share/pixmaps
+share/pixmaps/pulsar128.png usr/share/pixmaps
+share/pixmaps/pulsar256.png usr/share/pixmaps
+share/pixmaps/pulsar-testnet32.png usr/share/pixmaps
+share/pixmaps/pulsar-testnet128.png usr/share/pixmaps
+share/pixmaps/pulsar-testnet256.png usr/share/pixmaps
+debian/pulsar-qt.desktop usr/share/applications
+debian/pulsar-testnet-qt.desktop usr/share/applications
+debian/pulsar-qt.protocol usr/share/kde4/services/

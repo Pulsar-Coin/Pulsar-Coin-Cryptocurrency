@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Pulsar
+Comment=Desktop allet for Pulsar Cryptocurrency
+Comment[de]=Offizieller Client für die Kryptowährung Pulsar
+Exec=pulsar-qt %u
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/pulsar128.png
+MimeType=x-scheme-handler/pulsar;
+Categories=Office;Finance;
+StartupWMClass=Pulsar-qt
