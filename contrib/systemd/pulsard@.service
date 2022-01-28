@@ -1,0 +1,23 @@
+[Unit]
+Description=Pulsar daemon
+After=network.target 
+Conflicts=pulsard-tor@%i.service
+
+[Service]
+User=%i
+Group=users
+Type=forking
+Restart=always
+RestartSec=15
+ExecStart=/usr/bin/pulsard -daemon
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+
+## security
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=full
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
