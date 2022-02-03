@@ -35,7 +35,7 @@
 #include <checkpointsync.h>
 
 #if defined(NDEBUG)
-# error "Pulsar cannot be compiled without assertions."
+# error "Pulsarcoin cannot be compiled without assertions."
 #endif
 
 std::atomic<int64_t> nTimeBestReceived(0); // Used only to inform the wallet of when we last received a block
@@ -121,7 +121,7 @@ namespace {
     };
     std::map<uint256, std::pair<NodeId, std::list<QueuedBlock>::iterator> > mapBlocksInFlight;
 
-    /** pulsar: blocks that are waiting to be processed, the key points to previous CBlockIndex entry */
+    /** Pulsarcoin: blocks that are waiting to be processed, the key points to previous CBlockIndex entry */
     struct WaitElement {
         std::shared_ptr<CBlock> pblock;
             int64_t time;
@@ -1187,7 +1187,7 @@ void static ProcessGetBlockData(CNode* pfrom, const Consensus::Params& consensus
             // Bypass PushInventory, this must send even if redundant,
             // and we want it right after the last block so they don't
             // wait for other stuff first.
-            // pulsar: send latest proof-of-work block to allow the
+            // Pulsarcoin: send latest proof-of-work block to allow the
             // download node to accept as orphan (proof-of-stake
             // block might be rejected by stake connection check)
             std::vector<CInv> vInv;
@@ -1361,7 +1361,7 @@ bool static ProcessHeadersMessage(CNode *pfrom, CConnman *connman, const std::ve
                     // Probably out of memory attack. Punish peer for a long time.
                     nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
                     if (Params().NetworkIDString() != "test")
-                        g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
+                        g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", 3600) * 7);
                 } else {
                     nPoSTemperature *= 3;
                     Misbehaving(pfrom->GetId(), nDoS);
@@ -1720,7 +1720,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 
 #ifdef ENABLE_CHECKPOINTS
-        // pulsar: relay sync-checkpoint
+        // Pulsarcoin: relay sync-checkpoint
         {
             LOCK(cs_main);
             if (!checkpointMessage.IsNull())
@@ -1728,7 +1728,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 #endif
 
-        // pulsar: relay alerts
+        // Pulsarcoin: relay alerts
         {
             LOCK(cs_mapAlerts);
             for (auto& item : mapAlerts)
@@ -1761,7 +1761,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 
 #ifdef ENABLE_CHECKPOINTS
-        // pulsar: ask for pending sync-checkpoint if any
+        // Pulsarcoin: ask for pending sync-checkpoint if any
         if (!IsInitialBlockDownload())
             AskForPendingSyncCheckpoint(pfrom);
 #endif
@@ -1778,7 +1778,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return false;
     }
 
-    // pulsar: set/unset network serialization mode for new clients
+    // Pulsarcoin: set/unset network serialization mode for new clients
     if (pfrom->nVersion <= OLD_VERSION)
         vRecv.SetType(vRecv.GetType() & ~SER_POSMARKER);
     else
@@ -2029,6 +2029,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             if (pindex->GetBlockHash() == hashStop)
             {
                 LogPrint(BCLog::NET, "  getblocks stopping at %d %s\n", pindex->nHeight, pindex->GetBlockHash().ToString());
+
                 break;
             }
             pfrom->PushInventory(CInv(MSG_BLOCK, pindex->GetBlockHash()));
@@ -2386,7 +2387,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         if (nPoSTemperature >= MAX_CONSECUTIVE_POS_HEADERS) {
             nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
             if (Params().NetworkIDString() != "test") {
-                g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
+                g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", 3600) * 7);
                 return error("too many consecutive pos headers");
             }
         }
@@ -2673,7 +2674,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             ReadCompactSize(vRecv); // ignore tx count; assume it is 0.
             ReadCompactSize(vRecv); // needed for vchBlockSig.
 
-            // pulsar: quick check to see if we should ban peers for PoS spam
+            // Pulsarcoin: quick check to see if we should ban peers for PoS spam
             // note: at this point we don't know if PoW headers are valid - we just assume they are
             // so we need to update pfrom->nPoSTemperature once we actualy check them
             bool fPoS = headers[n].nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
@@ -2685,7 +2686,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             if (nTmpPoSTemperature >= MAX_CONSECUTIVE_POS_HEADERS) {
                 nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
                 if (Params().NetworkIDString() != "test") {
-                    g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
+                    g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", 3600) * 7);
                     return error("too many consecutive pos headers");
                 }
             }
@@ -2723,7 +2724,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 if (nPoSTemperature >= MAX_CONSECUTIVE_POS_HEADERS) {
                     nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
                     if (Params().NetworkIDString() != "test") {
-                        g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
+                        g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", 3600) * 7);
                         return error("too many consecutive pos headers");
                     }
                 }
@@ -2736,7 +2737,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                     return error("this block does not connect to any valid known blocks");
                 }
             }
-            // pulsar: store in memory until we can connect it to some chain
+            // Pulsarcoin: store in memory until we can connect it to some chain
             WaitElement we; we.pblock = pblock2; we.time = nTimeNow;
             mapBlocksWait[miPrev->second] = we;
         }
@@ -2746,7 +2747,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             pindexLastAccepted = chainActive.Tip();
         bool fContinue = true;
 
-        // pulsar: accept as many blocks as we possibly can from mapBlocksWait
+        // Pulsarcoin: accept as many blocks as we possibly can from mapBlocksWait
         while (fContinue) {
             fContinue = false;
             bool fSelected = false;
@@ -2756,7 +2757,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
             {
             LOCK(cs_main);
-            // pulsar: try to select next block in a constant time
+            // Pulsarcoin: try to select next block in a constant time
             std::map<CBlockIndex*, WaitElement>::iterator it = mapBlocksWait.find(pindexLastAccepted);
             if (it != mapBlocksWait.end() && pindexLastAccepted != nullptr) {
                 pindexPrev = it->first;
