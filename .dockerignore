@@ -1,3 +1,5 @@
+.git
+.idea
 bin
 *.config
 *.creator
@@ -46,6 +48,7 @@ src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
 src/obj/build.h
+src/univalue/gen
 
 src/qt/*.moc
 src/qt/moc_*.cpp
@@ -70,6 +73,7 @@ src/qt/bitcoin-qt.includes
 *.pyc
 *.o
 *.o-*
+*.patch
 .ppcoin
 .pulsar
 *.a
@@ -89,6 +93,7 @@ src/qt/bitcoin-qt.includes
 
 # Compilation and Qt preprocessor part
 *.qm
+Makefile
 ppcoin-qt
 pulsar-qt
 Pulsaroin-Qt.app
@@ -131,4 +136,3 @@ contrib/devtools/split-debug.sh
 
 #python stuff
 .mypy_cache
-.idea
