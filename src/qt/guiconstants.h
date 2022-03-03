@@ -51,7 +51,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Pulsar"
-#define QAPP_ORG_DOMAIN "pulsar.net"
+#define QAPP_ORG_DOMAIN "pulsarcoin.org"
 #define QAPP_APP_NAME_DEFAULT "Pulsar-Qt"
 #define QAPP_APP_NAME_TESTNET "Pulsar-Qt-testnet"
 

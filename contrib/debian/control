@@ -25,9 +25,9 @@ Build-Depends: debhelper,
  python,
  libzmq3-dev
 Standards-Version: 3.9.2
-Homepage: https://www.pulsar.net/
-Vcs-Git: git://github.com/vnetizen/pulsar.git
-Vcs-Browser: https://github.com/vnetizen/pulsar
+Homepage: https://pulsarcoin.org/
+Vcs-Git: git://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency.git
+Vcs-Browser: https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency
 
 Package: pulsard
 Architecture: any

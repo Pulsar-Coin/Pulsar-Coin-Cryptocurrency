@@ -45,7 +45,7 @@ Build Pulsar Core
 
 1. Clone the pulsar source code and cd into `pulsar`
 
-        git clone https://github.com/pulsar/pulsar.git
+        git clone https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency.git
         cd pulsar
 
 2.  Build pulsar-core:

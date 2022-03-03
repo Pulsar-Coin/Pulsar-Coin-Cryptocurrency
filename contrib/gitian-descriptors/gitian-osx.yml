@@ -31,7 +31,7 @@ packages:
 - "fonts-tuffy"
 - "ccache"
 remotes:
-- "url": "https://github.com/vnetizen/pulsar.git"
+- "url": "https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency.git"
   "dir": "pulsar"
 files:
 - "MacOSX10.11.sdk.tar.gz"

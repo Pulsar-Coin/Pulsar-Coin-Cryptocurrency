@@ -32,7 +32,7 @@ packages:
 - "libxkbcommon0"
 - "ccache"
 remotes:
-- "url": "https://github.com/vnetizen/pulsar.git"
+- "url": "https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency.git"
   "dir": "pulsar"
 files: []
 script: |

@@ -1,11 +1,9 @@
 Upstream-Name: Pulsar
-Upstream-Contact: Stichting Pulsar Foundation <foundation@pulsar.net>
-Source: https://github.com/vnetizen/pulsar
 
 Files: *
 Copyright: 2022, Pulsar Developers
 License: Expat
-Comment: The Pulsar Developers encompasses the current developers listed on https://github.com/vnetizen/pulsar,
+Comment: The Pulsar Developers encompasses the current developers listed on https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency,
          as well as the numerous contributors to the project.
 
 Files: debian/*
