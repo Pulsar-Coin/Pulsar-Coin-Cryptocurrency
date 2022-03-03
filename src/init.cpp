@@ -504,22 +504,54 @@ std::string HelpMessage(HelpMessageMode mode)
 std::string LicenseInfo()
 {
     const std::string URL_SOURCE_CODE = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency>";
-    const std::string URL_WEBSITE = "<https://pulsarcoin.org/>";
+    const std::string URL_WEBSITE = "<https://pulsarcoin.org>";
+    const std::string URL_EXPLORER = "<https://explorer.pulsarcoin.org>";
+    const std::string URL_OFFICIALPOOL = "<https://pool.pulsarcoin.org/>";
+    const std::string URL_WALLETS = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest>";
+    const std::string URL_DISCORD = "<https://discord.gg/mQpcC4tKkn>";
+    const std::string URL_TWITTER = "<https://twitter.com/PulsarCoin>";
+    const std::string URL_INSTAGRAM = "<https://www.instagram.com/pulsar_coin/>";
 
-    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2022, COPYRIGHT_YEAR) + " ") + "\n" +
+
+//    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2022, COPYRIGHT_YEAR) + " ") + "\n" +
+    return
            "\n" +
-           strprintf(_("Please contribute if you find %s useful. "
-                       "Visit %s for further information about the software."),
-               PACKAGE_NAME, URL_WEBSITE) +
+           strprintf(_("Website: %s"), + "\n" +
+               URL_WEBSITE) +
            "\n" +
-           strprintf(_("The source code is available from %s."),
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Explorer %s."), + "\n" +
+               URL_EXPLORER) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Official Pool: %s"), + "\n" +
+               URL_OFFICIALPOOL) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Source code: %s"), + "\n" +
                URL_SOURCE_CODE) +
            "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Wallets: %s"), + "\n" +
+               URL_WALLETS) +
            "\n" +
-           _("This is experimental software.") + "\n" +
-           strprintf(_("Distributed under the MIT software license, see the accompanying file %s or %s"), "COPYING", "<https://opensource.org/licenses/MIT>") + "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Discord: %s"), + "\n" +
+               URL_DISCORD) +
            "\n" +
-           strprintf(_("This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard."), "<https://www.openssl.org>") +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Twitter: %s"), + "\n" +
+               URL_TWITTER) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("Instagram: %s"), + "\n" +
+               URL_INSTAGRAM) +
+           "\n" +
+           _("----------------------------------------------------------------------------------------") + "\n" +
+           "\n" +
+           "\n" +
+           "\n" +
+           strprintf(_("This is a software distributed under the MIT software license, see the accompanying file %s or %s"), "COPYING", "<https://opensource.org/licenses/MIT>") + "\n" +
            "\n";
 }
 
