@@ -503,7 +503,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com//pulsar/pulsar>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency>";
     const std::string URL_WEBSITE = "<https://pulsarcoin.org/>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2022, COPYRIGHT_YEAR) + " ") + "\n" +
