@@ -1,4 +1,4 @@
-Pulsar 0.8.4 BETA
+Pulsar 1.1.1
 
 Setup
 ---------------------
