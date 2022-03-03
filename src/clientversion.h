@@ -14,7 +14,7 @@
 #error Client version information missing: version is not defined by bitcoin-config.h or in any other way
 #endif
 
-#if !defined(PULSAR_VERSION_MAJOR) || !defined(PULSAR_VERSION_MINOR) || !defined(PULSAR_VERSION_REVISION) || !defined(PULSAR_VERSION_BUILD)
+#if !defined(CLIENT_VERSION_MAJOR) || !defined(CLIENT_VERSION_MINOR) || !defined(CLIENT_VERSION_REVISION) || !defined(CLIENT_VERSION_BUILD)
 #error Client version information missing: version is not defined by bitcoin-config.h or in any other way
 #endif
 
@@ -46,11 +46,6 @@ static const int CLIENT_VERSION =
                          +       1 * CLIENT_VERSION_BUILD;
 
 // note: pulsar version is used for display purpose AND to accept alerts
-static const int PULSAR_VERSION =
-                           1000000 * PULSAR_VERSION_MAJOR
-                         +   10000 * PULSAR_VERSION_MINOR
-                         +     100 * PULSAR_VERSION_REVISION
-                         +       1 * PULSAR_VERSION_BUILD;
 
 extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;

@@ -657,11 +657,39 @@ fs::path GetConfigFile(const std::string& confPath)
     return pathConfigFile;
 }
 
+
+
 void ArgsManager::ReadConfigFile(const std::string& confPath)
 {
     fs::ifstream streamConfig(GetConfigFile(confPath));
-    if (!streamConfig.good())
-        return; // No bitcoin.conf file is OK
+    if (!streamConfig.good()){
+        FILE* configFile = fopen(GetConfigFile(confPath).string().c_str(), "a");
+
+        if (configFile != NULL) {
+            std::string strHeader = "# Pulsar Coin config file\n"
+                          "rpcuser=username\n"
+                          "rpcpassword=password\n"
+                          "server=1\n"
+                          "listen=1\n"
+                          "#txindex=1\n"
+                          "daemon=1\n"
+                          "staking=1\n"
+                          "port=5995\n"
+                          "rpcport=5996\n"
+                          "rpcbind=127.0.0.1\n"
+                          "maxconnections=40\n"
+                          "rpcallowip=127.0.0.1\n"
+                          "\n"
+                          "# ADDNODES:\n"
+                          "addnode=4216.128.141.31:5995\n"
+                          "addnode=149.28.244.210:5995\n"
+                          "addnode=103.249.70.51:5995\n"
+                          "addnode=103.249.70.51:5985\n";
+            fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
+            fclose(configFile);
+        }
+        return;
+    }
 
     {
         LOCK(cs_args);

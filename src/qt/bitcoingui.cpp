@@ -234,7 +234,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     progressBar = new GUIUtil::ProgressBar();
     progressBar->setAlignment(Qt::AlignCenter);
     progressBar->setVisible(false);
-    progressBar->setStyleSheet("QProgressBar { background-color: #8C8C8C; text-align: center; color: white; border: 1px solid #4b4b4b; } QProgressBar::chunk { background: #0098CE; margin: 0px; }");
+        progressBar->setStyleSheet("QProgressBar { background-color: #474747; font-family: Diversa Sans Com Black, sans-recif; font-weight: normal; max-height: 12px; color: #DBDBDB; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #474747, stop: 1 #0098CE); border-radius: 7px; margin: 0px; max-height: 12px;  }");
 
     statusBar()->addWidget(progressBarLabel);
     statusBar()->addWidget(progressBar);

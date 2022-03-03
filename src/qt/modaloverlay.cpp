@@ -122,6 +122,7 @@ void ModalOverlay::tipUpdate(int count, const QDateTime& blockDate, double nVeri
     // show the percentage done according to nVerificationProgress
     ui->percentageProgress->setText(QString::number(nVerificationProgress*100, 'f', 2)+"%");
     ui->progressBar->setValue(nVerificationProgress*100);
+    ui->progressBar->setStyleSheet("QProgressBar { background-color: #474747; font-family: Diversa Sans Com Black, sans-recif; font-weight: normal; max-height: 12px; color: #DBDBDB; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #474747, stop: 1 #0098CE); border-radius: 7px; margin: 0px; max-height: 12px;  }");
 
     if (!bestHeaderDate.isValid())
         // not syncing

@@ -12,7 +12,10 @@
 }
 
 QMainWindow {
-    border-image: url(:/images/logomask) 0 0 0 0 stretch stretch;
+  /*  border-image: url(:/images/logomask) 0 0 0 0 stretch stretch; */
+    border-image: url(:/images/logomask);
+    border-size: cover;
+    border-repeat: no-repeat;
     border-top:0px solid #000;
     margin:0;
     padding-top:0px;
