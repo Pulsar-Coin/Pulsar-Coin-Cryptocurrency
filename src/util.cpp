@@ -681,7 +681,7 @@ void ArgsManager::ReadConfigFile(const std::string& confPath)
                           "rpcallowip=127.0.0.1\n"
                           "\n"
                           "# ADDNODES:\n"
-                          "addnode=4216.128.141.31:5995\n"
+                          "addnode=216.128.141.31:5995\n"
                           "addnode=149.28.244.210:5995\n"
                           "addnode=103.249.70.51:5995\n"
                           "addnode=103.249.70.51:5985\n";

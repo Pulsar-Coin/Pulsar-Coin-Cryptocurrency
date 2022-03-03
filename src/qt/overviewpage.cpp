@@ -55,7 +55,7 @@ public:
         QVariant value = index.data(Qt::ForegroundRole);
         QColor foreground = QColor(0x4b, 0x4b, 0x4b);
         QFont font = QFont();
-        font.setPixelSize(20);
+        font.setPixelSize(12);
 
         painter->setPen(foreground);
         painter->setFont(font);
