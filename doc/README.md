@@ -29,7 +29,7 @@ Drag Pulsar-Core to your applications folder, and then run Pulsar-Core.
 
 * See the documentation at the [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page)
 for help and more information. Pulsar is very similar to bitcoin, so you can use their wiki.
-* Ask for help on [#general](https://pulsar.chat/) on pulsar.chat.
+* Ask for help on [#general](https://discord.gg/ycV7abbF7M) in the Official Pulsar Coin Discord Channel.
 
 Building
 ---------------------
