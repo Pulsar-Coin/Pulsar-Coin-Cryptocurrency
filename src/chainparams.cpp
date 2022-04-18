@@ -75,8 +75,8 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x19a8a53eaeb38a16b76bad30e70cdb228efafa791b5f2150c2a5934a431a1492"));
         assert(genesis.hashMerkleRoot == uint256S("0x5443b97731232a13f0671d95ba0b3ba59389963d2be7127caf22dfbccdc23aa3"));
 
-        vSeeds.emplace_back("216.128.141.31");
-        vSeeds.emplace_back("149.28.244.210");
+        vSeeds.emplace_back("45.63.65.34");
+        vSeeds.emplace_back("137.220.60.11");
         vSeeds.emplace_back("103.249.70.51");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
