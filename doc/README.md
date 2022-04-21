@@ -1,4 +1,4 @@
-Pulsar 1.1.1
+Pulsar 1.1.2
 
 Setup
 ---------------------
@@ -17,13 +17,24 @@ Unpack the files into a directory and run:
 - `bin/pulsar-qt` (GUI) or
 - `bin/pulsard` (headless)
 
+Data Directory Location:
+- Unix: ~/.pulsar
+
 ### Windows
 
 Unpack the files into a directory, and then run pulsar-qt.exe.
 
+Data Directory Locations
+
+- Windows < Vista: C:\Documents and Settings\Username\Application Data\Pulsar
+- Windows >= Vista: C:\Users\Username\AppData\Roaming\Pulsar
+
 ### OS X
 
 Drag Pulsar-Core to your applications folder, and then run Pulsar-Core.
+
+Data Directory Location:
+- Mac: ~/Library/Application Support/Pulsar
 
 ### Need Help?
 
@@ -60,7 +71,7 @@ The Pulsar repo's [root README](/README.md) contains relevant information on the
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* TODO: add some pulsar resourses
+* TODO: add some pulsar resources
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
