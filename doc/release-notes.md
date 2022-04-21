@@ -42,7 +42,7 @@ Notable changes
 1.1.2 change log
 ------------------
 
-Networking improvements: new nodes added by default.
+Networking improvements: new nodes added by default, banscore argument added to conf file by default.
 TestNet: node added, default port modified, connection requirement lowered.
 Various Typo Fixes.
 Proper release notes and readme files.
