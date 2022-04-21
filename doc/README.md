@@ -1,4 +1,4 @@
-Pulsar 1.1.1
+Pulsar 1.1.2
 
 Setup
 ---------------------
@@ -60,7 +60,7 @@ The Pulsar repo's [root README](/README.md) contains relevant information on the
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* TODO: add some pulsar resourses
+* TODO: add some pulsar resources
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
