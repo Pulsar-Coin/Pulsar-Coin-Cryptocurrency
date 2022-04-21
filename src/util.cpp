@@ -677,14 +677,17 @@ void ArgsManager::ReadConfigFile(const std::string& confPath)
                           "port=5995\n"
                           "rpcport=5996\n"
                           "rpcbind=127.0.0.1\n"
-                          "maxconnections=40\n"
+                          "maxconnections=48\n"
                           "rpcallowip=127.0.0.1\n"
+                          "banscore=10000\n"
                           "\n"
-                          "# ADDNODES:\n"
+                          "# Pulsar Official Nodes:\n"
                           "addnode=45.63.65.34:5995\n"
                           "addnode=137.220.60.11:5995\n"
                           "addnode=103.249.70.51:5995\n"
-                          "addnode=103.249.70.51:5985\n";
+                          "\n"          
+                          "# Additional Nodes:\n"
+                          "\n";
             fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
             fclose(configFile);
         }

@@ -6,7 +6,7 @@ etc.
 There are currently two sets of tests in this directory:
 
 - [functional](/test/functional) which test the functionality of 
-pulsard and bitcoin-qt by interacting with them through the RPC and P2P
+pulsard and pulsar-qt by interacting with them through the RPC and P2P
 interfaces.
 - [util](/test/util) which tests the pulsar utilities, currently only
 pulsar-tx.
