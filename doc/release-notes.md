@@ -81,6 +81,6 @@ PulsarCoin Modifier: PhoenixGaming
 
 And to those who contributed to previous releases:
 
-\_\_I TYLE I_/_/
+Original-Tasty
 
 As well as everyone that has contributed input and community resources on [Discord](https://discord.gg/kGBcBy5dFG).
