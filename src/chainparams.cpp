@@ -87,7 +87,7 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4}; // xprv
 
         // human readable prefix to bench32 address
-        bech32_hrp = "cur";
+        bech32_hrp = "plsr";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -152,7 +152,7 @@ public:
         pchMessageStart[1] = 0xf4;
         pchMessageStart[2] = 0xc1;
         pchMessageStart[3] = 0xe6;
-        nDefaultPort = 5996;
+        nDefaultPort = 5998;
         vAlertPubKey = ParseHex("04bef9e37b5da8fb263aff719047b8d148875a4d343f8f093534f6be911b9e7d5b7b678507b24b4b4948f0b8a884da3afd38484a1b37ea33018e32c9bd79e19d9f");
 
         genesis = CreateGenesisBlock(1605440641, 200008037, 0x1f00ffff, 1, 0);
@@ -166,7 +166,7 @@ public:
         vSeeds.clear();
 
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("");
+        vSeeds.emplace_back("23.147.229.244");
         vSeeds.emplace_back("");
         vSeeds.emplace_back("");
 
@@ -177,7 +177,7 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94}; // tprv
 
         // human readable prefix to bench32 address
-        bech32_hrp = "tst";
+        bech32_hrp = "tplsr";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
@@ -266,7 +266,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF}; // tpub
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94}; // tprv
 
-        bech32_hrp = "tcur";
+        bech32_hrp = "rtplsr";
 
         nMiningRequiresPeers = 0;
         fDefaultConsistencyChecks = false;
