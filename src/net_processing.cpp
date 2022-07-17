@@ -1192,6 +1192,7 @@ void static ProcessGetBlockData(CNode* pfrom, const Consensus::Params& consensus
             // block might be rejected by stake connection check)
             std::vector<CInv> vInv;
             vInv.push_back(CInv(MSG_BLOCK, GetLastBlockIndex(chainActive.Tip(), false)->GetBlockHash()));
+            vInv.push_back(CInv(MSG_BLOCK, chainActive.Tip()->GetBlockHash()));
             connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::INV, vInv));
             pfrom->hashContinue.SetNull();
         }
@@ -1355,17 +1356,17 @@ bool static ProcessHeadersMessage(CNode *pfrom, CConnman *connman, const std::ve
         if (state.IsInvalid(nDoS)) {
             LOCK(cs_main);
             if (nDoS > 0) {
-                if (nPoSTemperature >= 200) {
+      //          if (nPoSTemperature >= 200) {
                     // A lot of PoS headers followed by some failed header (most likely PoW).
                     // This situation is very unusual, because normaly you don't get a failed PoW header with a ton of PoS headers.
                     // Probably out of memory attack. Punish peer for a long time.
-                    nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
-                    if (Params().NetworkIDString() != "test")
-                        g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
-                } else {
-                    nPoSTemperature *= 3;
+      //              nPoSTemperature = (MAX_CONSECUTIVE_POS_HEADERS*3)/4;
+      //              if (Params().NetworkIDString() != "test")
+      //                  g_connman->Ban(pfrom->addr, BanReasonNodeMisbehaving, gArgs.GetArg("-bantime", DEFAULT_MISBEHAVING_BANTIME) * 7);
+      //          } else {
+      //              nPoSTemperature *= 3;
                     Misbehaving(pfrom->GetId(), nDoS);
-                }
+     //           }
             }
             if (punish_duplicate_invalid && mapBlockIndex.find(first_invalid_header.GetHash()) != mapBlockIndex.end()) {
                 // Goal: don't allow outbound peers to use up our outbound
@@ -2369,6 +2370,14 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         const CBlockIndex *pindex = nullptr;
         CValidationState state;
 
+
+        // workaround to fix invalid nFlags for PoS-Blocks
+        bool flagPoS = cmpctblock.header.nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
+        if (!flagPoS && (cmpctblock.header.nNonce == 0) && !CheckProofOfWork(&cmpctblock.header, chainparams.GetConsensus())) {
+        	flagPoS = CBlockIndex::BLOCK_PROOF_OF_STAKE;
+        	cmpctblock.header.nFlags |= CBlockIndex::BLOCK_PROOF_OF_STAKE;
+        }
+
         if (!ProcessNewBlockHeaders(nPoSTemperature, chainActive.Tip()->GetBlockHash(), {cmpctblock.header}, false, state, chainparams, &pindex)) {
             int nDoS;
             if (state.IsInvalid(nDoS)) {
@@ -2677,6 +2686,13 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             // note: at this point we don't know if PoW headers are valid - we just assume they are
             // so we need to update pfrom->nPoSTemperature once we actualy check them
             bool fPoS = headers[n].nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
+
+            // workaround to fix invalid nFlags for PoS
+            if (!fPoS && (headers[n].nNonce == 0) && !CheckProofOfWork(&headers[n], chainparams.GetConsensus())) {
+            	fPoS = CBlockIndex::BLOCK_PROOF_OF_STAKE;
+            	headers[n].nFlags |= CBlockIndex::BLOCK_PROOF_OF_STAKE;
+            }
+
             nTmpPoSTemperature += fPoS ? 1 : -POW_HEADER_COOLING;
             // peer cannot cool himself by PoW headers from other branches
             if (n == 0 && !fPoS && headers[n].hashPrevBlock != pfrom->lastAcceptedHeader)

@@ -51,10 +51,10 @@ public:
         consensus.fPowNoRetargeting = false;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000051ba0e7743d8f042");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000094383e20cb8020ce6");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x71d0dcd63b6dd49e923aeac4a3d596b76d09756109b003e4ef39c25715e1a45d");
+        consensus.defaultAssumeValid = uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -75,9 +75,12 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x19a8a53eaeb38a16b76bad30e70cdb228efafa791b5f2150c2a5934a431a1492"));
         assert(genesis.hashMerkleRoot == uint256S("0x5443b97731232a13f0671d95ba0b3ba59389963d2be7127caf22dfbccdc23aa3"));
 
-        vSeeds.emplace_back("45.63.65.34");
-        vSeeds.emplace_back("137.220.60.11");
-        vSeeds.emplace_back("103.249.70.51");
+        vSeeds.emplace_back("seed01.pulsarcoin.org");
+        vSeeds.emplace_back("seed02.pulsarcoin.org");
+        vSeeds.emplace_back("seed03.pulsarcoin.org");
+        vSeeds.emplace_back("seed04.pulsarcoin.org");
+        vSeeds.emplace_back("seed05.pulsarcoin.org");
+        vSeeds.emplace_back("seed06.pulsarcoin.org");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
         base58Prefixes[SCRIPT_ADDRESS] = {0x38};
@@ -107,14 +110,18 @@ public:
                 {10000, uint256S("0x3b93ea64a485b15bd746fb89332d2f68afc5cceed914f5b2a0d3d89659ecfbb8")},
                 {30000, uint256S("0x313428907dc75f527bd9faaf0cfe904b3d9a9ced34e482f6cd97e299c536bc79")},
                 {68625, uint256S("0x71d0dcd63b6dd49e923aeac4a3d596b76d09756109b003e4ef39c25715e1a45d")},
+                {150000, uint256S("0xbe2aca64cd3b9759da3e15a0b9faf361674909e2c31f1750d1d73d2518eb7e1b")},
+                {250000, uint256S("0x7c3682d7dc9e2bd3fff1b97f5432f08d338e2aaf99a08bf3abc46e031d6abdf7")},
+                {350000, uint256S("0x85f0db37068b2d31f91ec2508a44699a45848493b7e50ac13d507e210b416541")},
+                {368312, uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1")},
             }
         };
 
         chainTxData = ChainTxData{
 			// Data from rpc: getchaintxstats 0
-			/* nTime    */ 1646267619,
-			/* nTxCount */ 112354,
-			/* dTxRate  */ 0.03616576107949424
+			/* nTime    */ 1657962835,
+			/* nTxCount */ 688296,
+			/* dTxRate  */ 0.04790706240371376
         };
     }
 };
