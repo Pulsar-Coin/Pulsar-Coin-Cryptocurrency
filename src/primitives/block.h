@@ -9,6 +9,28 @@
 #include <primitives/transaction.h>
 #include <serialize.h>
 #include <uint256.h>
+#include <string>
+#include <crypto/minotaurx/yespower/yespower.h>
+
+const uint256 HIGH_HASH = uint256S("0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+// Default value for -powalgo argument
+const std::string DEFAULT_POW_TYPE = "curvehash";
+
+// Pow type names
+const std::string POW_TYPE_NAMES[] = {
+    "curvehash",
+    "minotaurx"
+};
+
+// Crow: Pow type IDs
+enum POW_TYPE {
+    POW_TYPE_CURVEHASH,
+    POW_TYPE_MINOTAURX,
+    //
+    NUM_BLOCK_TYPES
+};
+
+
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -17,6 +39,19 @@
  * in the block is a special one that creates a new coin owned by the creator
  * of the block.
  */
+
+class BlockNetwork
+{
+public:
+    BlockNetwork();
+    bool fOnRegtest;
+    bool fOnTestnet;
+    void SetNetwork(const std::string& network);
+};
+
+extern BlockNetwork bNetwork;
+
+
 class CBlockHeader
 {
 public:
@@ -71,12 +106,32 @@ public:
         return (nBits == 0);
     }
 
+    /// Compute the SHA256 hash from the block
+    uint256 GetSHA256Hash() const;
     uint256 GetHash() const;
+    static uint256 CrowHashArbitrary(const char* data);
+    uint256 GetGRHash() const;
+    uint256 ComputePoWHash() const;
+
 
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
     }
+
+    //  Get pow type from version bits
+    POW_TYPE GetPoWType() const {
+        return (POW_TYPE)((nVersion >> 16) & 0xFF);
+    }
+
+    //  Get pow type name
+    std::string GetPoWTypeName() const {
+        POW_TYPE pt = GetPoWType();
+        if (pt >= NUM_BLOCK_TYPES)
+            return "unrecognised";
+        return POW_TYPE_NAMES[pt];
+    }
+
 };
 
 

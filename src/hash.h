@@ -11,7 +11,11 @@
 #include <prevector.h>
 #include <uint256.h>
 #include <version.h>
-#include <primitives/block.h>
+#include <primitives/block.h> //?
+
+//extern "C" {
+//#include "algo/sph_sha2.h"
+//}//?
 
 #include <vector>
 
@@ -231,5 +235,8 @@ uint64_t SipHashUint256Extra(uint64_t k0, uint64_t k1, const uint256& val, uint3
 
 extern int32_t pulsarRandseed;
 int univHash(const uint256 &x);
+
+extern double algoHashTotal[16];
+extern int algoHashHits[16];
 
 #endif // BITCOIN_HASH_H

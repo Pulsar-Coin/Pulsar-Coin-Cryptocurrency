@@ -257,6 +257,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::POS, "1"},
     {BCLog::POS, "pos"},
     {BCLog::ALERT, "alert"},
+    {BCLog::MINOTAURX, "minotaurx"},
 };
 
 bool GetLogCategory(uint32_t *f, const std::string *str)

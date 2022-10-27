@@ -954,7 +954,10 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
 
     // Check the header
     if (block.IsProofOfWork() && !CheckProofOfWork(&block, consensusParams))
+	{
+	LogPrintf("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+	}
 
     return true;
 }
@@ -1155,7 +1158,7 @@ static void CheckForkWarningConditions()
     if (pindexBestForkTip && chainActive.Height() - pindexBestForkTip->nHeight >= 72)
         pindexBestForkTip = nullptr;
 
-    if (pindexBestForkTip || (pindexBestInvalid && pindexBestInvalid->nChainTrust > chainActive.Tip()->nChainTrust + (GetBlockTrust(*GetLastBlockIndex(chainActive.Tip(), true)) * 6)))
+    if (pindexBestForkTip || (pindexBestInvalid && pindexBestInvalid->nChainTrust > chainActive.Tip()->nChainTrust + (GetBlockProof(*GetLastBlockIndex(chainActive.Tip(), true)) * 6)))
     {
         if (!GetfLargeWorkForkFound() && pindexBestForkBase)
         {
@@ -1206,7 +1209,7 @@ static void CheckForkWarningConditionsOnNewFork(CBlockIndex* pindexNewForkTip)
     // We define it this way because it allows us to only store the highest fork tip (+ base) which meets
     // the 7-block condition and from this always have the most-likely-to-cause-warning fork
     if (pfork && (!pindexBestForkTip || pindexNewForkTip->nHeight > pindexBestForkTip->nHeight) &&
-        pindexNewForkTip->nChainTrust - pfork->nChainTrust > (GetBlockTrust(*pfork) * 7) &&
+        pindexNewForkTip->nChainTrust - pfork->nChainTrust > (GetBlockProof(*pfork) * 7) &&
         chainActive.Height() - pindexNewForkTip->nHeight < 72) {
         pindexBestForkTip = pindexNewForkTip;
         pindexBestForkBase = pfork;
@@ -1660,6 +1663,16 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex *pindex, const Consens
     return flags;
 }
 
+// Check if GR Algo is activated at given point
+bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& params)
+{
+    if (pindexPrev != nullptr) {
+        return (pindexPrev->nTime > params.powForkTime);
+    } else {
+        return false;
+    }
+}
+
 
 static int64_t nTimeCheck = 0;
 static int64_t nTimeForks = 0;
@@ -2076,8 +2089,22 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
         // Check the version of the last 100 blocks to see if we need to upgrade:
         for (int i = 0; i < 100 && pindex != nullptr; i++)
         {
-            if (pindex->nVersion > CBlockHeader::CURRENT_VERSION)
-                ++nUpgraded;
+            //if (pindex->nVersion > CBlockHeader::CURRENT_VERSION)
+	    int32_t dGRVersion = 65537;//0x00010001; //fix
+	    int32_t dPLSRVersion = 1;//0x00000001;
+	    int hGRVersion = 0x00010001; //fix
+	    int hPLSRVersion = 0x00000001;
+            // GR: Mask out blocktype before checking for possible unknown upgrade
+            if (IsMinoEnabled(pindex, chainParams.GetConsensus())) {
+		int tVersion = pindex->nVersion;
+		//(pindex->nVersion  |= 1 << 25)
+
+		if ((pindex->nVersion || tVersion) != (dGRVersion || dPLSRVersion || hGRVersion || hPLSRVersion))
+		{
+			LogPrintf("Block Version: %s GR: %s CH: %s TEST: %s \n", pindex->nVersion, dGRVersion, dPLSRVersion, tVersion);
+                	++nUpgraded;
+		}
+	    }
             pindex = pindex->pprev;
         }
         if (nUpgraded > 0)
@@ -2733,7 +2760,7 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block, bool fSetAs
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     if (fSetAsProofOfstake)
         pindexNew->SetProofOfStake();
-    pindexNew->nChainTrust = (pindexNew->pprev ? pindexNew->pprev->nChainTrust : 0) + GetBlockTrust(*pindexNew);
+    pindexNew->nChainTrust = (pindexNew->pprev ? pindexNew->pprev->nChainTrust : 0) + GetBlockProof(*pindexNew);
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
     if (pindexBestHeader == nullptr || pindexBestHeader->nChainTrust < pindexNew->nChainTrust)
         pindexBestHeader = pindexNew;
@@ -2874,6 +2901,7 @@ static bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, 
 
 static bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state, const Consensus::Params &consensusParams, bool fCheckPOW = true, bool fOldClient = false) {
     // Check proof of work matches claimed amount
+
     if (fCheckPOW && !CheckProofOfWork(&block, consensusParams))
     {
         if (fOldClient)
@@ -3050,12 +3078,31 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, bool fProofOfS
     const int nHeight = pindexPrev->nHeight + 1;
 
     const Consensus::Params& consensusParams = params.GetConsensus();
+
+
+    // Check proof of work
+     // Handle pow type
+POW_TYPE powType = block.GetPoWType();
+        if (IsMinoEnabled(pindexPrev, consensusParams) && !fProofOfStake) {
+            if (powType >= NUM_BLOCK_TYPES)
+                return state.DoS(100, false, REJECT_INVALID, "bad-algo-id", false, "unrecognised pow type in block version");
+
+            //if (block.nBits != GetNextTargetRequired(pindexPrev, &block, consensusParams, powType))
+	    if (block.nBits != GetNextTargetRequired(pindexPrev, false, consensusParams, powType))
+                return state.DoS(100, false, REJECT_INVALID, "bad-diff", false, "incorrect pow difficulty");
+
+    } else if (block.nBits != GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams, powType)) {
+		//if (block.nTime > consensusParams.isValid)
+		if (!IsInitialBlockDownload())
+	        	return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
+    	}
+
     //check block time (start)
     if (GetTime() < consensusParams.nStartMiningTime) {
         return state.Invalid(false, REJECT_INVALID, "time-too-new", "it's not good time to start mining");
     }
     // Check proof of work or proof-of-stake
-    if (block.nBits != GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams))
+    if (block.nBits != GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams, powType))
         return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work/proof-of-stake");
 
     // Check against checkpoints
@@ -3082,6 +3129,19 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, bool fProofOfS
     // Check timestamp
     if (block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
         return state.Invalid(false, REJECT_INVALID, "time-too-new", "block timestamp too far in the future");
+
+    // Crow: Handle nVersion differently after activation
+    if (IsMinoEnabled(pindexPrev,consensusParams)) {
+        // TODO: Fix version bit checking 
+        // // Top 8 bits must be zero
+        // if (block.nVersion & 0xFF000000)
+        //     return state.Invalid(false, REJECT_OBSOLETE, strprintf("old-versionbits(0x%08x)", block.nVersion), strprintf("rejected nVersion=0x%08x block (old versionbits)", block.nVersion));
+
+        // Blocktype must be valid
+        uint8_t blockType = (block.nVersion >> 16) & 0xFF;
+        if (blockType >= NUM_BLOCK_TYPES)
+            return state.Invalid(false, REJECT_INVALID, "bad-blocktype", strprintf("unrecognised blocktype of =0x%08x", blockType));
+    }
 
     return true;
 }
@@ -3193,6 +3253,9 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, bool fProofOfStak
     bool fSetAsPos = fProofOfStake;
     if (hash != chainparams.GetConsensus().hashGenesisBlock) {
 
+	//uint256 ghash = chainparams.GetConsensus().hashGenesisBlock;
+	//LogPrint(BCLog::ALL, "---Hash: %s Genesis: %s \n", hash.ToString(), ghash.ToString());
+
         if (miSelf != mapBlockIndex.end()) {
             // Block header is already known.
             pindex = miSelf->second;
@@ -3205,7 +3268,7 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, bool fProofOfStak
 
         // pulsar: Don't reject in case of old clients. Change our assumption instead.
         //ppcTODO: Maybe add restrictions until when this is allowed? We don't want new clients to pretend to be old clients and try to abuse this.
-        if (!CheckBlockHeader(block, state, chainparams.GetConsensus(), !fProofOfStake, fOldClient))
+        if (!IsInitialBlockDownload() && !CheckBlockHeader(block, state, chainparams.GetConsensus(), !fProofOfStake, fOldClient))
         {
             if (fOldClient)
                 fSetAsPos = !fProofOfStake; // our guess was wrong - correct it
@@ -3225,7 +3288,7 @@ bool CChainState::AcceptBlockHeader(const CBlockHeader& block, bool fProofOfStak
         if (pindexPrev->nStatus & BLOCK_FAILED_MASK)
             return state.DoS(100, error("%s: prev block invalid", __func__), REJECT_INVALID, "bad-prevblk");
         if (!ContextualCheckBlockHeader(block, fSetAsPos, state, chainparams, pindexPrev, GetAdjustedTime()))
-            return error("%s: Consensus::ContextualCheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
+            return error("%s: Consensus::ContextualCheckBlockHeader: %s, %s, PoS: %s", __func__, hash.ToString(), FormatStateMessage(state), fSetAsPos);
 
         if (!pindexPrev->IsValid(BLOCK_VALID_SCRIPTS)) {
             for (const CBlockIndex* failedit : g_failed_blocks) {
@@ -3581,7 +3644,7 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
     for (const std::pair<int, CBlockIndex *> &item : vSortedByHeight)
     {
         CBlockIndex *pindex = item.second;
-        pindex->nChainTrust = (pindex->pprev ? pindex->pprev->nChainTrust : 0) + GetBlockTrust(*pindex);
+        pindex->nChainTrust = (pindex->pprev ? pindex->pprev->nChainTrust : 0) + GetBlockProof(*pindex);
         pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);
         // We can link the chain of blocks for which we've received transactions at some point.
         // Pruned nodes may have deleted the block.

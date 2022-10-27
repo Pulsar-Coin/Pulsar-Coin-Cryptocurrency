@@ -1631,6 +1631,16 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             return false;
         }
 
+        if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus()) && nVersion < MINOTAURX_VERSION)
+        {
+            // disconnect from peers older than this proto version
+            LogPrintf("peer=%d using obsolete version; missing minotaurx algo; %i; disconnecting\n", pfrom->GetId(), nVersion);
+            connman->PushMessage(pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::REJECT, strCommand, REJECT_OBSOLETE,
+                               strprintf("Version must be %d or greater", MINOTAURX_VERSION)));
+            pfrom->fDisconnect = true;
+            return false;
+        }
+
         if (nVersion == 10300)
             nVersion = 300;
         if (!vRecv.empty())
@@ -2373,6 +2383,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
 
         // workaround to fix invalid nFlags for PoS-Blocks
         bool flagPoS = cmpctblock.header.nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
+
         if (!flagPoS && (cmpctblock.header.nNonce == 0) && !CheckProofOfWork(&cmpctblock.header, chainparams.GetConsensus())) {
         	flagPoS = CBlockIndex::BLOCK_PROOF_OF_STAKE;
         	cmpctblock.header.nFlags |= CBlockIndex::BLOCK_PROOF_OF_STAKE;
@@ -2713,6 +2724,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         // disconnect the peer if it is using one of our outbound connection
         // slots.
         bool should_punish = !pfrom->fInbound && !pfrom->m_manual_connection;
+
         return ProcessHeadersMessage(pfrom, connman, headers, chainparams, should_punish);
     }
 

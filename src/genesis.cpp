@@ -104,6 +104,7 @@ void *MineBlock(void *threadarg) {
             if (UintToArith256(PoWHash) <= hashTarget) {
                 block.nNonce = nNonce;
                 GetPoWHash(&block, &PoWHash);
+		//PoWHash = block.ComputePoWHash();
                 // Found a solution
                 printf("SUCCESS block.nTime = %u \n", block.nTime);
                 printf("SUCCESS block.nBits = 0x%08x \n", block.nBits);

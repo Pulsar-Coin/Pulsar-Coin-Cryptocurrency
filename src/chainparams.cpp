@@ -41,9 +41,20 @@ public:
         consensus.nStakeTargetSpacing = 1.25 * 60;
         consensus.nTargetSpacingWorkMax = 1.25 * consensus.nStakeTargetSpacing;
         consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
+
         consensus.nStakeMinConfirmations = 6;
         consensus.nCoinbaseMaturity = 40;
         consensus.nDgwPastBlocks = 30;
+
+
+	consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
+	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
+
+	consensus.powForkTime = 1668211200; //Saturday, 12 November 2022 00:00:00 GMT+00:00
+
+        consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
+        consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
+
 
         consensus.nStartMiningTime = 1605440641;
 
@@ -69,11 +80,12 @@ public:
         nDefaultPort = 5995;
 
         genesis = CreateGenesisBlock(1605440641, 128396, 0x1e0fffff, 1, 0);
-//        MineGenesisBlock(genesis, consensus.powLimit);
+	//MineGenesisBlock(genesis, consensus.powLimit);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == uint256S("0x19a8a53eaeb38a16b76bad30e70cdb228efafa791b5f2150c2a5934a431a1492"));
         assert(genesis.hashMerkleRoot == uint256S("0x5443b97731232a13f0671d95ba0b3ba59389963d2be7127caf22dfbccdc23aa3"));
+
 
         vSeeds.emplace_back("seed01.pulsarcoin.org");
         vSeeds.emplace_back("seed02.pulsarcoin.org");
@@ -135,19 +147,31 @@ public:
         strNetworkID = "test";
         consensus.BIP16Height = 0;
         consensus.BIP34Height = 0;
+	
         consensus.powLimit = uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
         consensus.nTargetTimespan = 24 * 60;  // 24 minutes
         consensus.nStakeTargetSpacing = 1 * 60;  // 1-minute block spacing
         consensus.nTargetSpacingWorkMax = 1 * consensus.nStakeTargetSpacing; // 24-minute
-        consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
+	consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
+
         consensus.nStakeMinConfirmations = 1;
         consensus.nCoinbaseMaturity = 6; // 6 confirmations
         consensus.nDgwPastBlocks = 30;
 
+	consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
+	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
+
+	consensus.powForkTime = 1666699200; // Tuesday, 25 October 2022 13:00:00 GMT+01:00
+
+	//consensus.isValid = 1666327253;
+
+        consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
+        consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
 
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nStartMiningTime = 1605440641;
+	consensus.nStartMiningTime = 1605440641;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -163,7 +187,7 @@ public:
         vAlertPubKey = ParseHex("04bef9e37b5da8fb263aff719047b8d148875a4d343f8f093534f6be911b9e7d5b7b678507b24b4b4948f0b8a884da3afd38484a1b37ea33018e32c9bd79e19d9f");
 
         genesis = CreateGenesisBlock(1605440641, 200008037, 0x1f00ffff, 1, 0);
- 
+
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == uint256S("0xf035a8cda8f5aaf9592ffcab28c3c08a245fd236adb82432c242b4ad364b9d4e"));
@@ -173,9 +197,11 @@ public:
         vSeeds.clear();
 
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("23.147.229.244");
-        vSeeds.emplace_back("");
-        vSeeds.emplace_back("");
+        vSeeds.emplace_back("95.154.244.50");
+	vSeeds.emplace_back("95.154.244.51");
+	vSeeds.emplace_back("95.154.244.52");
+	vSeeds.emplace_back("95.154.244.3");
+        vSeeds.emplace_back("212.159.68.18");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x80}; // t
         base58Prefixes[SCRIPT_ADDRESS] = {0x7a};
@@ -196,6 +222,7 @@ public:
         checkpointData = {
                 {
                         {0, uint256S("0xf035a8cda8f5aaf9592ffcab28c3c08a245fd236adb82432c242b4ad364b9d4e")},
+			{1000, uint256S("0xcd6f94e1b5c3015954d46059a878bbad40071bd16637e7770d1f121a7dc9acfa")},
             }
         };
 
@@ -249,6 +276,7 @@ public:
         genesis = CreateGenesisBlock(1605440641, 200008037, 0x1f00ffff, 1, 0);
 
         consensus.hashGenesisBlock = genesis.GetHash();
+
         assert(consensus.hashGenesisBlock == uint256S("0xf035a8cda8f5aaf9592ffcab28c3c08a245fd236adb82432c242b4ad364b9d4e"));
         assert(genesis.hashMerkleRoot == uint256S("0x5443b97731232a13f0671d95ba0b3ba59389963d2be7127caf22dfbccdc23aa3"));
 

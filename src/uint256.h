@@ -127,7 +127,24 @@ public:
 class uint256 : public base_blob<256> {
 public:
     uint256() {}
+    //explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
+    uint256(const base_blob<256>& b) : base_blob<256>(b) {}
+    explicit uint256(const char* psz) { SetHex(psz); }
+    explicit uint256(const std::string& strHex) { SetHex(strHex); }
     explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
+
+    // Truncate a uint512 to a uint256
+    uint256(base_blob<512>& dat){
+        memcpy(begin(), dat.begin(), size());
+    }
+
+    int GetNibble(int index) const 
+    {
+        index = 63 - index;
+        if (index % 2 == 1)
+            return(data[index / 2] >> 4);
+        return(data[index / 2] & 0x0F); 
+    }
 
     /** A cheap hash function that just returns 64 bits from the result, it can be
      * used when the contents are considered uniformly random. It is not appropriate
@@ -139,6 +156,25 @@ public:
         return ReadLE64(data);
     }
 };
+
+// GR: 512-bit opaque blob
+class uint512 : public base_blob<512> {
+public:
+    uint512() {}
+    explicit uint512(const std::vector<unsigned char>& vch) : base_blob<512>(vch) {}
+
+    unsigned char ByteAt(unsigned int n) {
+        return data[n];
+    }
+
+    uint256 trim256() const
+    {
+        uint256 result;
+        memcpy((void*)&result, (void*)data, 32);
+        return result;
+    }
+};
+
 
 /* uint256 from const char *.
  * This is a separate function because the constructor uint256(const char*) can result
@@ -159,6 +195,17 @@ inline uint256 uint256S(const std::string& str)
     uint256 rv;
     rv.SetHex(str);
     return rv;
+}
+
+namespace std {
+    template <>
+    struct hash<uint256>
+    {
+        std::size_t operator()(const uint256& k) const
+        {
+            return (std::size_t)k.GetCheapHash();
+        }
+    };
 }
 
 #endif // BITCOIN_UINT256_H

@@ -39,6 +39,8 @@
 #include <mutex>
 #include <condition_variable>
 
+#include <primitives/block.h>
+
 struct CUpdatedBlock
 {
     uint256 hash;
@@ -54,22 +56,58 @@ extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& 
 /* Calculate the difficulty for a given block index,
  * or the block index of the given chain.
  */
-double GetDifficulty(const CChain& chain, const CBlockIndex* blockindex)
+
+CBlockIndex* GetLastBlockIndex4Algo(CBlockIndex* pindex, POW_TYPE powType)
+{
+    while (pindex && pindex->pprev && pindex->GetBlockHeader().GetPoWType() != powType)
+        pindex = pindex->pprev;
+    return pindex;
+}
+
+//double GetDifficulty(POW_TYPE powType){
+//    return GetDifficulty(GetLastBlockIndex4Algo(chainActive.Tip(), powType));
+//}
+/*
+double GetDifficulty(const CBlockIndex* blockindex, POW_TYPE powType)
+{
+	if (blockindex == nullptr)
+	{
+		return GetDifficulty(powType);
+	}
+	else
+	{	
+		return GetDifficulty(blockindex);
+	}
+}
+*/
+
+/* Calculate the difficulty for a given block index,
+ * or the block index of the given chain.
+ */
+double GetDifficulty(const CBlockIndex* blockindex, POW_TYPE powType)
 {
     if (blockindex == nullptr)
     {
-        if (chain.Tip() == nullptr)
-            return 1.0;
-        else
-            blockindex = GetLastBlockIndex(chain.Tip(), false);
+	return GetDifficulty(GetLastBlockIndex4Algo(chainActive.Tip(), powType));
+        //return 1.0;
     }
 
-    return blockindex->GetBlockDifficulty();
-}
+    int nShift = (blockindex->nBits >> 24) & 0xff;
+    double dDiff =
+        (double)0x0000ffff / (double)(blockindex->nBits & 0x00ffffff);
 
-double GetDifficulty(const CBlockIndex* blockindex)
-{
-    return GetDifficulty(chainActive, blockindex);
+    while (nShift < 29)
+    {
+        dDiff *= 256.0;
+        nShift++;
+    }
+    while (nShift > 29)
+    {
+        dDiff /= 256.0;
+        nShift--;
+    }
+
+    return dDiff;
 }
 
 UniValue blockheaderToJSON(const CBlockIndex* blockindex)
@@ -340,22 +378,43 @@ UniValue syncwithvalidationinterfacequeue(const JSONRPCRequest& request)
 
 UniValue getdifficulty(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() != 0)
+    if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
-            "getdifficulty\n"
-            "\nReturns the difficulty as a multiple of the minimum difficulty.\n"
+            "getdifficulty ( powalgo )\n"
+            "\nReturns the proof-of-work difficulty as a multiple of the minimum difficulty.\n"
+            "\nArguments:\n"
+            "1. \"powalgo\":\"xxxx\"     (string, optional) This can be set to \"curvehash\" or \"minotaurx\". If omitted, wallet's default is assumed (-powalgo conf option)\n"
             "\nResult:\n"
-            "n.nnn       (numeric) the difficulty as a multiple of the minimum difficulty.\n"
+            "n.nnn       (numeric) the proof-of-work difficulty as a multiple of the minimum difficulty.\n"
             "\nExamples:\n"
             + HelpExampleCli("getdifficulty", "")
             + HelpExampleRpc("getdifficulty", "")
         );
+    std::string strAlgo = gArgs.GetArg("-powalgo", DEFAULT_POW_TYPE);
+    if (!request.params[0].isNull())
+        strAlgo = request.params[0].get_str();
 
+    bool algoFound = false;
+    POW_TYPE powType;
+    for (unsigned int i = 0; i < NUM_BLOCK_TYPES; i++) {
+        if (strAlgo == POW_TYPE_NAMES[i]) {
+            powType = (POW_TYPE)i;
+            algoFound = true;
+            break;
+        }
+    }
+    if (!algoFound)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid pow algorithm requested");
+
+    if (!IsMinoEnabled(chainActive.Tip(), Params().GetConsensus()) && powType != POW_TYPE_CURVEHASH)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Non curvehash algo requested but minotaurx not enabled");
     LOCK(cs_main);
     UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("proof-of-work",        GetDifficulty(NULL)));
-    obj.push_back(Pair("proof-of-stake",       GetDifficulty(GetLastBlockIndex(chainActive.Tip(), true))));
-    return obj;
+    //obj.push_back(Pair("proof-of-work",        GetDifficulty(NULL)));
+    //obj.push_back(Pair("proof-of-work",        GetDifficulty(powType)));
+    //obj.push_back(Pair("proof-of-stake",       GetDifficulty(GetLastBlockIndex(chainActive.Tip(), true))));
+    //return obj;
+    return GetDifficulty(nullptr, powType);
 }
 
 std::string EntryDescriptionString()
@@ -669,6 +728,7 @@ UniValue getblockheader(const JSONRPCRequest& request)
             "\nResult (for verbose = true):\n"
             "{\n"
             "  \"hash\" : \"hash\",     (string) the block hash (same as provided)\n"
+            "  \"powtype\" : \"curvehash\"|\"minotaurx\"|\"unrecognised\", (string) Indicates the pow mining type of the block\n" 
             "  \"confirmations\" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain\n"
             "  \"height\" : n,          (numeric) The block height or index\n"
             "  \"version\" : n,         (numeric) The block version\n"
@@ -732,6 +792,7 @@ UniValue getblock(const JSONRPCRequest& request)
             "\nResult (for verbosity = 1):\n"
             "{\n"
             "  \"hash\" : \"hash\",     (string) the block hash (same as provided)\n"
+            "  \"powtype\" : \"curvehash\"|\"minotaurx\"|\"unrecognised\", (string) Indicates the pow mining type of the block\n" 
             "  \"confirmations\" : n,   (numeric) The number of confirmations, or -1 if the block is not on the main chain\n"
             "  \"size\" : n,            (numeric) The block size\n"
             "  \"strippedsize\" : n,    (numeric) The block size excluding witness data\n"
@@ -1070,6 +1131,7 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
             "  \"headers\": xxxxxx,            (numeric) the current number of headers we have validated\n"
             "  \"bestblockhash\": \"...\",       (string) the hash of the currently best block\n"
             "  \"difficulty\": xxxxxx,         (numeric) the current difficulty\n"
+            "  \"difficulty_algoname\": x  (string) difficulty per algorithm after gr activation\n"
             "  \"mediantime\": xxxxxx,         (numeric) median time for the current best block\n"
             "  \"verificationprogress\": xxxx, (numeric) estimate of verification progress [0..1]\n"
             "  \"initialblockdownload\": xxxx, (bool) (debug information) estimate of whether this node is in Initial Block Download mode.\n"
@@ -1099,7 +1161,12 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.push_back(Pair("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1));
     obj.push_back(Pair("bestblockhash",         chainActive.Tip()->GetBlockHash().GetHex()));
     obj.push_back(Pair("npowblock",             chainActive.Tip()->nPOWBlockHeight));
-    obj.push_back(Pair("difficulty",            (double)GetDifficulty()));
+    obj.push_back(Pair("difficulty",            (double)GetDifficulty(chainActive.Tip())));
+    if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus())){
+        obj.push_back(Pair("difficulty_curvehash", GetDifficulty(nullptr, POW_TYPE_CURVEHASH)));
+        obj.push_back(Pair("difficulty_minotaurx", GetDifficulty(nullptr, POW_TYPE_MINOTAURX)));
+    }
+    obj.push_back(Pair("difficulty_algorithm", "DGW-180"));
     obj.push_back(Pair("mediantime",            (int64_t)chainActive.Tip()->GetMedianTimePast()));
     obj.push_back(Pair("verificationprogress",  GuessVerificationProgress(Params().TxData(), chainActive.Tip())));
     obj.push_back(Pair("initialblockdownload",  IsInitialBlockDownload()));

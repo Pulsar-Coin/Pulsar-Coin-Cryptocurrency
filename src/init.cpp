@@ -498,6 +498,8 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-rpcworkqueue=<n>", strprintf("Set the depth of the work queue to service RPC calls (default: %d)", DEFAULT_HTTP_WORKQUEUE));
         strUsage += HelpMessageOpt("-rpcservertimeout=<n>", strprintf("Timeout during HTTP requests (default: %d)", DEFAULT_HTTP_SERVER_TIMEOUT));
     }
+
+    strUsage += HelpMessageOpt("-powalgo=curvehash|minotaurx", strprintf(_("Default pow mining algorithm. Miners who can't easily adjust their getblocktemplate calls should use this argument to set their preferred mining algorithm. (default: %s)"), DEFAULT_POW_TYPE));
     return strUsage;
 }
 
@@ -506,9 +508,9 @@ std::string LicenseInfo()
     const std::string URL_SOURCE_CODE = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency>";
     const std::string URL_WEBSITE = "<https://pulsarcoin.org>";
     const std::string URL_EXPLORER = "<https://explorer.pulsarcoin.org>";
-    const std::string URL_OFFICIALPOOL = "<https://pool.pulsarcoin.org/>";
+    //const std::string URL_OFFICIALPOOL = "";
     const std::string URL_WALLETS = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest>";
-    const std::string URL_DISCORD = "<https://discord.gg/mQpcC4tKkn>";
+    const std::string URL_DISCORD = "<https://discord.gg/tPfB7REgNe>";
     const std::string URL_TWITTER = "<https://twitter.com/PulsarCoin>";
     const std::string URL_INSTAGRAM = "<https://www.instagram.com/pulsar_coin/>";
 
@@ -524,10 +526,10 @@ std::string LicenseInfo()
                URL_EXPLORER) +
            "\n" +
            _("--------------------------------------------") + "\n" +
-           strprintf(_("Official Pool: %s"), + "\n" +
-               URL_OFFICIALPOOL) +
-           "\n" +
-           _("--------------------------------------------") + "\n" +
+           //strprintf(_("Official Pool: %s"), + "\n" +
+           //    URL_OFFICIALPOOL) +
+           //"\n" +
+           //_("--------------------------------------------") + "\n" +
            strprintf(_("Source code: %s"), + "\n" +
                URL_SOURCE_CODE) +
            "\n" +
