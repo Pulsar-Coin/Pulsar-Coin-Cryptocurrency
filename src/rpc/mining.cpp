@@ -63,8 +63,8 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
     if (lookup > pb->nHeight)
         lookup = pb->nHeight;
 
-     // Skip incorrect powType
-    while(IsMinoEnabled(pb, Params().GetConsensus()) && pb->GetBlockHeader().GetPoWType() != powType) {
+     // Skip incorrect powType and PoS
+    while(IsMinoEnabled(pb, Params().GetConsensus()) && pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake() ) {
         assert (pb->pprev);
         pb = pb->pprev;
     }
@@ -74,15 +74,16 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
         return 0;
     }
     // We are either post-fork and with correct powType, or pre-fork and    int64_t minTime = pb->GetBlockTime();
-    CBlockIndex *pb0 = pb;
-    int64_t minTime = pb0->GetBlockTime();
+    //CBlockIndex *pb0 = pb;
+    //int64_t minTime = pb0->GetBlockTime();
+    int64_t minTime = pb->GetBlockTime();
     int64_t maxTime = minTime;
-	//arith_uint256 workDiff = GetBlockProof(*pb, powType); 
+	arith_uint256 workDiff = GetBlockProof(*pb, powType); //
 
     for (int i = 0; i < lookup; i++) {
         pb = pb->pprev;
 
-        while(IsMinoEnabled(pb, Params().GetConsensus()) && pb->GetBlockHeader().GetPoWType() != powType) {
+        while(IsMinoEnabled(pb, Params().GetConsensus()) && pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake() ) {
             assert (pb->pprev);
             pb = pb->pprev;
         }
@@ -90,19 +91,22 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
             break;
         }
 
-        int64_t time = pb0->GetBlockTime();
+        //int64_t time = pb0->GetBlockTime();
+	int64_t time = pb->GetBlockTime();
         minTime = std::min(time, minTime);
         maxTime = std::max(time, maxTime);
-        //workDiff += GetBlockProof(*pb, powType); 
+        workDiff += GetBlockProof(*pb, powType); 
+	
+	LogPrintf("WORKDIFF %d\r", workDiff.getdouble());
     }
 
     // In case there's a situation where minTime == maxTime, we don't want a divide by zero exception.
     if (minTime == maxTime)
         return 0;
 
-    arith_uint256 workDiff = pb->nChainTrust - pb0->nChainTrust;
+    //arith_uint256 workDiff = pb->nChainTrust - pb0->nChainTrust;//
     int64_t timeDiff = maxTime - minTime;
-
+	LogPrintf("TIMEDIFF %i\r", timeDiff);
     return workDiff.getdouble() / timeDiff;
 }
 
@@ -115,7 +119,7 @@ UniValue getnetworkhashps(const JSONRPCRequest& request)
             "Pass in [blocks] to override # of blocks, -1 specifies since last difficulty change.\n"
             "Pass in [height] to estimate the network speed at the time when a certain block was found.\n"
             "\nArguments:\n"
-            "1. nblocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.\n"
+            "1. nblocks     (numeric, optional, default=100) The number of blocks, or -1 for blocks since last difficulty change.\n"
             "2. height      (numeric, optional, default=-1) To estimate at the time of the given height.\n"
             "3. powalgo     (string, optional) This can be set to \"curvehash\" or \"minotaurx\". If omitted, wallet's default is assumed (-powalgo conf option)\n"
             "\nResult:\n"
@@ -142,7 +146,7 @@ UniValue getnetworkhashps(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid pow algorithm requested");
 
     LOCK(cs_main);
-    return GetNetworkHashPS(!request.params[0].isNull() ? request.params[0].get_int() : 10, !request.params[1].isNull() ? request.params[1].get_int() : -1, powType);
+    return GetNetworkHashPS(!request.params[0].isNull() ? request.params[0].get_int() : 100, !request.params[1].isNull() ? request.params[1].get_int() : -1, powType);
 }
 
 // pulsar: get network Gh/s estimate
