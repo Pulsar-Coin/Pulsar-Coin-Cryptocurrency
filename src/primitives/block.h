@@ -22,15 +22,13 @@ const std::string POW_TYPE_NAMES[] = {
     "minotaurx"
 };
 
-// Crow: Pow type IDs
+// Pow type IDs
 enum POW_TYPE {
     POW_TYPE_CURVEHASH,
     POW_TYPE_MINOTAURX,
     //
     NUM_BLOCK_TYPES
 };
-
-
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -39,18 +37,6 @@ enum POW_TYPE {
  * in the block is a special one that creates a new coin owned by the creator
  * of the block.
  */
-
-class BlockNetwork
-{
-public:
-    BlockNetwork();
-    bool fOnRegtest;
-    bool fOnTestnet;
-    void SetNetwork(const std::string& network);
-};
-
-extern BlockNetwork bNetwork;
-
 
 class CBlockHeader
 {
@@ -106,13 +92,8 @@ public:
         return (nBits == 0);
     }
 
-    /// Compute the SHA256 hash from the block
-    uint256 GetSHA256Hash() const;
     uint256 GetHash() const;
-    static uint256 CrowHashArbitrary(const char* data);
-    uint256 GetGRHash() const;
     uint256 ComputePoWHash() const;
-
 
     int64_t GetBlockTime() const
     {
