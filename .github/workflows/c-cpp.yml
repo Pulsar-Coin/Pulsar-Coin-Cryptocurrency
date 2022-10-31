@@ -29,10 +29,10 @@ jobs:
       matrix:
         name:
           - x86_64-linux
-          #- x86_64-macos
-          #- x86_64-win
-          #- aarch64-linux
-          #- armhf-linux
+          - x86_64-macos
+          - x86_64-win
+          - aarch64-linux
+          - armhf-linux
         include:
           - name: armhf-linux
             host: arm-linux-gnueabihf
