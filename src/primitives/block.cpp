@@ -12,27 +12,8 @@
 #include <validation.h>
 #include <util.h>
 
-
-BlockNetwork bNetwork = BlockNetwork();
-
-BlockNetwork::BlockNetwork()
-{
-    fOnTestnet = false;
-    fOnRegtest = false;
-}
-
-void BlockNetwork::SetNetwork(const std::string& net)
-{
-    if (net == "test") {
-        fOnTestnet = true;
-    } else if (net == "regtest") {
-        fOnRegtest = true;
-    }
-}
-
 uint256 CBlockHeader::ComputePoWHash() const
 {
-	//LogPrint(BCLog::ALL, "---BLOCK.cpp  - PowType: %s\n", GetPoWType());
             switch (GetPoWType()) {
             case POW_TYPE_CURVEHASH: {
 		return SerializeHash(*this);
@@ -48,10 +29,6 @@ uint256 CBlockHeader::ComputePoWHash() const
             }
 }
 
-
-
-
-
 uint256 CBlockHeader::GetHash() const
 {
     uint256 powHash;
@@ -60,11 +37,7 @@ uint256 CBlockHeader::GetHash() const
 	
     return powHash;
 }
-/*
-uint256 CBlockHeader::CrowHashArbitrary(const char* data) {
-    return Minotaur(data, data + strlen(data), true);
-}
-*/
+
 std::string CBlock::ToString() const
 {
     std::stringstream s;
