@@ -155,16 +155,16 @@ jobs:
           
       
       - name: Chmod
-      if: |
-        ${{ matrix.name }} != x86_64-macos &&
-        ${{ matrix.name }} != x86_64-win
+        if: |
+          ${{ matrix.name }} != x86_64-macos &&
+          ${{ matrix.name }} != x86_64-win
         run: |
           chmod +x depends/${{ matrix.host }}/bin/pulsard src/qt/pulsar-qt src/pulsar-cli
           
       - name: Tar files
-      if: |
-        ${{ matrix.name }} != x86_64-macos &&
-        ${{ matrix.name }} != x86_64-win
+        if: |
+          ${{ matrix.name }} != x86_64-macos &&
+          ${{ matrix.name }} != x86_64-win
         run: |
             tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
             tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
