@@ -151,24 +151,29 @@ jobs:
           
       - name: Strip built binaries
         run: |
-          ${{ matrix.strip-cmd }} depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli* dist/Pulsar-Qt.app* || ( echo "Failed stripping builds. The build will have a bigger file size" )
+          ${{ matrix.strip-cmd }} depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli* src/pulsar-tx* dist/Pulsar-Qt.app* || ( echo "Failed stripping builds. The build will have a bigger file size" )
           
+      - name: Move to release
+        run: |
+          mkdir release
+          cp depends/${{ matrix.host }}/bin/pulsard* release/
+          cp src/qt/pulsar-qt* release/
+          cp src/pulsar-cli* release/
+          cp src/pulsar-tx* release/
       
       - name: Chmod
         if: |
           ${{ matrix.name }} != 'x86_64-macos' &&
           ${{ matrix.name }} != 'x86_64-win'
         run: |
-          chmod +x depends/${{ matrix.host }}/bin/pulsard src/qt/pulsar-qt src/pulsar-cli
+          chmod -R +x release/
           
       - name: Tar files
         if: |
           ${{ matrix.name }} != 'x86_64-macos' &&
           ${{ matrix.name }} != 'x86_64-win'
         run: |
-            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
-            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
-            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C src/ pulsar-cli
+            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C release/ .
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -176,9 +181,9 @@ jobs:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
             Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar
-            depends/${{ matrix.host }}/bin/pulsard*
-            src/qt/pulsar-qt
-            src/qt/pulsar-qt.exe
-            src/pulsar-cli
-            src/pulsar-cli.exe
-            dist/Pulsar-Qt.app
+            #release/pulsard*
+            #release/pulsar-qt
+            #release/pulsar-qt.exe
+            #release/pulsar-cli
+            #release/pulsar-cli.exe
+            #release/Pulsar-Qt.app
