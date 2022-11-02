@@ -41,7 +41,7 @@ jobs:
         include:
           - name: armhf-linux
             host: arm-linux-gnueabihf
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             packages: g++-arm-linux-gnueabihf
             run-tests: false
             dep-opts: ""
@@ -49,7 +49,7 @@ jobs:
             goal: install
           - name: aarch64-linux
             host: aarch64-linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             packages: g++-aarch64-linux-gnu
             run-tests: false
             dep-opts: ""
@@ -57,7 +57,7 @@ jobs:
             goal: install
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
@@ -178,14 +178,27 @@ jobs:
             tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C release/ .
       
       - name: Upload artifacts
+        if: |
+          matrix.name != 'x86_64-macos' &&
+          matrix.name != 'x86_64-win'
         uses: actions/upload-artifact@v2
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
             Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar
+            
+      - name: Upload artifacts WIN/OSX
+        if: |
+          matrix.name == 'x86_64-macos' ||
+          matrix.name == 'x86_64-win'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
+          path: |
             #release/pulsard*
             #release/pulsar-qt
             #release/pulsar-qt.exe
             #release/pulsar-cli
             #release/pulsar-cli.exe
             #release/Pulsar-Qt.app
+
