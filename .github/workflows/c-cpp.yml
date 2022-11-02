@@ -195,10 +195,10 @@ jobs:
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
-            #release/pulsard*
-            #release/pulsar-qt
-            #release/pulsar-qt.exe
-            #release/pulsar-cli
-            #release/pulsar-cli.exe
-            #release/Pulsar-Qt.app
+            release/pulsard*
+            release/pulsar-qt
+            release/pulsar-qt.exe
+            release/pulsar-cli
+            release/pulsar-cli.exe
+            release/Pulsar-Qt.app
 
