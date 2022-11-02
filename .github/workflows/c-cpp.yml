@@ -166,16 +166,16 @@ jobs:
           ${{ matrix.name }} != x86_64-macos &&
           ${{ matrix.name }} != x86_64-win
         run: |
-            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
-            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
-            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C src/ pulsar-cli
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/ pulsar-cli
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Pulsar-${{ VERSION }}-${{ matrix.name }}
+          name: Pulsar-$VERSION-${{ matrix.name }}
           path: |
-            Pulsar-${{ VERSION }}-${{ matrix.name }}.tar
+            Pulsar-$VERSION-${{ matrix.name }}.tar
             depends/${{ matrix.host }}/bin/pulsard*
             src/qt/pulsar-qt
             src/qt/pulsar-qt.exe
