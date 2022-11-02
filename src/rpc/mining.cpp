@@ -64,26 +64,25 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
         lookup = pb->nHeight;
 
      // Skip incorrect powType and PoS
-    while(IsMinoEnabled(pb, Params().GetConsensus()) && (pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake()) ) {
+    while(pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake()) {
         assert (pb->pprev);
         pb = pb->pprev;
     }
     // We have either stepped back to before gr fork, or the requested powType block
-    // If we have stepped back to (or started looking up from) pre gr, but requested gr pow type, then there are no hashes
+    // If we have stepped back to (or started looking up from) pre mino, but requested mino pow type, then there are no hashes
     if (!IsMinoEnabled(pb, Params().GetConsensus()) && powType == POW_TYPE_MINOTAURX) {
         return 0;
     }
-    // We are either post-fork and with correct powType, or pre-fork and    int64_t minTime = pb->GetBlockTime();
-    //CBlockIndex *pb0 = pb;
-    //int64_t minTime = pb0->GetBlockTime();
+    // We are either post-fork and with correct powType, or pre-fork
+
     int64_t minTime = pb->GetBlockTime();
     int64_t maxTime = minTime;
-	arith_uint256 workDiff = GetBlockProof(*pb, powType); //
+    arith_uint256 workDiff = GetBlockProof(*pb, powType);
 
     for (int i = 0; i < lookup; i++) {
         pb = pb->pprev;
 
-        while(IsMinoEnabled(pb, Params().GetConsensus()) && (pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake()) ) {
+        while(pb->GetBlockHeader().GetPoWType() != powType || pb->IsProofOfStake()) {
             assert (pb->pprev);
             pb = pb->pprev;
         }
@@ -91,22 +90,18 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
             break;
         }
 
-        //int64_t time = pb0->GetBlockTime();
 	int64_t time = pb->GetBlockTime();
         minTime = std::min(time, minTime);
         maxTime = std::max(time, maxTime);
         workDiff += GetBlockProof(*pb, powType); 
-	
-	//LogPrintf("WORKDIFF %d\r", workDiff.getdouble());
     }
 
     // In case there's a situation where minTime == maxTime, we don't want a divide by zero exception.
     if (minTime == maxTime)
         return 0;
 
-    //arith_uint256 workDiff = pb->nChainTrust - pb0->nChainTrust;//
     int64_t timeDiff = maxTime - minTime;
-	//LogPrintf("TIMEDIFF %i\r", timeDiff);
+
     return workDiff.getdouble() / timeDiff;
 }
 
