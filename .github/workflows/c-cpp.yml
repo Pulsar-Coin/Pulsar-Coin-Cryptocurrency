@@ -26,6 +26,7 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
+      VERSION: "1.1.4.3"
 
     strategy:
       fail-fast: false
@@ -151,14 +152,26 @@ jobs:
       - name: Strip built binaries
         run: |
           ${{ matrix.strip-cmd }} depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli* dist/Pulsar-Qt.app* || ( echo "Failed stripping builds. The build will have a bigger file size" )
+          
+      - name: Chmod
+        run: |
+          chmod +x depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli*
+          
+      - name: Tar files
+        run: |
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
+            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/ pulsar-cli
+      
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: pulsar-${{ github.sha }}-${{ matrix.name }}
+          name: Pulsar-$VERSION-${{ matrix.name }}
           path: |
-            depends/${{ matrix.host }}/bin/pulsard*
-            src/qt/pulsar-qt
-            src/qt/pulsar-qt.exe
-            src/pulsar-cli
-            src/pulsar-cli.exe
-            dist/Pulsar-Qt.app
+            Pulsar-$VERSION-${{ matrix.name }}.tar
+            #depends/${{ matrix.host }}/bin/pulsard*
+            #src/qt/pulsar-qt
+            #src/qt/pulsar-qt.exe
+            #src/pulsar-cli
+            #src/pulsar-cli.exe
+            #dist/Pulsar-Qt.app
