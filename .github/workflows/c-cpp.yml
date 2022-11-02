@@ -153,25 +153,32 @@ jobs:
         run: |
           ${{ matrix.strip-cmd }} depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli* dist/Pulsar-Qt.app* || ( echo "Failed stripping builds. The build will have a bigger file size" )
           
+      
       - name: Chmod
+      if: |
+        ${{ matrix.name }} != x86_64-macos &&
+        ${{ matrix.name }} != x86_64-win
         run: |
-          chmod +x depends/${{ matrix.host }}/bin/pulsard* src/qt/pulsar-qt* src/pulsar-cli*
+          chmod +x depends/${{ matrix.host }}/bin/pulsard src/qt/pulsar-qt src/pulsar-cli
           
       - name: Tar files
+      if: |
+        ${{ matrix.name }} != x86_64-macos &&
+        ${{ matrix.name }} != x86_64-win
         run: |
-            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
-            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
-            tar -cvf Pulsar-$VERSION-${{ matrix.name }}.tar -C src/ pulsar-cli
+            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C depends/${{ matrix.host }}/bin/ pulsard
+            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C src/qt/ pulsar-qt
+            tar -cvf Pulsar-${{ VERSION }}-${{ matrix.name }}.tar -C src/ pulsar-cli
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Pulsar-$VERSION-${{ matrix.name }}
+          name: Pulsar-${{ VERSION }}-${{ matrix.name }}
           path: |
-            Pulsar-$VERSION-${{ matrix.name }}.tar
-            #depends/${{ matrix.host }}/bin/pulsard*
-            #src/qt/pulsar-qt
-            #src/qt/pulsar-qt.exe
-            #src/pulsar-cli
-            #src/pulsar-cli.exe
-            #dist/Pulsar-Qt.app
+            Pulsar-${{ VERSION }}-${{ matrix.name }}.tar
+            depends/${{ matrix.host }}/bin/pulsard*
+            src/qt/pulsar-qt
+            src/qt/pulsar-qt.exe
+            src/pulsar-cli
+            src/pulsar-cli.exe
+            dist/Pulsar-Qt.app
