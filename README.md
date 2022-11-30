@@ -87,7 +87,7 @@
 #### Exbitron: https://www.exbitron.com/trading/plsrbtc
 
 ## Supported Wallets
-### BeehiveWallet: [beehive](beehivewallet.link)
+#### BeehiveWallet: [beehive](beehivewallet.link)
 
 ## Coin Trackers
 #### CoinPaprika: https://coinpaprika.com/coin/plsr-pulsar-coin/
