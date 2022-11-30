@@ -99,10 +99,11 @@
 <a href="https://imgur.com/WW2vLYd"><img src="https://i.imgur.com/WW2vLYd.gif" title="source: imgur.com" /></a>
 
 ## Support
-Please e-mail us any with any concerns you may come across [Email Me](mailto:pulsarcoincrypto@gmail.com)
+Please e-mail us any with any concerns you may come across 
+<br> [Email Me](mailto:pulsarcoincrypto@gmail.com)
 
 ## Support the Team, Developers, and the Project
-<br> BTC - Bitcoin: 34AceByewdoYYYLjGJahkZLZ3RAZwa2Rdh
-<br> LTC - Litecoin: MSfD1TMdn8LnS6BpJhjPGuXJELu8Y2mrxX
-<br> ETH - Ethereum: 0x7276aF08bfED0a03Dcbcfe9bAC20E54439b74C31
-<br> PLSR - Pulsar Coin: P9dLXYBmJiFkNCw2sQxVbyXbT8keuGRVyg
+<br> **BTC** - Bitcoin: 34AceByewdoYYYLjGJahkZLZ3RAZwa2Rdh
+<br> **LTC** - Litecoin: MSfD1TMdn8LnS6BpJhjPGuXJELu8Y2mrxX
+<br> **ETH** - Ethereum: 0x7276aF08bfED0a03Dcbcfe9bAC20E54439b74C31
+<br> **PLSR** - Pulsar Coin: P9dLXYBmJiFkNCw2sQxVbyXbT8keuGRVyg
