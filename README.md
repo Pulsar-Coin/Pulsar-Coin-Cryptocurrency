@@ -78,7 +78,7 @@
 <br> YouTube: [@PulsarCoin](https://youtube.com/@pulsarcoin)
 <br> Facebook: [pulsarblockchain](https://www.facebook.com/pulsarblockchain)
 <br> Instagram: [pulsar_coin](https://www.instagram.com/pulsar_coin/)
-<br> Patreon: ***Coming Soon***
+<br> Patreon: [Pulsar Patreon](https://www.patreon.com/pulsar)
 <br> Telegram: [pulsarcoin1](https://t.me/pulsarcoin1)
 
 ## Exchanges
