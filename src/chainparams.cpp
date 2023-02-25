@@ -65,7 +65,8 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000094383e20cb8020ce6");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1");
+        //consensus.defaultAssumeValid = uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1");
+	consensus.defaultAssumeValid = uint256S("0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -126,14 +127,18 @@ public:
                 {250000, uint256S("0x7c3682d7dc9e2bd3fff1b97f5432f08d338e2aaf99a08bf3abc46e031d6abdf7")},
                 {350000, uint256S("0x85f0db37068b2d31f91ec2508a44699a45848493b7e50ac13d507e210b416541")},
                 {368312, uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1")},
+		{860000, uint246S{"0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a")},
             }
         };
 
         chainTxData = ChainTxData{
 			// Data from rpc: getchaintxstats 0
-			/* nTime    */ 1657962835,
-			/* nTxCount */ 688296,
-			/* dTxRate  */ 0.04790706240371376
+			///* nTime    */ 1657962835,
+			///* nTxCount */ 688296,
+			///* dTxRate  */ 0.04790706240371376
+			/* nTime    */ 1677347183,
+			/* nTxCount */ 1575119,
+			/* dTxRate  */ 0.04561816625194932
         };
     }
 };
