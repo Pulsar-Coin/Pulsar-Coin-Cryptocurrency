@@ -1,8 +1,9 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Maintained and Managed by The Pulsar Coin Team
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/bitcoinaddressvalidator.h>
+#include <qt/pulsaraddressvalidator.h>
 
 #include <base58.h>
 
@@ -15,12 +16,12 @@
   - All lower-case letters except for 'l'
 */
 
-BitcoinAddressEntryValidator::BitcoinAddressEntryValidator(QObject *parent) :
+PulsarAddressEntryValidator::PulsarAddressEntryValidator(QObject *parent) :
     QValidator(parent)
 {
 }
 
-QValidator::State BitcoinAddressEntryValidator::validate(QString &input, int &pos) const
+QValidator::State PulsarAddressEntryValidator::validate(QString &input, int &pos) const
 {
     Q_UNUSED(pos);
 
@@ -80,15 +81,15 @@ QValidator::State BitcoinAddressEntryValidator::validate(QString &input, int &po
     return state;
 }
 
-BitcoinAddressCheckValidator::BitcoinAddressCheckValidator(QObject *parent) :
+PulsarAddressCheckValidator::PulsarAddressCheckValidator(QObject *parent) :
     QValidator(parent)
 {
 }
 
-QValidator::State BitcoinAddressCheckValidator::validate(QString &input, int &pos) const
+QValidator::State PulsarAddressCheckValidator::validate(QString &input, int &pos) const
 {
     Q_UNUSED(pos);
-    // Validate the passed Bitcoin address
+    // Validate the passed Pulsar address
     if (IsValidDestinationString(input.toStdString())) {
         return QValidator::Acceptable;
     }
