@@ -4,9 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/pulsarunits.h>
-
 #include <primitives/transaction.h>
-
 #include <QStringList>
 
 PulsarUnits::PulsarUnits(QObject *parent):
