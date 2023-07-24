@@ -105,9 +105,9 @@ am__aclocal_m4_deps = $(top_srcdir)/build-aux/m4/ax_boost_base.m4 \
 	$(top_srcdir)/build-aux/m4/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/build-aux/m4/ax_gcc_func_attribute.m4 \
 	$(top_srcdir)/build-aux/m4/ax_pthread.m4 \
-	$(top_srcdir)/build-aux/m4/bitcoin_find_bdb48.m4 \
-	$(top_srcdir)/build-aux/m4/bitcoin_qt.m4 \
-	$(top_srcdir)/build-aux/m4/bitcoin_subdir_to_include.m4 \
+	$(top_srcdir)/build-aux/m4/pulsar_find_bdb48.m4 \
+	$(top_srcdir)/build-aux/m4/pulsar_qt.m4 \
+	$(top_srcdir)/build-aux/m4/pulsar_subdir_to_include.m4 \
 	$(top_srcdir)/build-aux/m4/l_atomic.m4 \
 	$(top_srcdir)/build-aux/m4/libtool.m4 \
 	$(top_srcdir)/build-aux/m4/ltoptions.m4 \
@@ -119,7 +119,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/src/config/bitcoin-config.h
+CONFIG_HEADER = $(top_builddir)/src/config/pulsar-config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_$(V))
@@ -187,10 +187,10 @@ AWK = gawk
 BDB_CFLAGS = 
 BDB_CPPFLAGS = 
 BDB_LIBS = -ldb_cxx-4.8
-BITCOIN_CLI_NAME = pulsar-cli
-BITCOIN_DAEMON_NAME = pulsard
-BITCOIN_GUI_NAME = pulsar-qt
-BITCOIN_TX_NAME = pulsar-tx
+PULSAR_CLI_NAME = pulsar-cli
+PULSAR_DAEMON_NAME = pulsard
+PULSAR_GUI_NAME = pulsar-qt
+PULSAR_TX_NAME = pulsar-tx
 BOOST_CHRONO_LIB = -lboost_chrono
 BOOST_CPPFLAGS = -DBOOST_SP_USE_STD_ATOMIC -DBOOST_AC_USE_STD_ATOMIC -pthread -I/usr/include
 BOOST_FILESYSTEM_LIB = -lboost_filesystem
