@@ -1,6 +1,6 @@
 Pulsar
 
-Copyright (c) 2022 Pulsar Developers
+Copyright (c) 2021-2023 Pulsar Coin Team
 Distributed under the MIT/X11 software license, see the accompanying
 file COPYING or http://www.opensource.org/licenses/mit-license.php.
 This product includes software developed by the OpenSSL Project for use in
@@ -29,5 +29,3 @@ Data Directory Locations
 ------------------------
 Windows < Vista: C:\Documents and Settings\Username\Application Data\Pulsar
 Windows >= Vista: C:\Users\Username\AppData\Roaming\Pulsar
-
-
