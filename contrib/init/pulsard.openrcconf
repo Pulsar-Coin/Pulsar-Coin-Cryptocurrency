@@ -1,0 +1,33 @@
+# /etc/conf.d/bitcoind: config file for /etc/init.d/bitcoind
+
+# Config file location
+#PULSARD_CONFIGFILE="/etc/bitcoin/bitcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $PULSARD_USER)
+#PULSARD_PIDDIR="/var/run/pulsard"
+
+# What filename to give the pidfile
+#PULSARD_PIDFILE="${PULSARD_PIDDIR}/pulsard.pid"
+
+# Where to write pulsard data (be mindful that the blockchain is large)
+#PULSARD_DATADIR="/var/lib/pulsard"
+
+# User and group to own pulsard process
+#PULSARD_USER="pulsar"
+#PULSARD_GROUP="pulsar"
+
+# Path to pulsard executable
+#PULSARD_BIN="/usr/bin/pulsard"
+
+# Nice value to run pulsard under
+#PULSARD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#PULSARD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for pulsard to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+PULSARD_SIGTERM_TIMEOUT=60
