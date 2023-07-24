@@ -1,126 +1,127 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
+# Maintained and Managed by The Pulsar Coin Team
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 bin_PROGRAMS += qt/pulsar-qt
-EXTRA_LIBRARIES += qt/libbitcoinqt.a
+EXTRA_LIBRARIES += qt/libpulsarqt.a
 
-# bitcoin qt core #
+# pulsar qt core #
 QT_TS = \
-  qt/locale/bitcoin_af.ts \
-  qt/locale/bitcoin_af_ZA.ts \
-  qt/locale/bitcoin_am.ts \
-  qt/locale/bitcoin_ar.ts \
-  qt/locale/bitcoin_be_BY.ts \
-  qt/locale/bitcoin_bg_BG.ts \
-  qt/locale/bitcoin_bg.ts \
-  qt/locale/bitcoin_bn.ts \
-  qt/locale/bitcoin_bs.ts \
-  qt/locale/bitcoin_ca_ES.ts \
-  qt/locale/bitcoin_ca.ts \
-  qt/locale/bitcoin_ca@valencia.ts \
-  qt/locale/bitcoin_cs_CZ.ts \
-  qt/locale/bitcoin_cs.ts \
-  qt/locale/bitcoin_cy.ts \
-  qt/locale/bitcoin_da.ts \
-  qt/locale/bitcoin_de_DE.ts \
-  qt/locale/bitcoin_de.ts \
-  qt/locale/bitcoin_el_GR.ts \
-  qt/locale/bitcoin_el.ts \
-  qt/locale/bitcoin_en_AU.ts \
-  qt/locale/bitcoin_en_GB.ts \
-  qt/locale/bitcoin_en.ts \
-  qt/locale/bitcoin_eo.ts \
-  qt/locale/bitcoin_es_419.ts \
-  qt/locale/bitcoin_es_AR.ts \
-  qt/locale/bitcoin_es_CL.ts \
-  qt/locale/bitcoin_es_CO.ts \
-  qt/locale/bitcoin_es_DO.ts \
-  qt/locale/bitcoin_es_ES.ts \
-  qt/locale/bitcoin_es_MX.ts \
-  qt/locale/bitcoin_es.ts \
-  qt/locale/bitcoin_es_UY.ts \
-  qt/locale/bitcoin_es_VE.ts \
-  qt/locale/bitcoin_et_EE.ts \
-  qt/locale/bitcoin_et.ts \
-  qt/locale/bitcoin_eu_ES.ts \
-  qt/locale/bitcoin_fa_IR.ts \
-  qt/locale/bitcoin_fa.ts \
-  qt/locale/bitcoin_fi.ts \
-  qt/locale/bitcoin_fr_CA.ts \
-  qt/locale/bitcoin_fr_FR.ts \
-  qt/locale/bitcoin_fr.ts \
-  qt/locale/bitcoin_gl.ts \
-  qt/locale/bitcoin_he_IL.ts \
-  qt/locale/bitcoin_he.ts \
-  qt/locale/bitcoin_hi_IN.ts \
-  qt/locale/bitcoin_hr.ts \
-  qt/locale/bitcoin_hu_HU.ts \
-  qt/locale/bitcoin_hu.ts \
-  qt/locale/bitcoin_id_ID.ts \
-  qt/locale/bitcoin_id.ts \
-  qt/locale/bitcoin_is.ts \
-  qt/locale/bitcoin_it_IT.ts \
-  qt/locale/bitcoin_it.ts \
-  qt/locale/bitcoin_ja_JP.ts \
-  qt/locale/bitcoin_ja.ts \
-  qt/locale/bitcoin_ka.ts \
-  qt/locale/bitcoin_kk_KZ.ts \
-  qt/locale/bitcoin_km_KH.ts \
-  qt/locale/bitcoin_ko_KR.ts \
-  qt/locale/bitcoin_ko.ts \
-  qt/locale/bitcoin_ku_IQ.ts \
-  qt/locale/bitcoin_ky.ts \
-  qt/locale/bitcoin_la.ts \
-  qt/locale/bitcoin_lt.ts \
-  qt/locale/bitcoin_lv_LV.ts \
-  qt/locale/bitcoin_mk_MK.ts \
-  qt/locale/bitcoin_ml.ts \
-  qt/locale/bitcoin_mn.ts \
-  qt/locale/bitcoin_mr_IN.ts \
-  qt/locale/bitcoin_ms_MY.ts \
-  qt/locale/bitcoin_ms.ts \
-  qt/locale/bitcoin_my.ts \
-  qt/locale/bitcoin_nb_NO.ts \
-  qt/locale/bitcoin_nb.ts \
-  qt/locale/bitcoin_ne.ts \
-  qt/locale/bitcoin_nl_NL.ts \
-  qt/locale/bitcoin_nl.ts \
-  qt/locale/bitcoin_pam.ts \
-  qt/locale/bitcoin_pl_PL.ts \
-  qt/locale/bitcoin_pl.ts \
-  qt/locale/bitcoin_pt_BR.ts \
-  qt/locale/bitcoin_pt_PT.ts \
-  qt/locale/bitcoin_pt.ts \
-  qt/locale/bitcoin_ro_RO.ts \
-  qt/locale/bitcoin_ro.ts \
-  qt/locale/bitcoin_ru_RU.ts \
-  qt/locale/bitcoin_ru.ts \
-  qt/locale/bitcoin_si.ts \
-  qt/locale/bitcoin_sk.ts \
-  qt/locale/bitcoin_sl_SI.ts \
-  qt/locale/bitcoin_sn.ts \
-  qt/locale/bitcoin_sq.ts \
-  qt/locale/bitcoin_sr@latin.ts \
-  qt/locale/bitcoin_sr.ts \
-  qt/locale/bitcoin_sv.ts \
-  qt/locale/bitcoin_ta_IN.ts \
-  qt/locale/bitcoin_ta.ts \
-  qt/locale/bitcoin_te.ts \
-  qt/locale/bitcoin_th_TH.ts \
-  qt/locale/bitcoin_th.ts \
-  qt/locale/bitcoin_tr_TR.ts \
-  qt/locale/bitcoin_tr.ts \
-  qt/locale/bitcoin_uk.ts \
-  qt/locale/bitcoin_ur_PK.ts \
-  qt/locale/bitcoin_uz@Cyrl.ts \
-  qt/locale/bitcoin_vi.ts \
-  qt/locale/bitcoin_vi_VN.ts \
-  qt/locale/bitcoin_zh_CN.ts \
-  qt/locale/bitcoin_zh-Hans.ts \
-  qt/locale/bitcoin_zh_HK.ts \
-  qt/locale/bitcoin_zh.ts \
-  qt/locale/bitcoin_zh_TW.ts
+  qt/locale/pulsar_af.ts \
+  qt/locale/pulsar_af_ZA.ts \
+  qt/locale/pulsar_am.ts \
+  qt/locale/pulsar_ar.ts \
+  qt/locale/pulsar_be_BY.ts \
+  qt/locale/pulsar_bg_BG.ts \
+  qt/locale/pulsar_bg.ts \
+  qt/locale/pulsar_bn.ts \
+  qt/locale/pulsar_bs.ts \
+  qt/locale/pulsar_ca_ES.ts \
+  qt/locale/pulsar_ca.ts \
+  qt/locale/pulsar_ca@valencia.ts \
+  qt/locale/pulsar_cs_CZ.ts \
+  qt/locale/pulsar_cs.ts \
+  qt/locale/pulsar_cy.ts \
+  qt/locale/pulsar_da.ts \
+  qt/locale/pulsar_de_DE.ts \
+  qt/locale/pulsar_de.ts \
+  qt/locale/pulsar_el_GR.ts \
+  qt/locale/pulsar_el.ts \
+  qt/locale/pulsar_en_AU.ts \
+  qt/locale/pulsar_en_GB.ts \
+  qt/locale/pulsar_en.ts \
+  qt/locale/pulsar_eo.ts \
+  qt/locale/pulsar_es_419.ts \
+  qt/locale/pulsar_es_AR.ts \
+  qt/locale/pulsar_es_CL.ts \
+  qt/locale/pulsar_es_CO.ts \
+  qt/locale/pulsar_es_DO.ts \
+  qt/locale/pulsar_es_ES.ts \
+  qt/locale/pulsar_es_MX.ts \
+  qt/locale/pulsar_es.ts \
+  qt/locale/pulsar_es_UY.ts \
+  qt/locale/pulsar_es_VE.ts \
+  qt/locale/pulsar_et_EE.ts \
+  qt/locale/pulsar_et.ts \
+  qt/locale/pulsar_eu_ES.ts \
+  qt/locale/pulsar_fa_IR.ts \
+  qt/locale/pulsar_fa.ts \
+  qt/locale/pulsar_fi.ts \
+  qt/locale/pulsar_fr_CA.ts \
+  qt/locale/pulsar_fr_FR.ts \
+  qt/locale/pulsar_fr.ts \
+  qt/locale/pulsar_gl.ts \
+  qt/locale/pulsar_he_IL.ts \
+  qt/locale/pulsar_he.ts \
+  qt/locale/pulsar_hi_IN.ts \
+  qt/locale/pulsar_hr.ts \
+  qt/locale/pulsar_hu_HU.ts \
+  qt/locale/pulsar_hu.ts \
+  qt/locale/pulsar_id_ID.ts \
+  qt/locale/pulsar_id.ts \
+  qt/locale/pulsar_is.ts \
+  qt/locale/pulsar_it_IT.ts \
+  qt/locale/pulsar_it.ts \
+  qt/locale/pulsar_ja_JP.ts \
+  qt/locale/pulsar_ja.ts \
+  qt/locale/pulsar_ka.ts \
+  qt/locale/pulsar_kk_KZ.ts \
+  qt/locale/pulsar_km_KH.ts \
+  qt/locale/pulsar_ko_KR.ts \
+  qt/locale/pulsar_ko.ts \
+  qt/locale/pulsar_ku_IQ.ts \
+  qt/locale/pulsar_ky.ts \
+  qt/locale/pulsar_la.ts \
+  qt/locale/pulsar_lt.ts \
+  qt/locale/pulsar_lv_LV.ts \
+  qt/locale/pulsar_mk_MK.ts \
+  qt/locale/pulsar_ml.ts \
+  qt/locale/pulsar_mn.ts \
+  qt/locale/pulsar_mr_IN.ts \
+  qt/locale/pulsar_ms_MY.ts \
+  qt/locale/pulsar_ms.ts \
+  qt/locale/pulsar_my.ts \
+  qt/locale/pulsar_nb_NO.ts \
+  qt/locale/pulsar_nb.ts \
+  qt/locale/pulsar_ne.ts \
+  qt/locale/pulsar_nl_NL.ts \
+  qt/locale/pulsar_nl.ts \
+  qt/locale/pulsar_pam.ts \
+  qt/locale/pulsar_pl_PL.ts \
+  qt/locale/pulsar_pl.ts \
+  qt/locale/pulsar_pt_BR.ts \
+  qt/locale/pulsar_pt_PT.ts \
+  qt/locale/pulsar_pt.ts \
+  qt/locale/pulsar_ro_RO.ts \
+  qt/locale/pulsar_ro.ts \
+  qt/locale/pulsar_ru_RU.ts \
+  qt/locale/pulsar_ru.ts \
+  qt/locale/pulsar_si.ts \
+  qt/locale/pulsar_sk.ts \
+  qt/locale/pulsar_sl_SI.ts \
+  qt/locale/pulsar_sn.ts \
+  qt/locale/pulsar_sq.ts \
+  qt/locale/pulsar_sr@latin.ts \
+  qt/locale/pulsar_sr.ts \
+  qt/locale/pulsar_sv.ts \
+  qt/locale/pulsar_ta_IN.ts \
+  qt/locale/pulsar_ta.ts \
+  qt/locale/pulsar_te.ts \
+  qt/locale/pulsar_th_TH.ts \
+  qt/locale/pulsar_th.ts \
+  qt/locale/pulsar_tr_TR.ts \
+  qt/locale/pulsar_tr.ts \
+  qt/locale/pulsar_uk.ts \
+  qt/locale/pulsar_ur_PK.ts \
+  qt/locale/pulsar_uz@Cyrl.ts \
+  qt/locale/pulsar_vi.ts \
+  qt/locale/pulsar_vi_VN.ts \
+  qt/locale/pulsar_zh_CN.ts \
+  qt/locale/pulsar_zh-Hans.ts \
+  qt/locale/pulsar_zh_HK.ts \
+  qt/locale/pulsar_zh.ts \
+  qt/locale/pulsar_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -149,10 +150,10 @@ QT_MOC_CPP = \
   qt/moc_addresstablemodel.cpp \
   qt/moc_askpassphrasedialog.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_bitcoinaddressvalidator.cpp \
-  qt/moc_bitcoinamountfield.cpp \
-  qt/moc_bitcoingui.cpp \
-  qt/moc_bitcoinunits.cpp \
+  qt/moc_pulsaraddressvalidator.cpp \
+  qt/moc_pulsaramountfield.cpp \
+  qt/moc_pulsargui.cpp \
+  qt/moc_pulsarunits.cpp \
   qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
@@ -195,36 +196,36 @@ QT_MOC_CPP = \
   qt/moc_multisigdialog.cpp \
   qt/moc_multisiginputentry.cpp
 
-BITCOIN_MM = \
+PULSAR_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/bitcoin.moc \
-  qt/bitcoinamountfield.moc \
+  qt/pulsar.moc \
+  qt/pulsaramountfield.moc \
   qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_bitcoin.cpp
-QT_QRC = qt/bitcoin.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_bitcoin_locale.cpp
-QT_QRC_LOCALE = qt/bitcoin_locale.qrc
+QT_QRC_CPP = qt/qrc_pulsar.cpp
+QT_QRC = qt/pulsar.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_pulsar_locale.cpp
+QT_QRC_LOCALE = qt/pulsar_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
 PROTOBUF_PROTO = qt/paymentrequest.proto
 
-BITCOIN_QT_H = \
+PULSAR_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
   qt/bantablemodel.h \
-  qt/bitcoinaddressvalidator.h \
-  qt/bitcoinamountfield.h \
-  qt/bitcoingui.h \
-  qt/bitcoinunits.h \
+  qt/pulsaraddressvalidator.h \
+  qt/pulsaramountfield.h \
+  qt/pulsargui.h \
+  qt/pulsarunits.h \
   qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
@@ -282,7 +283,7 @@ RES_ICONS = \
   qt/res/icons/about_qt.png \
   qt/res/icons/pulsar.ico \
   qt/res/icons/pulsar_testnet.ico \
-  qt/res/icons/bitcoin.png \
+  qt/res/icons/pulsar.png \
   qt/res/icons/pulsar.png \
   qt/res/icons/pulsar_testnet.png \
   qt/res/icons/chevron.png \
@@ -388,12 +389,12 @@ RES_ICONS = \
   qt/res/themes/default.qss \
   qt/res/fonts/NotoSans-Regular.ttf
 
-BITCOIN_QT_BASE_CPP = \
+PULSAR_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/bitcoinaddressvalidator.cpp \
-  qt/bitcoinamountfield.cpp \
-  qt/bitcoingui.cpp \
-  qt/bitcoinunits.cpp \
+  qt/pulsaraddressvalidator.cpp \
+  qt/pulsaramountfield.cpp \
+  qt/pulsargui.cpp \
+  qt/pulsarunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
@@ -412,9 +413,9 @@ BITCOIN_QT_BASE_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
-BITCOIN_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
+PULSAR_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-BITCOIN_QT_WALLET_CPP = \
+PULSAR_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
@@ -445,31 +446,31 @@ BITCOIN_QT_WALLET_CPP = \
   qt/multisigdialog.cpp \
   qt/multisiginputentry.cpp
 
-BITCOIN_QT_CPP = $(BITCOIN_QT_BASE_CPP)
+PULSAR_QT_CPP = $(PULSAR_QT_BASE_CPP)
 if TARGET_WINDOWS
-BITCOIN_QT_CPP += $(BITCOIN_QT_WINDOWS_CPP)
+PULSAR_QT_CPP += $(PULSAR_QT_WINDOWS_CPP)
 endif
 if ENABLE_WALLET
-BITCOIN_QT_CPP += $(BITCOIN_QT_WALLET_CPP)
+PULSAR_QT_CPP += $(PULSAR_QT_WALLET_CPP)
 endif
 
 RES_IMAGES = 
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-BITCOIN_RC = qt/res/bitcoin-qt-res.rc
+PULSAR_RC = qt/res/pulsar-qt-res.rc
 
-BITCOIN_QT_INCLUDES = -DQT_NO_KEYWORDS
+PULSAR_QT_INCLUDES = -DQT_NO_KEYWORDS
 
-qt_libbitcoinqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+qt_libpulsarqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(PULSAR_INCLUDES) $(PULSAR_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_libbitcoinqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
-qt_libbitcoinqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
+qt_libpulsarqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_libpulsarqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libbitcoinqt_a_SOURCES = $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(QT_FORMS_UI) \
+qt_libpulsarqt_a_SOURCES = $(PULAR_QT_CPP) $(PULSAR_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 
-nodist_qt_libbitcoinqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
+nodist_qt_libpulsarqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
   $(PROTOBUF_H) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
 
 # forms/foo.h -> forms/ui_foo.h
@@ -478,7 +479,7 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libbitcoinqt_a_OBJECTS) $(qt_pulsar_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libpulsarqt_a_OBJECTS) $(qt_pulsar_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
@@ -486,25 +487,25 @@ $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
 # pulsar-qt binary #
-qt_pulsar_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+qt_pulsar_qt_CPPFLAGS = $(AM_CPPFLAGS) $(PULSAR_INCLUDES) $(PULSAR_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
 qt_pulsar_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_pulsar_qt_SOURCES = qt/bitcoin.cpp
+qt_pulsar_qt_SOURCES = qt/pulsar-coin.cpp
 if TARGET_DARWIN
-  qt_pulsar_qt_SOURCES += $(BITCOIN_MM)
+  qt_pulsar_qt_SOURCES += $(PULSAR_MM)
 endif
 if TARGET_WINDOWS
-  qt_pulsar_qt_SOURCES += $(BITCOIN_RC)
+  qt_pulsar_qt_SOURCES += $(PULSAR_RC)
 endif
-qt_pulsar_qt_LDADD = qt/libbitcoinqt.a $(LIBBITCOIN_SERVER)
+qt_pulsar_qt_LDADD = qt/libpulsarqt.a $(LIBPULSAR_SERVER)
 if ENABLE_WALLET
-qt_pulsar_qt_LDADD += $(LIBBITCOIN_WALLET)
+qt_pulsar_qt_LDADD += $(LIBPULSAR_WALLET)
 endif
 if ENABLE_ZMQ
-qt_pulsar_qt_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+qt_pulsar_qt_LDADD += $(LIBPULSAR_ZMQ) $(ZMQ_LIBS)
 endif
-qt_pulsar_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+qt_pulsar_qt_LDADD += $(LIBPULSAR_CLI) $(LIBPULSAR_COMMON) $(LIBPULSAR_UTIL) $(LIBPULSAR_CONSENSUS) $(LIBPULSAR_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 qt_pulsar_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
@@ -515,34 +516,34 @@ QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/bitcoinstrings.cpp: $(libbitcoin_server_a_SOURCES) $(libbitcoin_wallet_a_SOURCES) $(libbitcoin_common_a_SOURCES) $(libbitcoin_zmq_a_SOURCES) $(libbitcoin_consensus_a_SOURCES) $(libbitcoin_util_a_SOURCES)
+$(srcdir)/qt/pulsarstrings.cpp: $(libpulsar_server_a_SOURCES) $(libpulsar_wallet_a_SOURCES) $(libpulsar_common_a_SOURCES) $(libpulsar_zmq_a_SOURCES) $(libpulsar_consensus_a_SOURCES) $(libpulsar_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
-translate: $(srcdir)/qt/bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_BASE_CPP) qt/bitcoin.cpp $(BITCOIN_QT_WINDOWS_CPP) $(BITCOIN_QT_WALLET_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: $(srcdir)/qt/pulsarstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(PULSAR_QT_BASE_CPP) qt/pulsar-coin.cpp $(PULSAR_QT_WINDOWS_CPP) $(PULSAR_QT_WALLET_CPP) $(PULSAR_QT_H) $(PULSAR_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/bitcoin_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/pulsar_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name pulsar_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name pulsar $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
-CLEAN_QT = $(nodist_qt_libbitcoinqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno qt/temp_bitcoin_locale.qrc
+CLEAN_QT = $(nodist_qt_libpulsarqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno qt/temp_pulsar_locale.qrc
 
 CLEANFILES += $(CLEAN_QT)
 
 pulsar_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libbitcoinqt_a_OBJECTS) $(qt_pulsar_qt_OBJECTS) qt/bitcoin-qt$(EXEEXT) $(LIBBITCOINQT)
+	rm -f $(CLEAN_QT) $(qt_libpulsarqt_a_OBJECTS) $(qt_pulsar_qt_OBJECTS) qt/pulsar-qt$(EXEEXT) $(LIBPULSARQT)
 
-pulsar_qt : qt/bitcoin-qt$(EXEEXT)
+pulsar_qt : qt/pulsar-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)
