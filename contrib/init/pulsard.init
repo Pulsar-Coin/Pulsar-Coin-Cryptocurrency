@@ -1,36 +1,36 @@
 #!/bin/bash
 #
-#  bitcoind The bitcoin core server.
+#  pulsard The pulsar core server.
 #
 #
 # chkconfig: 345 80 20
-# description: bitcoind
-# processname: bitcoind
+# description: pulsard
+# processname: pulsard
 #
 
 # Source function library.
 . /etc/init.d/functions
 
-# you can override defaults in /etc/sysconfig/bitcoind, see below
-if [ -f /etc/sysconfig/bitcoind ]; then
-        . /etc/sysconfig/bitcoind
+# you can override defaults in /etc/sysconfig/pulsard, see below
+if [ -f /etc/sysconfig/pulsard ]; then
+        . /etc/sysconfig/pulsard
 fi
 
 RETVAL=0
 
-prog=bitcoind
-# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/bitcoind
-lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/bitcoind}
+prog=pulsard
+# you can override the lockfile via PULSARD_LOCKFILE in /etc/sysconfig/pulsard
+lockfile=${PULSARD_LOCKFILE-/var/lock/subsys/pulsard}
 
-# bitcoind defaults to /usr/bin/bitcoind, override with BITCOIND_BIN
-bitcoind=${BITCOIND_BIN-/usr/bin/bitcoind}
+# pulsard defaults to /usr/bin/pulsard, override with PULSARD_BIN
+pulsard=${PULSARD_BIN-/usr/bin/pulsard}
 
-# bitcoind opts default to -disablewallet, override with BITCOIND_OPTS
-bitcoind_opts=${BITCOIND_OPTS--disablewallet}
+# pulsard opts default to -disablewallet, override with PULSARD_OPTS
+pulsard_opts=${PULSARD_OPTS--disablewallet}
 
 start() {
     echo -n $"Starting $prog: "
-    daemon $DAEMONOPTS $bitcoind $bitcoind_opts
+    daemon $DAEMONOPTS $pulsard $pulsard_opts
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && touch $lockfile
