@@ -1,9 +1,10 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Maintained and Managed by The Pulsar Coin Team
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_BITCOINAMOUNTFIELD_H
-#define BITCOIN_QT_BITCOINAMOUNTFIELD_H
+#ifndef PULSAR_QT_PULSARAMOUNTFIELD_H
+#define PULSAR_QT_PULSARAMOUNTFIELD_H
 
 #include <amount.h>
 
@@ -15,9 +16,9 @@ QT_BEGIN_NAMESPACE
 class QValueComboBox;
 QT_END_NAMESPACE
 
-/** Widget for entering bitcoin amounts.
+/** Widget for entering pulsar amounts.
   */
-class BitcoinAmountField: public QWidget
+class PulsarAmountField: public QWidget
 {
     Q_OBJECT
 
@@ -26,7 +27,7 @@ class BitcoinAmountField: public QWidget
     Q_PROPERTY(qint64 value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
-    explicit BitcoinAmountField(QWidget *parent = 0);
+    explicit PulsarAmountField(QWidget *parent = 0);
 
     CAmount value(bool *value=0) const;
     void setValue(const CAmount& value);
@@ -72,4 +73,4 @@ private Q_SLOTS:
 
 };
 
-#endif // BITCOIN_QT_BITCOINAMOUNTFIELD_H
+#endif // PULSAR_QT_PULSARAMOUNTFIELD_H
