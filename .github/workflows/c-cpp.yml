@@ -41,7 +41,7 @@ jobs:
         include:
           - name: armhf-linux
             host: arm-linux-gnueabihf
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: g++-arm-linux-gnueabihf
             run-tests: false
             dep-opts: ""
@@ -49,7 +49,7 @@ jobs:
             goal: install
           - name: aarch64-linux
             host: aarch64-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: g++-aarch64-linux-gnu
             run-tests: false
             dep-opts: ""
@@ -57,7 +57,7 @@ jobs:
             goal: install
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
@@ -80,7 +80,7 @@ jobs:
             strip-cmd: "x86_64-w64-mingw32-strip"
           - name: x86_64-macos
             host: x86_64-apple-darwin11
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: cmake imagemagick libcap-dev librsvg2-bin libz-dev libtiff-tools libtinfo5 python3-setuptools xorriso libtinfo5
             run-tests: false
             dep-opts: ""
@@ -106,11 +106,11 @@ jobs:
         run: ${{ matrix.postinstall }}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: SDK cache
         if: ${{ matrix.sdk }}
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: sdk
         with:
@@ -125,7 +125,7 @@ jobs:
           curl --location --fail $SDK_URL/MacOSX${{ matrix.sdk }}.sdk.tar.gz -o depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
           tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
       - name: Dependency cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: depends
         with:
@@ -136,7 +136,7 @@ jobs:
         run: |
           make $MAKEJOBS -C depends HOST=${{ matrix.host }} ${{ matrix.dep-opts }}
       - name: CCache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: ccache
         with:
@@ -181,7 +181,7 @@ jobs:
         if: |
           matrix.name != 'x86_64-macos' &&
           matrix.name != 'x86_64-win'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
@@ -191,7 +191,7 @@ jobs:
         if: |
           matrix.name == 'x86_64-macos' ||
           matrix.name == 'x86_64-win'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
