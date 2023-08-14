@@ -3687,6 +3687,13 @@ bool static LoadBlockIndexDB(const CChainParams &chainparams) {
     LogPrintf("%s: last block file = %i\n", __func__, nLastBlockFile);
     for (int nFile = 0; nFile <= nLastBlockFile; nFile++) {
         pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile]);
+	    uiInterface.InitMessage(_("Loading block index..."));
+	            // Calculate completion percentage
+		    double completionPercentage = static_cast<double>(nFile + 1) / (nLastBlockFile + 1) * 100;
+		
+		    // Update the loading message with the completion percentage
+		    std::string loadingMessage = _("Loading block index... ") + std::to_string(completionPercentage) + "%";
+		    uiInterface.InitMessage(loadingMessage);
     }
     LogPrintf("%s: last block file info: %s\n", __func__, vinfoBlockFile[nLastBlockFile].ToString());
     for (int nFile = nLastBlockFile + 1; true; nFile++) {
