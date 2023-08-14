@@ -33,12 +33,13 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          #- x86_64-linux
-          #- x86_64-macos
+          - x86_64-linux
+          - x86_64-macos
           - x86_64-win
-          #- aarch64-linux
-          #- armhf-linux
+          - aarch64-linux
+          - armhf-linux
         include:
+        
           - name: armhf-linux
             host: arm-linux-gnueabihf
             os: ubuntu-20.04
@@ -47,6 +48,7 @@ jobs:
             dep-opts: ""
             config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports"
             goal: install
+            
           - name: aarch64-linux
             host: aarch64-linux-gnu
             os: ubuntu-20.04
@@ -55,6 +57,7 @@ jobs:
             dep-opts: ""
             config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports"
             goal: install
+            
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
             os: ubuntu-20.04
@@ -64,6 +67,18 @@ jobs:
             config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports"
             goal: install
             strip-cmd: "strip"
+            
+          - name: x86_64-macos
+            host: x86_64-apple-darwin11
+            os: ubuntu-20.04
+            packages: cmake imagemagick libcap-dev librsvg2-bin libz-dev libtiff-tools libtinfo5 python3-setuptools xorriso libtinfo5
+            run-tests: false
+            dep-opts: ""
+            config-opts: "--enable-gui=qt5 --enable-reduce-exports"
+            goal: install
+            sdk: 10.11
+            strip-cmd: "x86_64-apple-darwin11-strip"
+
           - name: x86_64-win
             host: x86_64-w64-mingw32
             arch: "i386"
@@ -78,16 +93,6 @@ jobs:
             config-opts: "--disable-shared --enable-gui=qt5"
             goal: install
             strip-cmd: "x86_64-w64-mingw32-strip"
-          - name: x86_64-macos
-            host: x86_64-apple-darwin11
-            os: ubuntu-20.04
-            packages: cmake imagemagick libcap-dev librsvg2-bin libz-dev libtiff-tools libtinfo5 python3-setuptools xorriso libtinfo5
-            run-tests: false
-            dep-opts: ""
-            config-opts: "--enable-gui=qt5 --enable-reduce-exports"
-            goal: install
-            sdk: 10.11
-            strip-cmd: "x86_64-apple-darwin11-strip"
 
     runs-on: ${{ matrix.os }}
 
