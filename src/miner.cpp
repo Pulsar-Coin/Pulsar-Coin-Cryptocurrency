@@ -167,7 +167,7 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
 		int64_t = nFinish = getTimeMilli();
 		int64_t = nDiff = nFinish - nStart;
 		//if (nDiff > 1000)
-			LogPrintf("InputTimer(): %d\n", nDiff);
+			LogPrintf("InputTimer(): %u\n", nDiff);
         }
         if (*pfPoSCancel)
             return nullptr; // pulsar: there is no point to continue if we failed to create coinstake
