@@ -151,6 +151,7 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
         int64_t nSearchTime = txCoinStake.nTime; // search to current time
         if (nSearchTime > nLastCoinStakeSearchTime)
         {
+		int64_t nStart = getTimeMilli();
             if (pwallet->CreateCoinStake(*pwallet, pblock->nBits, txCoinStake))
             {
                 if (txCoinStake.nTime >= std::max(pindexPrev->GetMedianTimePast()+1, pindexPrev->GetBlockTime() - MAX_FUTURE_BLOCK_TIME))
@@ -163,6 +164,10 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
                 }
             }
             nLastCoinStakeSearchTime = nSearchTime;
+		int64_t = nFinish = getTimeMilli();
+		int64_t = nDiff = nFinish - nStart;
+		//if (nDiff > 1000)
+			LogPrintf("InputTimer(): %d\n", nDiff);
         }
         if (*pfPoSCancel)
             return nullptr; // pulsar: there is no point to continue if we failed to create coinstake
