@@ -3692,7 +3692,7 @@ bool static LoadBlockIndexDB(const CChainParams &chainparams) {
 		    double completionPercentage = static_cast<double>(nFile + 1) / (nLastBlockFile + 1) * 100;
 		
 		    // Update the loading message with the completion percentage
-		    std::string loadingMessage = _("Loading block index... ") + std::to_string(completionPercentage) + "%";
+		    std::string loadingMessage = _("Loading block index.. ") + std::to_string(completionPercentage) + "%";
 		    uiInterface.InitMessage(loadingMessage);
     }
     LogPrintf("%s: last block file info: %s\n", __func__, vinfoBlockFile[nLastBlockFile].ToString());
