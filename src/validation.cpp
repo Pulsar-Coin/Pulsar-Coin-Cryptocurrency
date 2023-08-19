@@ -3632,6 +3632,9 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
 
     boost::this_thread::interruption_point();
 
+    const size_t totalBlocks = mapBlockIndex.size();
+    size_t processedBlocks = 0;
+
     // Calculate nChainTrust
     std::vector<std::pair<int, CBlockIndex*> > vSortedByHeight;
     vSortedByHeight.reserve(mapBlockIndex.size());
@@ -3639,6 +3642,13 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
     {
         CBlockIndex *pindex = item.second;
         vSortedByHeight.push_back(std::make_pair(pindex->nHeight, pindex));
+	
+	++processedBlocks;
+	    
+            float progress = static_cast<float>(processedBlocks) / totalBlocks;
+	    // Update the loading message with the completion percentage
+		std::string loadingMessage = _("Loading block index.. ") + std::to_string(progress) + "%";
+		uiInterface.InitMessage(loadingMessage);
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
     for (const std::pair<int, CBlockIndex *> &item : vSortedByHeight)
