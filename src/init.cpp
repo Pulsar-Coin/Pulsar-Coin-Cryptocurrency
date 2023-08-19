@@ -1307,6 +1307,7 @@ bool AppInitMain()
         uiInterface.InitMessage(_("Loading block index..."));
 
         nStart = GetTimeMillis();
+        
         do {
             try {
                 UnloadBlockIndex();
@@ -1317,7 +1318,7 @@ bool AppInitMain()
                 // fails if it's still open from the previous loop. Close it first:
                 pblocktree.reset();
                 pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
-
+                LogPrintf(" block index %15dms\n", GetTimeMillis() - nStart);
                 if (fReset)
                     pblocktree->WriteReindexing(true);
 
@@ -1331,7 +1332,7 @@ bool AppInitMain()
                     strLoadError = _("Error loading block database");
                     break;
                 }
-
+                LogPrintf(" block index %15dms\n", GetTimeMillis() - nStart);
                 // If the loaded chain has a wrong genesis, bail out immediately
                 // (we're likely using a testnet datadir, or the other way around).
                 if (!mapBlockIndex.empty() && mapBlockIndex.count(chainparams.GetConsensus().hashGenesisBlock) == 0)
