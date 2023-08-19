@@ -1316,8 +1316,9 @@ bool AppInitMain()
                 // new CBlockTreeDB tries to delete the existing file, which
                 // fails if it's still open from the previous loop. Close it first:
                 pblocktree.reset();
+                LogPrintf("1 block index %15dms\n", GetTimeMillis() - nStart);
                 pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
-
+                LogPrintf("2 block index %15dms\n", GetTimeMillis() - nStart);
                 if (fReset)
                     pblocktree->WriteReindexing(true);
 
@@ -1364,10 +1365,10 @@ bool AppInitMain()
 
                 // At this point we're either in reindex or we've loaded a useful
                 // block tree into mapBlockIndex!
-
+                
                 pcoinsdbview.reset(new CCoinsViewDB(nCoinDBCache, false, fReset || fReindexChainState));
                 pcoinscatcher.reset(new CCoinsViewErrorCatcher(pcoinsdbview.get()));
-
+                LogPrintf("3 block index %15dms\n", GetTimeMillis() - nStart);
                 // If necessary, upgrade from older database format.
                 // This is a no-op if we cleared the coinsviewdb with -reindex or -reindex-chainstate
                 if (!pcoinsdbview->Upgrade()) {
@@ -1383,7 +1384,7 @@ bool AppInitMain()
 
                 // The on-disk coinsdb is now in a good state, create the cache
                 pcoinsTip.reset(new CCoinsViewCache(pcoinscatcher.get()));
-
+                LogPrintf("4 block index %15dms\n", GetTimeMillis() - nStart);
                 bool is_coinsview_empty = fReset || fReindexChainState || pcoinsTip->GetBestBlock().IsNull();
                 if (!is_coinsview_empty) {
                     // LoadChainTip sets chainActive based on pcoinsTip's best block
@@ -1393,7 +1394,7 @@ bool AppInitMain()
                     }
                     assert(chainActive.Tip() != nullptr);
                 }
-
+                LogPrintf("5 block index %15dms\n", GetTimeMillis() - nStart);
                 if (!fReset) {
                     // Note that RewindBlockIndex MUST run even if we're about to -reindex-chainstate.
                     // It both disconnects blocks based on chainActive, and drops block data in
