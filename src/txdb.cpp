@@ -264,9 +264,22 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
     std::unique_ptr<CDBIterator> pcursor(NewIterator());
 
     pcursor->Seek(std::make_pair(DB_BLOCK_INDEX, uint256()));
+    int64_t nNow;
+    int64_t nLastNow = 0;
+    int nCount = 0;
+    int nLastPercent = -1;
 
     // Load mapBlockIndex
     while (pcursor->Valid()) {
+        if (nNow >= nLastNow + 5) {
+            int nPercent = 100 * nCount / nHighest;
+            if (nPercent > nLastPercent) {
+                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * nCount) / nHighest));
+                nLastPercent = nPercent;
+            }
+            nLastNow = nNow;
+        }
+        nCount++;
         boost::this_thread::interruption_point();
         std::pair<char, uint256> key;
         if (pcursor->GetKey(key) && key.first == DB_BLOCK_INDEX) {
