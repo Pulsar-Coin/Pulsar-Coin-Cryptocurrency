@@ -3627,7 +3627,8 @@ CBlockIndex * CChainState::InsertBlockIndex(const uint256& hash)
 
 bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlockTreeDB& blocktree)
 {
-    if (!blocktree.LoadBlockIndexGuts(consensus_params, [this](const uint256& hash){ return this->InsertBlockIndex(hash); }))
+	int nHighest = 1;
+    if (!blocktree.LoadBlockIndexGuts(consensus_params, [this](const uint256& hash, nHighest){ return this->InsertBlockIndex(hash); }))
         return false;
 
     boost::this_thread::interruption_point();
