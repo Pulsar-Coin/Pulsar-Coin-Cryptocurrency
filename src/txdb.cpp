@@ -271,6 +271,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
 
     // Load mapBlockIndex
     while (pcursor->Valid()) {
+        nNow = GetTime();
         if (nNow >= nLastNow + 5) {
             int nPercent = 100 * nCount / nHighest;
             if (nPercent > nLastPercent) {
