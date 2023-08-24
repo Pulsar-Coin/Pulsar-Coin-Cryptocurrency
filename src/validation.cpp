@@ -3646,10 +3646,8 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
 	
 	++processedBlocks;
 	    
-            float progress = static_cast<float>(processedBlocks) / totalBlocks;
 	    // Update the loading message with the completion percentage
-		std::string loadingMessage = _("Loading block index.. ") + std::to_string(progress) + "%";
-		uiInterface.InitMessage(loadingMessage);
+	    uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * processedBlocks) / totalBlocks));
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
     for (const std::pair<int, CBlockIndex *> &item : vSortedByHeight)
