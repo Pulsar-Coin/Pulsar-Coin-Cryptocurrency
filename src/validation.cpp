@@ -3635,6 +3635,9 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
 
     const size_t totalBlocks = mapBlockIndex.size();
     size_t processedBlocks = 0;
+    int64_t nNow;
+    int64_t nLastNow = 0;
+    int nLastPercent = -1;
 
     // Calculate nChainTrust
     std::vector<std::pair<int, CBlockIndex*> > vSortedByHeight;
@@ -3645,9 +3648,15 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
         vSortedByHeight.push_back(std::make_pair(pindex->nHeight, pindex));
 	
 	++processedBlocks;
-	    
-	    // Update the loading message with the completion percentage
-	    uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * processedBlocks) / totalBlocks));
+	nNow = GetTime();
+        if (nNow >= nLastNow + 5) {
+            int nPercent = (100 * processedBlocks) / totalBlocks;
+            if (nPercent > nLastPercent) {
+                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * processedBlocks) / totalBlocks));
+                nLastPercent = nPercent;
+            }
+            nLastNow = nNow;
+        }
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
     for (const std::pair<int, CBlockIndex *> &item : vSortedByHeight)
