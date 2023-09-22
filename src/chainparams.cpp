@@ -51,6 +51,7 @@ public:
 	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
 
 	consensus.powForkTime = 1668211200; //Saturday, 12 November 2022 00:00:00 GMT+00:00
+	consensus.halvingForkBlock = 1400000; //current 132xxxx
 
         consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
@@ -170,6 +171,7 @@ public:
 	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
 
 	consensus.powForkTime = 1666699200; // Tuesday, 25 October 2022 13:00:00 GMT+01:00
+	consensus.halvingForkBlock = 100;
 
 	//consensus.isValid = 1666327253;
 
