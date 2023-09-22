@@ -46,4 +46,7 @@ static const int INVALID_CB_NO_BAN_VERSION = 80011;
 //MINO ADDED
 static const int MINOTAURX_VERSION = 80014;
 
+//change halving
+static const int HALVING_VERSION = 80015;
+
 #endif // BITCOIN_VERSION_H
