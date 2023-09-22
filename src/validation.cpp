@@ -977,6 +977,11 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
                 pindex->ToString(), pindex->GetBlockPos().ToString());
     return true;
 }
+
+int64_t GetBlockReward(unsigned int nHeight) {
+    return 45 * COIN;
+}
+
 // pulsar: it depends on current POW Block Height, not current blockchain Height
 int64_t GetProofOfWorkReward(unsigned int nHeight) {
     const Consensus::Params &params = Params().GetConsensus();
