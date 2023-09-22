@@ -4544,7 +4544,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, CMu
         if (!GetCoinAge(txNew, view, pindexPrev, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
 
-        CAmount nReward = GetProofOfStakeReward(nCoinAge);
+        if (IsHalvingActive(pindexPrev->nHeight))
+        {
+            CAmount nReward = GetBlockReward(pindexPrev->nHeight);
+        }
+        else
+        {
+            CAmount nReward = GetProofOfStakeReward(nCoinAge);
+        }
         LogPrint(BCLog::ALERT, "CreateCoinStake nCoinAge %d nReward %d\n", nCoinAge, nReward);
         // Refuse to create mint that has zero or negative reward
         if(nReward <= 0) {
