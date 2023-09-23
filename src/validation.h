@@ -465,6 +465,9 @@ bool LoadMempool();
 // pulsar:
 CAmount GetProofOfWorkReward(unsigned int nHeight);
 CAmount GetProofOfStakeReward(CAmount nCoinAge);
+
+CAmount GetBlockReward(unsigned int nHeight);
+
 bool IsConfirmedInNPrevBlocks(const uint256 &hashBlock, const CBlockIndex *pindexFrom, int nMaxDepth, int &nActualDepth);
 bool CheckAge(const CBlockIndex *pindexTip, const uint256 &hashKernelBlock, int &nDepth);
 bool GetCoinAge(const CTransaction& tx, const CCoinsViewCache &view, const CBlockIndex* pindexPrev, uint64_t& nCoinAge, int nDepth = -1); // pulsar: get transaction coin age
