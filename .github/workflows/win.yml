@@ -2,17 +2,6 @@ name: Windows Only Integration
 
 on:
   workflow_dispatch:
-  
-  #push:
-  #  branches: [ "main" ]
-  #  paths-ignore:
-  #    - '**/*.md'
-  #pull_request:
-  #  branches: [ "main" ]
-  #  paths-ignore:
-  #    - 'doc/**'
-  #    - 'contrib/**'
-  #    - '**/*.md'
 
 jobs:
   build:
@@ -27,7 +16,7 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-      VERSION: "1.1.4.4"
+      VERSION: "1.1.5.0"
 
     strategy:
       fail-fast: false
@@ -71,40 +60,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: SDK cache
-        if: ${{ matrix.sdk }}
-        uses: actions/cache@v3
-        env:
-          cache-name: sdk
+      - name: Cache SDK
+        uses: actions/cache@v2
         with:
-          path: ./depends/sdk-sources
-          key: ${{ matrix.name }}-${{ env.cache-name }}
+          path: depends/sdk-sources
+          key: sdk-${{ runner.os }}-${{ matrix.name }}
+          restore-keys: sdk-${{ runner.os }}-
+          if: matrix.sdk
 
       - name: Install SDK
         if: ${{ matrix.sdk }}
         run: |
-          mkdir -p ./depends/sdk-sources
-          mkdir -p ./depends/SDKs
+          mkdir -p depends/sdk-sources
+          mkdir -p depends/SDKs
           curl --location --fail $SDK_URL/MacOSX${{ matrix.sdk }}.sdk.tar.gz -o depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
           tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
-      - name: Dependency cache
-        uses: actions/cache@v3
-        env:
-          cache-name: depends
+      - name: Cache Dependencies
+        uses: actions/cache@v2
         with:
-          path: ./depends/built
-          key: ${{ matrix.name }}-${{ env.cache-name }}-cache-${{ hashFiles('depends/packages/*') }}
+          path: depends/built
+          key: dependencies-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('depends/packages/*') }}
+          restore-keys: dependencies-${{ runner.os }}-${{ matrix.name }}-
+          if: steps.Build Depends.outputs.cache-hit != 'true'
 
       - name: Build depends
+        id: Build Depends
         run: |
           make $MAKEJOBS -C depends HOST=${{ matrix.host }} ${{ matrix.dep-opts }}
+        continue-on-error: true
+      
       - name: CCache
-        uses: actions/cache@v3
-        env:
-          cache-name: ccache
+        uses: actions/cache@v2
         with:
           path: ~/.ccache
-          key: ${{ matrix.name }}-${{ env.cache-name }}-${{ hashFiles('**/configure.ac') }}
+          key: ccache-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('**/configure.ac') }}
+          restore-keys: ccache-${{ runner.os }}-${{ matrix.name }}-
+          if: steps.Build Depends.outputs.cache-hit != 'true'
 
       - name: Build Pulsar Core
         run: |
