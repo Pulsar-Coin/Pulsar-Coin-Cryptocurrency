@@ -979,6 +979,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 }
 
 int64_t GetBlockReward(unsigned int nHeight) {
+    const Consensus::Params &params = Params().GetConsensus();
     return 45 * COIN;
 }
 
