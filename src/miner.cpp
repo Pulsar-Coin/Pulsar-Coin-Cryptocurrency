@@ -131,7 +131,7 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
     CAmount blockValue = 0;
     if (pblock->IsProofOfWork()) {
         pblock->nBits = GetNextTargetRequired(pindexPrev, false, chainparams.GetConsensus(), powType);
-	if (IsHalvingActive(pindexPrev, Params().GetConsensus())
+	if (IsHalvingActive(pindexPrev, Params().GetConsensus()))
 	{
 		blockValue = GetBlockReward(nHeight);
 	}
