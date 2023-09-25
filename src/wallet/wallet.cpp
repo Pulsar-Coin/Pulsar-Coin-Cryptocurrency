@@ -4382,6 +4382,8 @@ uint64_t CWallet::GetStakeWeight() const
 typedef std::vector<unsigned char> valtype;
 bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, CMutableTransaction& txNew)
 {
+    CBlockIndex* pindexPrev = chainActive.Tip();
+    
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
     static unsigned int nStakeSplitAge = (60 * 60 * 24 * 90);
@@ -4399,7 +4401,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, CMu
     CBigNum bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
 
-    CBlockIndex* pindexPrev = chainActive.Tip();
+    
 
     // Transaction index is required to get to block header
     if (!fTxIndex)
