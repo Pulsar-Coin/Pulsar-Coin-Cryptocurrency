@@ -678,7 +678,7 @@ void ArgsManager::ReadConfigFile(const std::string& confPath)
                           "rpcbind=127.0.0.1\n"
                           "maxconnections=48\n"
                           "rpcallowip=127.0.0.1\n"
-                          "banscore=10000\n"
+                          "banscore=1000\n"
                           "\n"
                           "staking=1\n"
                           "\n"
