@@ -3185,12 +3185,25 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     if (block.IsProofOfWork())
         nCoinbaseCost = (GetMinFee(*block.vtx[0]) < PERKB_TX_FEE)? 0 : (GetMinFee(*block.vtx[0]) - PERKB_TX_FEE);
 
-    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)) {
-        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
-        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount", false,
-                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
-                                   FormatMoney(block.vtx[0]->GetValueOut()),
-                                   FormatMoney(block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)));
+    if (IsHalvingActive(pindexPrev, Params().GetConsensus())
+    {
+	    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetBlockReward(pindexPrev->nHeight + 1) - nCoinbaseCost) : 0)) {
+	        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
+	        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount-halving", false,
+	                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
+	                                   FormatMoney(block.vtx[0]->GetValueOut()),
+	                                   FormatMoney(block.IsProofOfWork() ? (GetBlockReward(pindexPrev->nHeight + 1) - nCoinbaseCost) : 0)));
+	    }
+    }
+    else
+    {
+	    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)) {
+	        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
+	        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount", false,
+	                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
+	                                   FormatMoney(block.vtx[0]->GetValueOut()),
+	                                   FormatMoney(block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)));
+	    }
     }
 
     // Check that all transactions are finalized
