@@ -128,10 +128,17 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-
+    CAmount blockValue = 0;
     if (pblock->IsProofOfWork()) {
         pblock->nBits = GetNextTargetRequired(pindexPrev, false, chainparams.GetConsensus(), powType);
-        CAmount blockValue = GetProofOfWorkReward(nPOWBlockHeight);
+	if (IsHalvingActive(pindexPrev, Params().GetConsensus())
+	{
+		blockValue = GetBlockReward(nHeight);
+	}
+	else
+	{
+        	blockValue = GetProofOfWorkReward(nPOWBlockHeight);
+	}
         coinbaseTx.vout[0].nValue = blockValue;
     }
 
