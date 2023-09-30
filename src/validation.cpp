@@ -977,6 +977,12 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
                 pindex->ToString(), pindex->GetBlockPos().ToString());
     return true;
 }
+// temp PoW/PoS Reward after first halving.
+int64_t GetBlockReward(unsigned int nHeight) {
+    const Consensus::Params &params = Params().GetConsensus();
+    return 45 * COIN;
+}
+
 // pulsar: it depends on current POW Block Height, not current blockchain Height
 int64_t GetProofOfWorkReward(unsigned int nHeight) {
     const Consensus::Params &params = Params().GetConsensus();
@@ -1668,6 +1674,15 @@ bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& param
 {
     if (pindexPrev != nullptr) {
         return (pindexPrev->nTime > params.powForkTime);
+    } else {
+        return false;
+    }
+}
+
+bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& params)
+{
+    if (pindexPrev != nullptr) {
+        return (pindexPrev->nHeight >= params.halvingForkBlock);
     } else {
         return false;
     }
@@ -3171,12 +3186,25 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     if (block.IsProofOfWork())
         nCoinbaseCost = (GetMinFee(*block.vtx[0]) < PERKB_TX_FEE)? 0 : (GetMinFee(*block.vtx[0]) - PERKB_TX_FEE);
 
-    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)) {
-        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
-        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount", false,
-                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
-                                   FormatMoney(block.vtx[0]->GetValueOut()),
-                                   FormatMoney(block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)));
+    if (IsHalvingActive(pindexPrev, Params().GetConsensus()))
+    {
+	    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetBlockReward(pindexPrev->nHeight + 1) - nCoinbaseCost) : 0)) {
+	        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
+	        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount-halving", false,
+	                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
+	                                   FormatMoney(block.vtx[0]->GetValueOut()),
+	                                   FormatMoney(block.IsProofOfWork() ? (GetBlockReward(pindexPrev->nHeight + 1) - nCoinbaseCost) : 0)));
+	    }
+    }
+    else
+    {
+	    if (block.vtx[0]->GetValueOut() > (block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)) {
+	        LogPrint(BCLog::ALL, "-- invalid block %s\n", block.ToString());
+	        return state.DoS(50, false, REJECT_INVALID, "bad-cb-amount", false,
+	                         strprintf("CheckBlock() : coinbase reward exceeded %s > %s",
+	                                   FormatMoney(block.vtx[0]->GetValueOut()),
+	                                   FormatMoney(block.IsProofOfWork() ? (GetProofOfWorkReward(pindexPrev->nPOWBlockHeight + 1) - nCoinbaseCost) : 0)));
+	    }
     }
 
     // Check that all transactions are finalized
@@ -3627,10 +3655,17 @@ CBlockIndex * CChainState::InsertBlockIndex(const uint256& hash)
 
 bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlockTreeDB& blocktree)
 {
-    if (!blocktree.LoadBlockIndexGuts(consensus_params, [this](const uint256& hash){ return this->InsertBlockIndex(hash); }))
+	int nHighest = 1;
+    if (!blocktree.LoadBlockIndexGuts(consensus_params, [this](const uint256& hash){ return this->InsertBlockIndex(hash); },nHighest))
         return false;
 
     boost::this_thread::interruption_point();
+
+    const size_t totalBlocks = mapBlockIndex.size();
+    size_t processedBlocks = 0;
+    int64_t nNow;
+    int64_t nLastNow = 0;
+    int nLastPercent = -1;
 
     // Calculate nChainTrust
     std::vector<std::pair<int, CBlockIndex*> > vSortedByHeight;
@@ -3639,6 +3674,17 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
     {
         CBlockIndex *pindex = item.second;
         vSortedByHeight.push_back(std::make_pair(pindex->nHeight, pindex));
+	
+	++processedBlocks;
+	nNow = GetTime();
+        if (nNow >= nLastNow + 5) {
+            int nPercent = (100 * processedBlocks) / totalBlocks;
+            if (nPercent > nLastPercent) {
+                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * processedBlocks) / totalBlocks));
+                nLastPercent = nPercent;
+            }
+            nLastNow = nNow;
+        }
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
     for (const std::pair<int, CBlockIndex *> &item : vSortedByHeight)
@@ -3687,6 +3733,13 @@ bool static LoadBlockIndexDB(const CChainParams &chainparams) {
     LogPrintf("%s: last block file = %i\n", __func__, nLastBlockFile);
     for (int nFile = 0; nFile <= nLastBlockFile; nFile++) {
         pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile]);
+	    uiInterface.InitMessage(_("Loading block index..."));
+	            // Calculate completion percentage
+		    double completionPercentage = static_cast<double>(nFile + 1) / (nLastBlockFile + 1) * 100;
+		
+		    // Update the loading message with the completion percentage
+		    std::string loadingMessage = _("Loading block index.. ") + std::to_string(completionPercentage) + "%";
+		    uiInterface.InitMessage(loadingMessage);
     }
     LogPrintf("%s: last block file info: %s\n", __func__, vinfoBlockFile[nLastBlockFile].ToString());
     for (int nFile = nLastBlockFile + 1; true; nFile++) {

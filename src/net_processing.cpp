@@ -1641,6 +1641,16 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             return false;
         }
 
+        if (IsHalvingActive(chainActive.Tip(), Params().GetConsensus()) && nVersion < HALVING_VERSION)
+        {
+            // disconnect from peers older than this proto version
+            LogPrintf("peer=%d using obsolete version; halving fix; %i; disconnecting\n", pfrom->GetId(), nVersion);
+            connman->PushMessage(pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::REJECT, strCommand, REJECT_OBSOLETE,
+                               strprintf("Version must be %d or greater", HALVING_VERSION)));
+            pfrom->fDisconnect = true;
+            return false;
+        }
+
         if (nVersion == 10300)
             nVersion = 300;
         if (!vRecv.empty())

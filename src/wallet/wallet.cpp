@@ -4382,15 +4382,26 @@ uint64_t CWallet::GetStakeWeight() const
 typedef std::vector<unsigned char> valtype;
 bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, CMutableTransaction& txNew)
 {
+    CBlockIndex* pindexPrev = chainActive.Tip();
+    
     // The following split & combine thresholds are important to security
     // Should not be adjusted if you don't understand the consequences
     static unsigned int nStakeSplitAge = (60 * 60 * 24 * 90);
-    int64_t nCombineThreshold = GetProofOfWorkReward(GetLastBlockIndex(chainActive.Tip(), false)->nPOWBlockHeight) / 3;
+    int64_t nCombineThreshold;
+    if (IsHalvingActive(pindexPrev, Params().GetConsensus()))
+    {
+        nCombineThreshold = GetBlockReward(GetLastBlockIndex(chainActive.Tip(), false)->nHeight) / 3;
+        
+    }
+    else
+    {
+        nCombineThreshold = GetProofOfWorkReward(GetLastBlockIndex(chainActive.Tip(), false)->nPOWBlockHeight) / 3;
+    }
 
     CBigNum bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
 
-    CBlockIndex* pindexPrev = chainActive.Tip();
+    
 
     // Transaction index is required to get to block header
     if (!fTxIndex)
@@ -4543,8 +4554,15 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, CMu
         CCoinsViewCache view(pcoinsTip.get());
         if (!GetCoinAge(txNew, view, pindexPrev, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
-
-        CAmount nReward = GetProofOfStakeReward(nCoinAge);
+        CAmount nReward;
+        if (IsHalvingActive(pindexPrev, Params().GetConsensus()))
+        {
+            nReward = GetBlockReward(pindexPrev->nHeight);
+        }
+        else
+        {
+            nReward = GetProofOfStakeReward(nCoinAge);
+        }
         LogPrint(BCLog::ALERT, "CreateCoinStake nCoinAge %d nReward %d\n", nCoinAge, nReward);
         // Refuse to create mint that has zero or negative reward
         if(nReward <= 0) {

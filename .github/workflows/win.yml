@@ -3,6 +3,7 @@ name: Windows Only Integration
 on:
   workflow_dispatch:
 
+
 jobs:
   build:
     name: ${{ matrix.name }}
@@ -60,6 +61,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+
       - name: Cache SDK
         uses: actions/cache@v2
         with:
@@ -68,9 +70,11 @@ jobs:
           restore-keys: sdk-${{ runner.os }}-
           if: matrix.sdk
 
+
       - name: Install SDK
         if: ${{ matrix.sdk }}
         run: |
+
           mkdir -p depends/sdk-sources
           mkdir -p depends/SDKs
           curl --location --fail $SDK_URL/MacOSX${{ matrix.sdk }}.sdk.tar.gz -o depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
@@ -96,6 +100,7 @@ jobs:
           key: ccache-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('**/configure.ac') }}
           restore-keys: ccache-${{ runner.os }}-${{ matrix.name }}-
           if: steps.Build Depends.outputs.cache-hit != 'true'
+
 
       - name: Build Pulsar Core
         run: |

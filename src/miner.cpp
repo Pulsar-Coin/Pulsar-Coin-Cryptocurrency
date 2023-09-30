@@ -128,10 +128,17 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-
+    CAmount blockValue = 0;
     if (pblock->IsProofOfWork()) {
         pblock->nBits = GetNextTargetRequired(pindexPrev, false, chainparams.GetConsensus(), powType);
-        CAmount blockValue = GetProofOfWorkReward(nPOWBlockHeight);
+	if (IsHalvingActive(pindexPrev, Params().GetConsensus()))
+	{
+		blockValue = GetBlockReward(nHeight);
+	}
+	else
+	{
+        	blockValue = GetProofOfWorkReward(nPOWBlockHeight);
+	}
         coinbaseTx.vout[0].nValue = blockValue;
     }
 
@@ -151,6 +158,7 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
         int64_t nSearchTime = txCoinStake.nTime; // search to current time
         if (nSearchTime > nLastCoinStakeSearchTime)
         {
+		int64_t nStart = GetTimeMicros();
             if (pwallet->CreateCoinStake(*pwallet, pblock->nBits, txCoinStake))
             {
                 if (txCoinStake.nTime >= std::max(pindexPrev->GetMedianTimePast()+1, pindexPrev->GetBlockTime() - MAX_FUTURE_BLOCK_TIME))
@@ -163,6 +171,16 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
                 }
             }
             nLastCoinStakeSearchTime = nSearchTime;
+		int64_t nFinish = GetTimeMicros();
+		int64_t nDiff = 0.001 * (nFinish - nStart);
+		if (nDiff > 1000)
+		{
+    			LogPrintf("Input Timer: %.0fms\n", static_cast<double>(nDiff));
+		}
+		else
+		{
+			LogPrint(BCLog::ALL, "Input Timer: %.0fms\n", static_cast<double>(nDiff));
+		}
         }
         if (*pfPoSCancel)
             return nullptr; // pulsar: there is no point to continue if we failed to create coinstake
@@ -211,26 +229,24 @@ std::unique_ptr <CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript &s
     pblock->hashPrevBlock = pindexPrev->GetBlockHash();
     if (pblock->IsProofOfStake())
         pblock->nTime = pblock->vtx[1]->nTime; //same as coinstake timestamp
-//LogPrintf("1");
+
     pblock->nTime = std::max(pindexPrev->GetMedianTimePast() + 1, pblock->GetMaxTransactionTime());
     pblock->nTime = std::max(pblock->GetBlockTime(), pindexPrev->GetBlockTime() - MAX_FUTURE_BLOCK_TIME);
-//LogPrintf("2");
+
     if (pblock->IsProofOfWork())
     {
-//LogPrintf("3");
         UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev, powType);
-//LogPrintf("4");
+	    
 	if (IsMinoEnabled(pindexPrev, chainparams.GetConsensus())) {
-LogPrintf("4a powType: %s\n", powType);
 		//pblock->nBits = GetNextTargetRequired(pindexPrev, pblock, chainparams.GetConsensus(), powType);
 		pblock->nBits = GetNextTargetRequired(pindexPrev, false, chainparams.GetConsensus(), powType);
 	} else {
-LogPrintf("4b");
+
 		//pblock->nBits = GetNextTargetRequired(pindexPrev, pblock, chainparams.GetConsensus(), powType);
 		pblock->nBits = GetNextTargetRequired(pindexPrev, false, chainparams.GetConsensus(), powType);
 	}
     }
-LogPrintf("5");
+
     pblock->nNonce = 0;
     pblocktemplate->vTxSigOpsCost[0] = WITNESS_SCALE_FACTOR * GetLegacySigOpCount(*pblock->vtx[0]);
 
@@ -238,9 +254,9 @@ LogPrintf("5");
     if (pwallet && !TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
         throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
     }
-LogPrintf("6");
+
     int64_t nTime2 = GetTimeMicros();
-LogPrintf("7");
+
     LogPrint(BCLog::BENCH, "CreateNewBlock() packages: %.2fms (%d packages, %d updated descendants), validity: %.2fms (total %.2fms)\n", 0.001 * (nTime1 - nTimeStart), nPackagesSelected,
              nDescendantsUpdated, 0.001 * (nTime2 - nTime1), 0.001 * (nTime2 - nTimeStart));
 

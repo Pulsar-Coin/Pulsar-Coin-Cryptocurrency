@@ -117,6 +117,8 @@ static const int64_t BLOCK_DOWNLOAD_TIMEOUT_BASE = 1000000;
 static const int64_t BLOCK_DOWNLOAD_TIMEOUT_PER_PEER = 500000;
 
 bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& params);
+bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& params);
+
 
 static const int64_t DEFAULT_MAX_TIP_AGE = 24 * 60 * 60;
 /** Maximum age of our tip in seconds for us to be considered current for fee estimation */
@@ -463,6 +465,9 @@ bool LoadMempool();
 // pulsar:
 CAmount GetProofOfWorkReward(unsigned int nHeight);
 CAmount GetProofOfStakeReward(CAmount nCoinAge);
+
+CAmount GetBlockReward(unsigned int nHeight);
+
 bool IsConfirmedInNPrevBlocks(const uint256 &hashBlock, const CBlockIndex *pindexFrom, int nMaxDepth, int &nActualDepth);
 bool CheckAge(const CBlockIndex *pindexTip, const uint256 &hashKernelBlock, int &nDepth);
 bool GetCoinAge(const CTransaction& tx, const CCoinsViewCache &view, const CBlockIndex* pindexPrev, uint64_t& nCoinAge, int nDepth = -1); // pulsar: get transaction coin age
