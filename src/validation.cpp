@@ -977,7 +977,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
                 pindex->ToString(), pindex->GetBlockPos().ToString());
     return true;
 }
-
+// temp PoW/PoS Reward after first halving.
 int64_t GetBlockReward(unsigned int nHeight) {
     const Consensus::Params &params = Params().GetConsensus();
     return 45 * COIN;
@@ -1682,7 +1682,7 @@ bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& param
 bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& params)
 {
     if (pindexPrev != nullptr) {
-        return (pindexPrev->nHeight + 1 >= params.halvingForkBlock);
+        return (pindexPrev->nHeight >= params.halvingForkBlock);
     } else {
         return false;
     }
