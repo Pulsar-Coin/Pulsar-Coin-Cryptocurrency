@@ -1682,7 +1682,7 @@ bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& param
 bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& params)
 {
     if (pindexPrev != nullptr) {
-        return (pindexPrev->nHeight >= params.halvingForkBlock);
+        return (pindexPrev->nHeight + 1 >= params.halvingForkBlock);
     } else {
         return false;
     }
