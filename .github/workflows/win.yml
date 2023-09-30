@@ -88,7 +88,7 @@ jobs:
           if: steps.Build Depends.outputs.cache-hit != 'true'
 
       - name: Build depends
-        id: Build Depends
+        id: Build_Depends
         run: |
           make $MAKEJOBS -C depends HOST=${{ matrix.host }} ${{ matrix.dep-opts }}
         continue-on-error: true
