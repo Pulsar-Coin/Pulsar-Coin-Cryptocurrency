@@ -44,7 +44,7 @@ jobs:
         
           - name: armhf-linux
             host: arm-linux-gnueabihf
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: g++-arm-linux-gnueabihf
             run-tests: false
             dep-opts: ""
@@ -53,7 +53,7 @@ jobs:
             
           - name: aarch64-linux
             host: aarch64-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: g++-aarch64-linux-gnu
             run-tests: false
             dep-opts: ""
@@ -62,7 +62,7 @@ jobs:
             
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
