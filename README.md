@@ -1,6 +1,6 @@
 # Pulsar Coin - Update 1.1.6
 ***
-<a href="https://imgur.com/7PQvRXL"><img src="https://i.imgur.com/7PQvRXL.png" title="source: imgur.com" /></a>
+<a href="https://imgur.com/EmoVsgC"><img src="https://i.imgur.com/EmoVsgC.png" title="source: imgur.com" /></a>
 ### Fast & Secure Savings Coin.
 ## Coin Specifications:
 #### Total Supply: 500,000,000 (500 Million PLSR)
@@ -93,9 +93,6 @@
 #### CoinGecko: https://www.coingecko.com/en/coins/pulsar-coin
 #### CoinMarketCap: ***Coming Soon***
 #### BlockSpot: https://blockspot.io/coin/pulsar-coin/
-
-
-<a href="https://imgur.com/WW2vLYd"><img src="https://i.imgur.com/WW2vLYd.gif" title="source: imgur.com" /></a>
 
 ## Support
 Please e-mail us any with any concerns you may come across 
