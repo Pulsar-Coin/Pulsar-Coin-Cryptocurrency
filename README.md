@@ -1,7 +1,7 @@
 # Pulsar Coin - Update 1.1.6
 ***
 <a href="https://imgur.com/EmoVsgC"><img src="https://i.imgur.com/EmoVsgC.png" title="source: imgur.com" /></a>
-### Fast & Secure Savings Coin.
+
 ## Coin Specifications:
 #### Total Supply: 500,000,000 (500 Million PLSR)
 #### Pre-mined Supply: 50,000,000 (50 Million PLSR | 10%)
