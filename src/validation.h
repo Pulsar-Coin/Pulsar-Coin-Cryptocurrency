@@ -118,6 +118,10 @@ static const int64_t BLOCK_DOWNLOAD_TIMEOUT_PER_PEER = 500000;
 
 bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& params);
 bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& params);
+<<<<<<< Updated upstream
+=======
+bool IsHalvingActiveFix(const CBlockIndex* pindexPrev, const Consensus::Params& params);
+>>>>>>> Stashed changes
 
 
 static const int64_t DEFAULT_MAX_TIP_AGE = 24 * 60 * 60;

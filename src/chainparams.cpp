@@ -47,11 +47,17 @@ public:
         consensus.nDgwPastBlocks = 30;
 
 
-	consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
-	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
+	    consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
+    	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
 
+<<<<<<< Updated upstream
 	consensus.powForkTime = 1668211200; //Saturday, 12 November 2022 00:00:00 GMT+00:00
 	consensus.halvingForkBlock = 1400000; //current 132xxxx
+=======
+	    consensus.powForkTime = 1668211200; //Saturday, 12 November 2022 00:00:00 GMT+00:00
+	    consensus.halvingForkBlock = 1400000; //current 132xxxx
+        consensus.halvingFixForkBlock = 1445000;
+>>>>>>> Stashed changes
 
         consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
@@ -83,12 +89,10 @@ public:
         nDefaultPort = 5995;
 
         genesis = CreateGenesisBlock(1605440641, 128396, 0x1e0fffff, 1, 0);
-	//MineGenesisBlock(genesis, consensus.powLimit);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == uint256S("0x19a8a53eaeb38a16b76bad30e70cdb228efafa791b5f2150c2a5934a431a1492"));
         assert(genesis.hashMerkleRoot == uint256S("0x5443b97731232a13f0671d95ba0b3ba59389963d2be7127caf22dfbccdc23aa3"));
-
 
         vSeeds.emplace_back("seed01.pulsarcoin.org");
         vSeeds.emplace_back("seed02.pulsarcoin.org");
@@ -96,6 +100,7 @@ public:
         vSeeds.emplace_back("seed04.pulsarcoin.org");
         vSeeds.emplace_back("seed05.pulsarcoin.org");
         vSeeds.emplace_back("seed06.pulsarcoin.org");
+        vSeeds.emplace_back("95.154.244.51");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
         base58Prefixes[SCRIPT_ADDRESS] = {0x38};
@@ -171,9 +176,14 @@ public:
 	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
 
 	consensus.powForkTime = 1666699200; // Tuesday, 25 October 2022 13:00:00 GMT+01:00
+<<<<<<< Updated upstream
 	consensus.halvingForkBlock = 100;
 
 	//consensus.isValid = 1666327253;
+=======
+	consensus.halvingForkBlock = 50;
+    consensus.halvingFixForkBlock = 100;
+>>>>>>> Stashed changes
 
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
@@ -207,9 +217,9 @@ public:
 
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("95.154.244.50");
-	vSeeds.emplace_back("95.154.244.51");
-	vSeeds.emplace_back("95.154.244.52");
-	vSeeds.emplace_back("95.154.244.3");
+	    vSeeds.emplace_back("95.154.244.51");
+	    vSeeds.emplace_back("95.154.244.52");
+	    vSeeds.emplace_back("95.154.244.3");
         vSeeds.emplace_back("212.159.68.18");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x80}; // t

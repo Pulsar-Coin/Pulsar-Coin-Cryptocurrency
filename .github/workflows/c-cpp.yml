@@ -27,9 +27,13 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
+<<<<<<< Updated upstream
 
       VERSION: "1.1.5.1"
 
+=======
+      VERSION: "1.1.4.4"
+>>>>>>> Stashed changes
 
     strategy:
       fail-fast: false
@@ -182,7 +186,7 @@ jobs:
           matrix.name != 'x86_64-macos' &&
           matrix.name != 'x86_64-win'
         run: |
-            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C release/ .
+            tar -czvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar.gz -C release/ .
       
       - name: Upload artifacts
         if: |
@@ -194,7 +198,7 @@ jobs:
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
-            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar
+            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar.gz
             
       - name: Upload artifacts WIN/OSX
         if: |

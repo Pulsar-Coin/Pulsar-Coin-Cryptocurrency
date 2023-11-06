@@ -132,3 +132,4 @@ contrib/devtools/split-debug.sh
 #python stuff
 .mypy_cache
 .idea
+/.vs

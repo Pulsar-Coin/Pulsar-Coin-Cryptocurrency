@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 # Pulsar Coin - Update 1.1.4
 ***
 <a href="https://imgur.com/7PQvRXL"><img src="https://i.imgur.com/7PQvRXL.png" title="source: imgur.com" /></a>
 ### Any Payment. Anywhere. We have your back.
+=======
+# Pulsar Coin - Update 1.1.6
+***
+<a href="https://imgur.com/EmoVsgC"><img src="https://i.imgur.com/EmoVsgC.png" title="source: imgur.com" /></a>
+
+>>>>>>> Stashed changes
 ## Coin Specifications:
 #### Total Supply: 500,000,000 (500 Million PLSR)
 #### Pre-mined Supply: 50,000,000 (50 Million PLSR | 10%)
@@ -9,10 +16,16 @@
 #### Block Maturity: 41
 #### Block Time: 75 Seconds
 #### Difficulty Time: 2,064 Blocks
+<<<<<<< Updated upstream
 #### Block Rewards (Proof of Stake): 90 PLSR
 #### P2P Port: 5995
 #### RPC Port: 5996
 #### Halving Period: 2,500,000 Blocks (Proof of Work mined)
+=======
+#### Block Rewards (Proof of Stake): 45 PLSR
+#### P2P Port: 5995
+#### RPC Port: 5996
+>>>>>>> Stashed changes
 #### Total POS & POW rewards phase: 202.2 years
 ## Installation:
 1. Navigate to [Downloads](https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest)
@@ -68,9 +81,15 @@
 
 ## Links
 <br> Wallet Downloads: [PLSR Downloads](https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest)
+<<<<<<< Updated upstream
 <br> Website: https://pulsarcoin.org
 <br> Whitepaper: [Whitepaper](https://pulsarcoin.org/whitepaper)
 <br> Roadmap: [Roadmap](https://pulsarcoin.org/roadmap)
+=======
+<br> Website: [https://pulsarcoin.info](https://pulsarcoin.info)
+<br> Whitepaper: [Whitepaper](https://drive.google.com/file/d/1PNd9VrxJqK3qUKYHVzck79Aw82E-CLt-/view?usp=sharing)
+<br> 2.0 Proposal: [Proposal](https://drive.google.com/file/d/1kRlu-YnWpx8ye7JhOPY83268fL01D30F/view?usp=sharing)
+>>>>>>> Stashed changes
 <br> BitcoinTalk: [Welcome to the Pulsar Network](https://bitcointalk.org/index.php?topic=5383700)
 
 ### Social Media
@@ -82,7 +101,12 @@
 <br> Telegram: [pulsarcoin1](https://t.me/pulsarcoin1)
 
 ## Exchanges
+<<<<<<< Updated upstream
 ### Options below may have **more pairs** than just PLSR/BTC
+=======
+### Options below may have **more pairs** than listed below
+#### Xeggex: https://xeggex.com/trade/plsr_usdt
+>>>>>>> Stashed changes
 #### SouthXchange: https://market.southxchange.com/Market/Book/PLSR/BTC
 #### Exbitron: https://www.exbitron.com/trading/plsrbtc
 
@@ -95,6 +119,7 @@
 #### CoinMarketCap: ***Coming Soon***
 #### BlockSpot: https://blockspot.io/coin/pulsar-coin/
 
+<<<<<<< Updated upstream
 
 <a href="https://imgur.com/WW2vLYd"><img src="https://i.imgur.com/WW2vLYd.gif" title="source: imgur.com" /></a>
 
@@ -107,3 +132,13 @@ Please e-mail us any with any concerns you may come across
 <br> **LTC** - Litecoin: MSfD1TMdn8LnS6BpJhjPGuXJELu8Y2mrxX
 <br> **ETH** - Ethereum: 0x7276aF08bfED0a03Dcbcfe9bAC20E54439b74C31
 <br> **PLSR** - Pulsar Coin: P9dLXYBmJiFkNCw2sQxVbyXbT8keuGRVyg
+=======
+## Support
+Please e-mail us any with any concerns you may come across 
+<br> [Email Me](mailto:team@pulsarcoin.info)
+
+## Support the Team, Developers, and the Project
+**Development Funds MultiSig Wallets**
+<br>PLSR: PuxaWK9Bizsrmk3N4EfxFsvk2k5C6DbikR
+<br>LTC: ltc1q5vn626f996lx3lgc7s7rfyjzwkq6jm6fh9g2ly9c528w5jgsrr0szsfd9e
+>>>>>>> Stashed changes

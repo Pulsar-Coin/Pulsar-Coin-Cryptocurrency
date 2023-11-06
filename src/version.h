@@ -9,7 +9,11 @@
  * network protocol versioning
  */
 
+<<<<<<< Updated upstream
 static const int PROTOCOL_VERSION = 80015;
+=======
+static const int PROTOCOL_VERSION = 80016;
+>>>>>>> Stashed changes
 static const int OLD_VERSION = 80011; // pulsar: used to communicate with clients that don't know how to send PoS information in headers
 
 //! initial proto version, to be increased after version/verack negotiation
@@ -19,7 +23,7 @@ static const int INIT_PROTO_VERSION = 209;
 static const int GETHEADERS_VERSION = 80011;
 
 //! disconnect from peers older than this proto version
-static const int MIN_PEER_PROTO_VERSION = 80012;
+static const int MIN_PEER_PROTO_VERSION = 80015;
 
 //! nTime field added to CAddress, starting with this version;
 //! if possible, avoid requesting addresses nodes older than this
@@ -49,4 +53,10 @@ static const int MINOTAURX_VERSION = 80014;
 //change halving
 static const int HALVING_VERSION = 80015;
 
+<<<<<<< Updated upstream
+=======
+// halving fix
+static const int HALVING_FIX_VERSION = 80016;
+
+>>>>>>> Stashed changes
 #endif // BITCOIN_VERSION_H

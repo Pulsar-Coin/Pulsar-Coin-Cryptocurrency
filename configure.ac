@@ -3,14 +3,18 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 1)
 define(_CLIENT_VERSION_MINOR, 1)
 
+<<<<<<< Updated upstream
 define(_CLIENT_VERSION_REVISION, 5)
+=======
+define(_CLIENT_VERSION_REVISION, 6)
+>>>>>>> Stashed changes
 define(_CLIENT_VERSION_BUILD, 1)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2023)
 
 define(_COPYRIGHT_HOLDERS,[The %s developers])
 define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Pulsar]])
-AC_INIT([Pulsar],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/issues],[pulsar],[https://pulsarcoin.org/])
+AC_INIT([Pulsar],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/issues],[pulsar],[https://pulsarcoin.info/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/bitcoin-config.h])
 AC_CONFIG_AUX_DIR([build-aux])

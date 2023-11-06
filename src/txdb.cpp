@@ -264,18 +264,34 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
     std::unique_ptr<CDBIterator> pcursor(NewIterator());
 
     pcursor->Seek(std::make_pair(DB_BLOCK_INDEX, uint256()));
+<<<<<<< Updated upstream
     int64_t nNow;
     int64_t nLastNow = 0;
     int nCount = 0;
     int nLastPercent = -1;
+=======
+    int64_t nNow = 0;
+    int64_t nLastNow = 0;
+    int nCount = 0;
+    int nLastPercent = -1;
+
+    int nMax = nHighest * 1.25;
+>>>>>>> Stashed changes
 
     // Load mapBlockIndex
     while (pcursor->Valid()) {
         nNow = GetTime();
         if (nNow >= nLastNow + 5) {
+<<<<<<< Updated upstream
             int nPercent = 100 * nCount / nHighest;
             if (nPercent > nLastPercent) {
                 uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * nCount) / nHighest));
+=======
+            int nPercent = (100 * nCount) / nMax;
+            nPercent = std::min(nPercent, 100); // Cap it at 100%
+            if (nPercent > nLastPercent) {
+                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), nPercent));
+>>>>>>> Stashed changes
                 nLastPercent = nPercent;
             }
             nLastNow = nNow;
@@ -290,8 +306,13 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 CBlockIndex* pindexNew = insertBlockIndex(diskindex.GetBlockHash());
                 pindexNew->pprev          = insertBlockIndex(diskindex.hashPrev);
                 pindexNew->nHeight        = diskindex.nHeight;
+<<<<<<< Updated upstream
                 if (diskindex.nHeight > nHighest)
                     nHighest = diskindex.nHeight;
+=======
+                if (diskindex.nHeight > nMax)
+                    nMax = diskindex.nHeight * 1.25;
+>>>>>>> Stashed changes
                 pindexNew->nFile          = diskindex.nFile;
                 pindexNew->nDataPos       = diskindex.nDataPos;
                 pindexNew->nUndoPos       = diskindex.nUndoPos;
