@@ -9,11 +9,8 @@
  * network protocol versioning
  */
 
-<<<<<<< Updated upstream
-static const int PROTOCOL_VERSION = 80015;
-=======
 static const int PROTOCOL_VERSION = 80016;
->>>>>>> Stashed changes
+
 static const int OLD_VERSION = 80011; // pulsar: used to communicate with clients that don't know how to send PoS information in headers
 
 //! initial proto version, to be increased after version/verack negotiation
@@ -53,10 +50,7 @@ static const int MINOTAURX_VERSION = 80014;
 //change halving
 static const int HALVING_VERSION = 80015;
 
-<<<<<<< Updated upstream
-=======
 // halving fix
 static const int HALVING_FIX_VERSION = 80016;
 
->>>>>>> Stashed changes
 #endif // BITCOIN_VERSION_H
