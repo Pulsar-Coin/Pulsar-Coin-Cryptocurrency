@@ -3690,15 +3690,9 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
 	++processedBlocks;
 	nNow = GetTime();
         if (nNow >= nLastNow + 5) {
-<<<<<<< Updated upstream
-            int nPercent = (100 * processedBlocks) / totalBlocks;
-            if (nPercent > nLastPercent) {
-                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), (100 * processedBlocks) / totalBlocks));
-=======
             int nPercent = processedBlocks / totalBlocks * 100;
             if (nPercent > nLastPercent) {
                 uiInterface.InitMessage(strprintf(_("Loading Block Index... %d%%"), (processedBlocks / totalBlocks * 100)));
->>>>>>> Stashed changes
                 nLastPercent = nPercent;
             }
             nLastNow = nNow;
@@ -3751,20 +3745,14 @@ bool static LoadBlockIndexDB(const CChainParams &chainparams) {
     LogPrintf("%s: last block file = %i\n", __func__, nLastBlockFile);
     for (int nFile = 0; nFile <= nLastBlockFile; nFile++) {
         pblocktree->ReadBlockFileInfo(nFile, vinfoBlockFile[nFile]);
-<<<<<<< Updated upstream
-	    uiInterface.InitMessage(_("Loading block index..."));
-=======
+
 	    //uiInterface.InitMessage(_("Loading block index..."));
->>>>>>> Stashed changes
 	            // Calculate completion percentage
 		    double completionPercentage = static_cast<double>(nFile + 1) / (nLastBlockFile + 1) * 100;
 		
 		    // Update the loading message with the completion percentage
-<<<<<<< Updated upstream
-		    std::string loadingMessage = _("Loading block index.. ") + std::to_string(completionPercentage) + "%";
-=======
+
 		    std::string loadingMessage = _("Loading block index DB.. ") + std::to_string(completionPercentage) + "%";
->>>>>>> Stashed changes
 		    uiInterface.InitMessage(loadingMessage);
     }
     LogPrintf("%s: last block file info: %s\n", __func__, vinfoBlockFile[nLastBlockFile].ToString());
