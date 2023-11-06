@@ -27,13 +27,8 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-<<<<<<< Updated upstream
+      VERSION: "1.1.6.1"
 
-      VERSION: "1.1.5.1"
-
-=======
-      VERSION: "1.1.4.4"
->>>>>>> Stashed changes
 
     strategy:
       fail-fast: false
