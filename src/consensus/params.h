@@ -53,10 +53,7 @@ struct Params {
     std::vector<uint256> powTypeLimits; // Limits for each pow type (with future-proofing space; can't pick up NUM_BLOCK_TYPES here)
 
     uint32_t halvingForkBlock;
-<<<<<<< Updated upstream
-=======
     uint32_t halvingFixForkBlock;
->>>>>>> Stashed changes
 
     /** pulsar stuff */
     int64_t nStakeTargetSpacing;
