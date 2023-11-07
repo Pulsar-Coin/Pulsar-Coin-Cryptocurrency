@@ -522,7 +522,7 @@ std::string LicenseInfo()
                URL_WEBSITE) +
            "\n" +
            _("--------------------------------------------") + "\n" +
-           strprintf(_("Explorer %s."), + "\n" +
+           strprintf(_("Explorer: %s."), + "\n" +
                URL_EXPLORER) +
            "\n" +
            _("--------------------------------------------") + "\n" +
