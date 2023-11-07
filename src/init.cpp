@@ -506,9 +506,9 @@ std::string HelpMessage(HelpMessageMode mode)
 std::string LicenseInfo()
 {
     const std::string URL_SOURCE_CODE = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency>";
-    const std::string URL_WEBSITE = "<https://pulsarcoin.org>";
+    const std::string URL_WEBSITE = "<https://pulsarcoin.info>";
     const std::string URL_EXPLORER = "<https://explorer.pulsarcoin.org>";
-    //const std::string URL_OFFICIALPOOL = "";
+    const std::string URL_OFFICIALPOOL = "<https://miningpools.pro>";
     const std::string URL_WALLETS = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest>";
     const std::string URL_DISCORD = "<https://discord.gg/tPfB7REgNe>";
     const std::string URL_TWITTER = "<https://twitter.com/PulsarCoin>";
