@@ -1688,8 +1688,6 @@ bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& par
     }
 }
 
-<<<<<<< Updated upstream
-=======
 bool IsHalvingActiveFix(const CBlockIndex* pindexPrev, const Consensus::Params& params)
 {
     if (pindexPrev != nullptr) {
@@ -1698,8 +1696,6 @@ bool IsHalvingActiveFix(const CBlockIndex* pindexPrev, const Consensus::Params& 
         return false;
     }
 }
-
->>>>>>> Stashed changes
 
 static int64_t nTimeCheck = 0;
 static int64_t nTimeForks = 0;
