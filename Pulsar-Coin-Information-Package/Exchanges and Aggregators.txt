@@ -1,0 +1,80 @@
+
+Pulsar Coin Exhanges and Trading Pairs for PulsarCoin (PLSR)
+
+Main Exchange = Xeggex.com = https://xeggex.com/market/PLSR_USDT PLSR/USDT Pair
+
+(we prefer data from xeggex because its the most up to date and accurate for our project)
+
+
+Other Exchanges:
+
+SouthxChange = https://market.southxchange.com/Market/Book/PLSR/USDT
+               https://market.southxchange.com/Market/Book/PLSR/BTC
+			   
+Altmarkets = https://v2.altmarkets.io/signup?refid=ID0427FB66B5
+             PLSR/LTC
+			 PLSR/BTC
+
+Exbitron =  https://trade.exbitron.com/
+            PLSR/USDT
+			PLSR/BTC
+
+Pulsar Discord Exchange = https://discord.gg/H9JFqNdY9k
+                          PLSR/LTC
+						  
+				
+Aggregators:
+
+Blockspot.io = https://blockspot.io/coin/pulsar-coin/
+
+Coincodex.com = https://coincodex.com/crypto/pulsar/
+
+Coingecko.com = https://www.coingecko.com/en/coins/pulsar-coin
+
+Coinpaprika.com = https://coinpaprika.com/coin/plsr-pulsar-coin/
+
+Livecoinwatch.com = https://www.livecoinwatch.com/price/PulsarCoin-PLSR
+
+
+
+Mining Pools:
+
+PulsarCoin PLSR Curvehash -
+
+https://miningpools.pro/
+
+https://pool.rplant.xyz/
+
+https://zergpool.com/
+
+https://raptorhash.net/
+
+https://deepfields.io/
+
+https://zpool.ca/
+
+https://coinminerz.com/
+
+
+
+PulsarCoin PLSR MinotaurX -
+
+https://miningpools.pro/
+
+https://pool.rplant.xyz/
+
+https://zergpool.com/
+
+https://deepfields.io/
+
+https://zpool.ca/
+
+https://pulsar.cedric-crispin.com/
+
+https://coinminerz.com/
+
+http://solo.1pool.org/#PLSR
+
+https://raptorhash.net/
+
+
