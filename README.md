@@ -14,7 +14,7 @@
 #### RPC Port: 5996
 #### Total POS & POW rewards phase: 202.2 years
 ## Installation:
-1. Navigate to [Downloads](https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest)
+1. Navigate to [Downloads](https://github.com/Pulsar-Coin/Pulsar-Coin-Cryptocurrency/releases/latest)
     1. Download and extract the folder designated to your Operating System in the location of your choice
       * The act of downloading this software and receiving errors from Windows, Mac, or protection software is normal.
       * If a firewall pop-up appears, allow Pulsar - Wallet to communicate on both Private and Public Networks
@@ -65,28 +65,31 @@
     * Depending on your physical hardware and specifications,
 3. A correct mining application (and correct mining configuration file) will open a terminal window and confirmation prompts will continue to accumulate.
 
+## Explorer
+<br> Pulsar Coin Explorer: [PLSR Explorer](https://explorer.pulsarcoin.info/)
+
 ## Links
-<br> Wallet Downloads: [PLSR Downloads](https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest)
+<br> Wallet Downloads: [PLSR Downloads](https://github.com/Pulsar-Coin/Pulsar-Coin-Cryptocurrency/releases/latest)
 <br> Website: [https://pulsarcoin.info](https://pulsarcoin.info)
 <br> Whitepaper: [Whitepaper](https://drive.google.com/file/d/1PNd9VrxJqK3qUKYHVzck79Aw82E-CLt-/view?usp=sharing)
 <br> 2.0 Proposal: [Proposal](https://drive.google.com/file/d/1kRlu-YnWpx8ye7JhOPY83268fL01D30F/view?usp=sharing)
 <br> BitcoinTalk: [Welcome to the Pulsar Network](https://bitcointalk.org/index.php?topic=5383700)
 
 ### Social Media
-<br> Discord: [Click Here](https://discord.gg/ycV7abbF7M)
-<br> YouTube: [@PulsarCoin](https://youtube.com/@pulsarcoin)
-<br> Facebook: [pulsarblockchain](https://www.facebook.com/pulsarblockchain)
-<br> Instagram: [pulsar_coin](https://www.instagram.com/pulsar_coin/)
-<br> Patreon: [Pulsar Patreon](https://www.patreon.com/pulsar)
-<br> Telegram: [pulsarcoin1](https://t.me/pulsarcoin1)
+<br> X: [Twitter](https://twitter.com/TeamPulsarCoin).
+<br> Discord: [Click Here](https://discord.com/invite/VuDakSctNX)
+<br> YouTube: [@TeamPulsarCoin](https://www.youtube.com/@TeamPulsarCoin)
+<br> Instagram: [teampulsarcoin](https://www.instagram.com/teampulsarcoin/)
+<br> LinkTree: [Linktr.ee](https://linktr.ee/teampulsarcoin)
 
 ## Exchanges
 ### Options below may have **more pairs** than just PLSR/BTC
-#### SouthXchange: https://market.southxchange.com/Market/Book/PLSR/BTC
-#### Exbitron: https://www.exbitron.com/trading/plsrbtc
+#### Xeggex: https://xeggex.com/market/PLSR_BTC
+#### Exbitron: https://exbitron.com/trade?market=plsr-btc
 
 ## Supported Wallets
-#### BeehiveWallet: [beehive](beehivewallet.link)
+#### Desktop Wallet: [Windows/Linux](https://github.com/Pulsar-Coin/Pulsar-Coin-Cryptocurrency/releases/latest)
+#### Discord Wallet: [Discord](https://discord.com/invite/VuDakSctNX)
 
 ## Coin Trackers
 #### CoinPaprika: https://coinpaprika.com/coin/plsr-pulsar-coin/
