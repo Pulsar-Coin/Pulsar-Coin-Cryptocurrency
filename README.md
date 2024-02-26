@@ -37,9 +37,11 @@
   * This will create your Pulsar Address designation and can be used from 3rd party applications and other users to send your account pulsar coins.
 6. You're all ready to go!
 ## Config File:
-#### addnode= : Insert IP address for peer node (Ex. addnode=49.232.0.153:5995)
+#### addnode= : Insert IP address for peer node (Ex. addnode=85.215.71.19:5995)
+* Note: Please remove all entires of _addnode=_ in _pulsar.conf_ as appropriate values are already hard-coded in the wallet.
 * Visit (link coming soon) for approved team & community nodes
 * The 5995 is the RPC port, this must be present at the end of every added node address
+#### banscore= : Please remove all entires of _banscore=_ in _pulsar.conf_ as appropriate values are already hard-coded in the wallet.
 #### rpcuser= : This will set the username for secure JSON-RPC api interaction
 #### rpcpassword= : This will set the password for secure JSON-RPC api interaction
  * Just like pulsar-qt encryption, record rpcuser & rpcpassword where you can access it. These do not need to be included if you're not dealing with apps other than pulsar-qt
@@ -62,7 +64,7 @@
     * The Pulsar Team does not own, manage, or control any coin-mining entity and *can not be at fault by any wrong doings 3rd party software engages in.* We can, however, **help you be safe and secure when operating this software.** Team supported software, such as SRBMiner, should take priority over other 3rd party software if you're new to the *cryptocurrency ecosystem*
 2. Follow your miner's guide on setting up. Usually batch file (.bat) can be made along with your specifications
   * You can find mining software that offers mining different algorithms. PLSR can be mined on the CurveHash algorithm (CPU + GPU) and MinotaurX algorithm (CPU Only)
-    * Depending on your physical hardware and specifications,
+    * Depending on your physical hardware and specifications, the hash rate of your mining effort will vary.
 3. A correct mining application (and correct mining configuration file) will open a terminal window and confirmation prompts will continue to accumulate.
 
 ## Explorer
@@ -84,7 +86,7 @@
 
 ## Exchanges
 ### Options below may have **more pairs** than just PLSR/BTC
-#### Xeggex: https://xeggex.com/market/PLSR_BTC
+#### XeggeX: https://xeggex.com/market/PLSR_BTC
 #### Exbitron: https://exbitron.com/trade?market=plsr-btc
 
 ## Supported Wallets
