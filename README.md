@@ -66,6 +66,19 @@
   * You can find mining software that offers mining different algorithms. PLSR can be mined on the CurveHash algorithm (CPU + GPU) and MinotaurX algorithm (CPU Only)
     * Depending on your physical hardware and specifications, the hash rate of your mining effort will vary.
 3. A correct mining application (and correct mining configuration file) will open a terminal window and confirmation prompts will continue to accumulate.
+4. Example SRBMiner configuration parameters:
+  * Configuration example #1:
+    ```
+    :: SRBMiner Miningpools.pro
+    :: Verify at https://miningpools.pro/?address=<PLSR wallet address>
+    SRBMiner-MULTI.exe -a ghostrider -o stratum+tcp://miningpools.pro:5477 -u <PLSR wallet address>.<Worker Name> -p c=PLSR
+    ```
+  * Configuration example #2:
+    ```
+    :: SRBMiner Raptorhash.net
+    :: Verify at https://raptorhash.net/?address=<PLSR wallet address>
+    SRBMiner-MULTI.exe -a ghostrider -o stratum+tcp://na.raptorhash.net:6900 -u <PLSR wallet address>.<Worker Name> -p x
+    ```
 
 ## Explorer
 <br> Pulsar Coin Explorer: [PLSR Explorer](https://explorer.pulsarcoin.info/)
