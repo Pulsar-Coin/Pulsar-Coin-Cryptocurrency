@@ -43,8 +43,6 @@ PulsarCoin PLSR Curvehash -
 
 https://miningpools.pro/
 
-https://pool.rplant.xyz/
-
 https://zergpool.com/
 
 https://raptorhash.net/
@@ -61,8 +59,6 @@ PulsarCoin PLSR MinotaurX -
 
 https://miningpools.pro/
 
-https://pool.rplant.xyz/
-
 https://zergpool.com/
 
 https://deepfields.io/
@@ -76,5 +72,3 @@ https://coinminerz.com/
 http://solo.1pool.org/#PLSR
 
 https://raptorhash.net/
-
-
