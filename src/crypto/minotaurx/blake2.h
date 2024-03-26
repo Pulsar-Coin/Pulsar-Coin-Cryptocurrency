@@ -61,7 +61,8 @@ extern "C" {
     uint8_t  personal[BLAKE2S_PERSONALBYTES];  // 32
   } blake2s_param;
 
-  ALIGN( 64 ) typedef struct __blake2s_state
+  //ALIGN( 64 ) typedef struct __blake2s_state
+  typedef struct ALIGN( 64 ) __blake2s_state
   {
     uint32_t h[8];
     uint32_t t[2];
@@ -86,7 +87,8 @@ extern "C" {
     uint8_t  personal[BLAKE2B_PERSONALBYTES];  // 64
   } blake2b_param;
 
-  ALIGN( 64 ) typedef struct __blake2b_state
+  //ALIGN( 64 ) typedef struct __blake2b_state
+  typedef struct ALIGN( 64 ) __blake2b_state
   {
     uint64_t h[8];
     uint64_t t[2];
@@ -96,7 +98,8 @@ extern "C" {
     uint8_t  last_node;
   } blake2b_state;
 
-  typedef struct __blake2sp_state
+  //typedef struct __blake2sp_state
+  typedef struct ALIGN( 64 ) __blake2sp_state
   {
     blake2s_state S[8][1];
     blake2s_state R[1];
@@ -104,7 +107,8 @@ extern "C" {
     size_t  buflen;
   } blake2sp_state;
 
-  typedef struct __blake2bp_state
+  //typedef struct __blake2bp_state
+  typedef struct ALIGN( 64 ) __blake2bp_state
   {
     blake2b_state S[4][1];
     blake2b_state R[1];
