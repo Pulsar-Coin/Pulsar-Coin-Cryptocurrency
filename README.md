@@ -1,4 +1,4 @@
-# Pulsar Coin - Update 1.1.6
+# Pulsar Coin - Update 1.1.7
 ***
 <a href="https://imgur.com/EmoVsgC"><img src="https://i.imgur.com/EmoVsgC.png" title="source: imgur.com" /></a>
 
