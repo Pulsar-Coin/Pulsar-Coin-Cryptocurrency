@@ -1,7 +1,11 @@
-name: Windows Only Integration
+name: Windows Only TEST
 
 on:
   workflow_dispatch:
+  push:
+  # Sequence of patterns matched against refs/tags
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 
 jobs:
@@ -9,7 +13,7 @@ jobs:
     name: ${{ matrix.name }}
 
     env:
-      MAKEJOBS: "-j3"
+      MAKEJOBS: "-j20"
       CHECK_DOC: "0"
       CCACHE_SIZE: "100M"
       CCACHE_TEMPDIR: /tmp/.ccache-temp
@@ -18,6 +22,8 @@ jobs:
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
       VERSION: "1.1.7.0"
+      RELEASE_NAME: "$GITHUB_WORKFLOW"
+      RELEASE_TAG: "v1.1.7.x"
 
     strategy:
       fail-fast: false
@@ -26,7 +32,6 @@ jobs:
           - x86_64-win
 
         include:
-
           - name: x86_64-win
             host: x86_64-w64-mingw32
             arch: "i386"
@@ -42,18 +47,20 @@ jobs:
             goal: install
             strip-cmd: "x86_64-w64-mingw32-strip"
 
-    runs-on: ${{ matrix.os }}
+    runs-on: self-hosted
 
     steps:
       - name: Add architecture
         if: ${{ matrix.arch }}
         run: |
           sudo dpkg --add-architecture "${{ matrix.arch }}"
+  
       - name: Install packages
         run: |
           sudo apt-get update
           sudo apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl ca-certificates ccache python3 rsync git procps bison
           sudo apt-get install ${{ matrix.packages }}
+
       - name: Post install
         if: ${{ matrix.postinstall }}
         run: ${{ matrix.postinstall }}
@@ -61,15 +68,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-
       - name: Cache SDK
         uses: actions/cache@v4
         with:
           path: depends/sdk-sources
           key: sdk-${{ runner.os }}-${{ matrix.name }}
           restore-keys: sdk-${{ runner.os }}-
-          #if: matrix.sdk
-
+          save-always: true
 
       - name: Install SDK
         if: ${{ matrix.sdk }}
@@ -78,18 +83,19 @@ jobs:
           mkdir -p depends/SDKs
           curl --location --fail $SDK_URL/MacOSX${{ matrix.sdk }}.sdk.tar.gz -o depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
           tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
+
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
           path: depends/built
           key: dependencies-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('depends/packages/*') }}
           restore-keys: dependencies-${{ runner.os }}-${{ matrix.name }}-
-          #if: steps.Build Depends.outputs.cache-hit != 'true'
+          save-always: true
 
       - name: Build depends
         id: Build_Depends
         run: |
-          make $MAKEJOBS -C depends HOST=${{ matrix.host }} ${{ matrix.dep-opts }}
+          make -C depends HOST=${{ matrix.host }} ${{ env.MAKEJOBS }} ${{ matrix.dep-opts }}
         continue-on-error: true
       
       - name: CCache
@@ -98,15 +104,13 @@ jobs:
           path: ~/.ccache
           key: ccache-${{ runner.os }}-${{ matrix.name }}-${{ hashFiles('**/configure.ac') }}
           restore-keys: ccache-${{ runner.os }}-${{ matrix.name }}-
-          #if: steps.Build Depends.outputs.cache-hit != 'true'
-
 
       - name: Build Pulsar Core
         run: |
-          #depends/${{ matrix.host }}/native/bin/ccache --max-size=$CCACHE_SIZE
           ./autogen.sh
           ./configure --prefix=`pwd`/depends/${{ matrix.host }} ${{ matrix.config-opts }} || ( cat config.log && false)
-          make $MAKEJOBS ${{ matrix.goal }} || ( echo "Build failure. Verbose build follows." && make ${{ matrix.goal }} V=1 ; false )
+          make ${{ env.MAKEJOBS }} ${{ matrix.goal }} || ( echo "Build failure. Verbose build follows." && make ${{ matrix.goal }} V=1 ; false )
+
           
       - name: Strip built binaries
         run: |
@@ -120,30 +124,6 @@ jobs:
           cp src/pulsar-cli* release/
           cp src/pulsar-tx* release/
         continue-on-error: true
-      
-      - name: Chmod
-        if: |
-          matrix.name != 'x86_64-macos' &&
-          matrix.name != 'x86_64-win'
-        run: |
-          chmod -R +x release/
-          
-      - name: Tar files
-        if: |
-          matrix.name != 'x86_64-macos' &&
-          matrix.name != 'x86_64-win'
-        run: |
-            tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C release/ .
-      
-      - name: Upload artifacts
-        if: |
-          matrix.name != 'x86_64-macos' &&
-          matrix.name != 'x86_64-win'
-        uses: actions/upload-artifact@v4
-        with:
-          name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
-          path: |
-            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar
             
       - name: Upload artifacts WIN/OSX
         if: |
@@ -159,4 +139,55 @@ jobs:
             release/pulsar-cli
             release/pulsar-cli.exe
             release/Pulsar-Qt.app
-            
+      
+#TESTING
+
+      - name: Set enviroment for github-release
+        run: |
+          - name: Save state
+          run: echo "RELEASE_TAG=${{ env.RELEASE_TAG }}" >> $GITHUB_STATE
+
+          - name: Set output
+          run: echo "RELEASE_NAME={$GITHUB_WORKFLOW}" >> $GITHUB_OUTPUT
+        continue-on-error: true
+      
+      - uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_TAG }}
+          body: >
+            testing.....  
+          gzip: false
+          files: >
+            ./release/Pulsar-${{ env.VERSION }}-${{ matrix.name }}.zip
+        continue-on-error: true
+
+
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          zip --junk-paths my-artifact README.md
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: ${{ env.VERSION }}
+          draft: true
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./my-artifact.zip
+          asset_name: my-artifact.zip
+          asset_content_type: application/zip
+

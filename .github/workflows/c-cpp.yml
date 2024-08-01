@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: All Integration
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-      VERSION: "1.1.6.1"
+      VERSION: "1.1.7.0"
 
 
     strategy:
@@ -35,7 +35,7 @@ jobs:
       matrix:
         name:
           - x86_64-linux
-          - x86_64-macos
+          #- x86_64-macos
           - x86_64-win
           - aarch64-linux
           - armhf-linux
@@ -69,16 +69,16 @@ jobs:
             goal: install
             strip-cmd: "strip"
             
-          - name: x86_64-macos
-            host: x86_64-apple-darwin11
-            os: ubuntu-20.04
-            packages: cmake imagemagick libcap-dev librsvg2-bin libz-dev libtiff-tools libtinfo5 python3-setuptools xorriso libtinfo5
-            run-tests: false
-            dep-opts: ""
-            config-opts: "--enable-gui=qt5 --enable-reduce-exports"
-            goal: install
-            sdk: 10.11
-            strip-cmd: "x86_64-apple-darwin11-strip"
+          #- name: x86_64-macos
+          #  host: x86_64-apple-darwin11
+          #  os: ubuntu-20.04
+          #  packages: cmake imagemagick libcap-dev librsvg2-bin libz-dev libtiff-tools libtinfo5 python3-setuptools xorriso libtinfo5
+          #  run-tests: false
+          #  dep-opts: ""
+          #  config-opts: "--enable-gui=qt5 --enable-reduce-exports"
+          #  goal: install
+          #  sdk: 10.11
+          #  strip-cmd: "x86_64-apple-darwin11-strip"
 
           - name: x86_64-win
             host: x86_64-w64-mingw32
@@ -96,7 +96,7 @@ jobs:
             strip-cmd: "x86_64-w64-mingw32-strip"
 
     runs-on: ${{ matrix.os }}
-
+    
     steps:
       - name: Add architecture
         if: ${{ matrix.arch }}
@@ -112,11 +112,11 @@ jobs:
         run: ${{ matrix.postinstall }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: SDK cache
         if: ${{ matrix.sdk }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: sdk
         with:
@@ -131,7 +131,7 @@ jobs:
           curl --location --fail $SDK_URL/MacOSX${{ matrix.sdk }}.sdk.tar.gz -o depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
           tar -C depends/SDKs -xf depends/sdk-sources/MacOSX${{ matrix.sdk }}.sdk.tar.gz
       - name: Dependency cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: depends
         with:
@@ -142,7 +142,7 @@ jobs:
         run: |
           make $MAKEJOBS -C depends HOST=${{ matrix.host }} ${{ matrix.dep-opts }}
       - name: CCache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: ccache
         with:
@@ -188,7 +188,7 @@ jobs:
           matrix.name != 'x86_64-macos' &&
           matrix.name != 'x86_64-win'
 
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
 
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
@@ -200,7 +200,7 @@ jobs:
           matrix.name == 'x86_64-macos' ||
           matrix.name == 'x86_64-win'
 
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
 
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}

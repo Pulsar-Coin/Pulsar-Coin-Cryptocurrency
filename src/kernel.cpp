@@ -130,7 +130,14 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
         return error("prevout-not-in-chain");
     }
     int nDepth;
-    if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth)) {
+
+    if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+    {
+        if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations_Reduction - 1, nDepth)) {
+            return error("CheckProofOfStake_Reduction() : tried to stake at depth %d", nDepth + 1);
+        }
+    }
+    else if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth)) {
         return error("CheckProofOfStake() : tried to stake at depth %d", nDepth + 1);
     }
 
@@ -164,8 +171,12 @@ bool CheckKernel(unsigned int nBits, CBlockIndex *pindexPrev, const CBlockHeader
 {
     uint256 hashProofOfStake, targetProofOfStake;
     int nDepth;
-
-    if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth)) {
+    if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+    {
+        if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations_Reduction - 1, nDepth))
+            return false;
+    }
+    else if (IsConfirmedInNPrevBlocks(header.GetHash(), pindexPrev, Params().GetConsensus().nStakeMinConfirmations - 1, nDepth)) {
         return false;
     }
 

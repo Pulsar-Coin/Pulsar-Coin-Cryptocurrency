@@ -1,14 +1,13 @@
-# Pulsar Coin - Update 1.1.6
+# Pulsar Coin - Update 1.1.7
 ***
-<a href="https://imgur.com/EmoVsgC"><img src="https://i.imgur.com/EmoVsgC.png" title="source: imgur.com" /></a>
+<img src="https://github.com/jasonhilton87/Pulsar-Coin-Dev-117/blob/master/src/qt/res/images/splash.png?raw=true" />
 
 ## Coin Specifications:
 #### Total Supply: 500,000,000 (500 Million PLSR)
 #### Pre-mined Supply: 50,000,000 (50 Million PLSR | 10%)
 #### Launch Supply: 450,000,000 (450 Million PLSR | 90%)
-#### Block Maturity: 41
-#### Block Time: 75 Seconds
-#### Difficulty Time: 2,064 Blocks
+#### Block Maturity: 141
+#### Block Time: 10 Seconds
 #### Block Rewards (Proof of Stake): 45 PLSR
 #### P2P Port: 5995
 #### RPC Port: 5996

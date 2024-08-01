@@ -2335,7 +2335,12 @@ void CWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, uint32_t nS
                 continue;  // pulsar: timestamp must not exceed spend time
             if ((pcoin->IsCoinBase() || pcoin->IsCoinStake()) && pcoin->GetBlocksToMaturity() > 0)
                 continue;
-            if (nDepth < params.nStakeMinConfirmations)
+            if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+            {
+                if (nDepth < params.nStakeMinConfirmations_Reduction)
+                    continue;
+            }
+            else if (nDepth < params.nStakeMinConfirmations)
                 continue;
             for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
                 if (IsLockedCoin(entry.first, i))
@@ -4217,7 +4222,11 @@ int CMerkleTx::GetBlocksToMaturity() const
 {
     if (!(IsCoinBase() || IsCoinStake()))
         return 0;
-    return std::max(0, (Params().GetConsensus().nCoinbaseMaturity+1) - GetDepthInMainChain());
+
+    if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+        return std::max(0, (Params().GetConsensus().nCoinbaseMaturity_Reduction + 1) - GetDepthInMainChain());
+    else
+        return std::max(0, (Params().GetConsensus().nCoinbaseMaturity+1) - GetDepthInMainChain());
 }
 
 
@@ -4370,7 +4379,11 @@ uint64_t CWallet::GetStakeWeight() const
     std::set<std::pair<const CWalletTx*,unsigned int> >::iterator it = setCoins.begin();
     for (; it != setCoins.end(); ++it) {
         auto pcoin = *it;
-        if (pcoin.first->GetDepthInMainChain() >= params.nStakeMinConfirmations)
+        if (IsReductionActive(chainActive.Tip(), Params().GetConsensus())) {
+            if (pcoin.first->GetDepthInMainChain() >= params.nStakeMinConfirmations_Reduction)
+                nWeight += pcoin.first->tx->vout[pcoin.second].nValue;
+        }
+        else if (pcoin.first->GetDepthInMainChain() >= params.nStakeMinConfirmations)
             nWeight += pcoin.first->tx->vout[pcoin.second].nValue;
     }
 

@@ -226,11 +226,19 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         assert(!coin.IsSpent());
 
         // If prev is coinbase, check that it's matured
-        if ((coin.IsCoinBase() || coin.IsCoinStake()) && nSpendHeight - coin.nHeight < params.nCoinbaseMaturity) {
+        if (IsReductionActive(chainActive.Tip(), params)) {
+            if ((coin.IsCoinBase() || coin.IsCoinStake()) && nSpendHeight - coin.nHeight < params.nCoinbaseMaturity_Reduction) {
+                return state.Invalid(false,
+                    REJECT_INVALID, "bad-txns-premature-spend-of-coinbase/coinstake",
+                    strprintf("tried to spend coinbase at depth %d", nSpendHeight - coin.nHeight));
+            }
+        }
+        else if ((coin.IsCoinBase() || coin.IsCoinStake()) && nSpendHeight - coin.nHeight < params.nCoinbaseMaturity) {
             return state.Invalid(false,
                 REJECT_INVALID, "bad-txns-premature-spend-of-coinbase/coinstake",
                 strprintf("tried to spend coinbase at depth %d", nSpendHeight - coin.nHeight));
         }
+        
 
         // pulsar: check transaction timestamp
         if (coin.nTime > tx.nTime)

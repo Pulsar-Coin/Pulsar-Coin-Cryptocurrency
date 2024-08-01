@@ -92,26 +92,43 @@ unsigned int DarkGravityWave(const CBlockIndex *pindexLast, bool fProofOfStake, 
     int64_t nActualTimespan = pindexLastMatchingProof->GetBlockTime() - pindex->GetBlockTime();
     int64_t nTargetTimespan = params.nDgwPastBlocks * params.nStakeTargetSpacing;
 
+    if (IsReductionActive(pindex->pprev, params))
+    {
+        nTargetTimespan = params.nDgwPastBlocks * params.nPoSTargetSpacing_Reduction;
+    }
+
 	if (!fProofOfStake)
 	{
 		const arith_uint256 powLimit = UintToArith256(params.powTypeLimits[powType]);   // Minimum diff, 00000ffff... for x16rt, 000fffff... for minotaurx
 
 		if (IsMinoEnabled(pindex->pprev, params))
 		{
-			if (powType == POW_TYPE_CURVEHASH)
+			if (IsReductionActive(pindex->pprev, params))
 			{
-				nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingCH;
-				nProofOfWorkLimit = powLimit.GetCompact();
-			}
-			else
-			{
-				nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingGR;
-				nProofOfWorkLimit = powLimit.GetCompact();
-			}
+                if (powType == POW_TYPE_CURVEHASH) {
+                    nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingCurvehash_Reduction;
+                    nProofOfWorkLimit = powLimit.GetCompact();
+                } 
+                else {
+                    nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingMinotaurX_Reduction;
+                    nProofOfWorkLimit = powLimit.GetCompact();
+                }
+
+			} 
+            else {
+                if (powType == POW_TYPE_CURVEHASH) {
+                    nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingCH;
+                    nProofOfWorkLimit = powLimit.GetCompact();
+                } 
+                else {
+                    nTargetTimespan = params.nDgwPastBlocks * params.nPowTargetSpacingMino;
+                    nProofOfWorkLimit = powLimit.GetCompact();
+                }
+            }
 		}
 		else
 		{
-			LogPrint(BCLog::ALL, "-- GR NOT ENABLED --");
+			LogPrint(BCLog::ALL, "-- MINOTAURX NOT ENABLED --");
 		}
 	}
 
