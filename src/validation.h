@@ -121,6 +121,8 @@ bool IsHalvingActive(const CBlockIndex* pindexPrev, const Consensus::Params& par
 
 bool IsHalvingActiveFix(const CBlockIndex* pindexPrev, const Consensus::Params& params);
 
+bool IsReductionActive(const CBlockIndex* pindexPrev, const Consensus::Params& params);
+
 
 
 static const int64_t DEFAULT_MAX_TIP_AGE = 24 * 60 * 60;

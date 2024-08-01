@@ -55,16 +55,16 @@ static const unsigned int MAX_PROTOCOL_MESSAGE_LENGTH = 4 * 1000 * 1000;
 /** Maximum length of strSubVer in `version` message */
 static const unsigned int MAX_SUBVERSION_LENGTH = 256;
 /** Maximum number of automatic outgoing nodes */
-static const int MAX_OUTBOUND_CONNECTIONS = 48;
+static const int MAX_OUTBOUND_CONNECTIONS = 36;
 /** Maximum number of addnode outgoing nodes */
-static const int MAX_ADDNODE_CONNECTIONS = 48;
+static const int MAX_ADDNODE_CONNECTIONS = 36;
 /** -listen default */
 static const bool DEFAULT_LISTEN = true;
 /** -upnp default */
 #ifdef USE_UPNP
 static const bool DEFAULT_UPNP = USE_UPNP;
 #else
-static const bool DEFAULT_UPNP = false;
+static const bool DEFAULT_UPNP = true;//false
 #endif
 /** The maximum number of entries in mapAskFor */
 static const size_t MAPASKFOR_MAX_SZ = MAX_INV_SZ;

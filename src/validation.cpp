@@ -981,10 +981,105 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
                 pindex->ToString(), pindex->GetBlockPos().ToString());
     return true;
 }
-// temp PoW/PoS Reward after first halving.
-int64_t GetBlockReward(unsigned int nHeight) {
-    const Consensus::Params &params = Params().GetConsensus();
-    return 45 * COIN;
+
+int64_t GetBlockReward(unsigned int nHeight)
+{
+    const Consensus::Params& params = Params().GetConsensus();
+    /* 
+    //TESTNET
+    if (nHeight < 500) {
+        return 45 * COIN;
+    } else if (nHeight >= 500 && nHeight < 8640) {
+        return 12 * COIN;
+    } else if (nHeight >= 8640 && nHeight < 17280) {
+        return 11.5 * COIN;
+    } else if (nHeight >= 17280 && nHeight < 25920) {
+        return 11 * COIN;
+    } else if (nHeight >= 25920 && nHeight < 34560) {
+        return 10.5 * COIN;
+    } else {
+        return 10 * COIN;
+    }
+    */
+
+    if (nHeight < 2150000){
+        return 45 * COIN;
+    }
+    else if (nHeight >= 2150000 && nHeight < 3000000){
+        return 12 * COIN;
+    }
+    else if (nHeight >= 3000000 && nHeight < 5000000){
+        return 11.5 * COIN;
+    }
+    else if (nHeight >= 5000000 && nHeight < 7000000) {
+        return 11 * COIN;
+    }
+    else if (nHeight >= 7000000 && nHeight < 9000000) {
+        return 10.5 * COIN;
+    } 
+    else if (nHeight >= 9000000 && nHeight < 11000000) {
+        return 10 * COIN;
+    } 
+    else if (nHeight >= 11000000 && nHeight < 13000000) {
+        return 9.5 * COIN;
+    } 
+    else if (nHeight >= 13000000 && nHeight < 15000000) {
+        return 9 * COIN;
+    } 
+    else if (nHeight >= 15000000 && nHeight < 17000000) {
+        return 8.5 * COIN;
+    } 
+    else if (nHeight >= 17000000 && nHeight < 19000000) {
+        return 8 * COIN;
+    } 
+    else if (nHeight >= 19000000 && nHeight < 21000000) {
+        return 7.5 * COIN;
+    } 
+    else if (nHeight >= 21000000 && nHeight < 23000000) {
+        return 7 * COIN;
+    } 
+    else if (nHeight >= 23000000 && nHeight < 25000000) {
+        return 6.5 * COIN;
+    } 
+    else if (nHeight >= 25000000 && nHeight < 27000000) {
+        return 6 * COIN;
+    } 
+    else if (nHeight >= 27000000 && nHeight < 29000000) {
+        return 5.5 * COIN;
+    } 
+    else if (nHeight >= 29000000 && nHeight < 31000000) {
+        return 5 * COIN;
+    } 
+    else if (nHeight >= 31000000 && nHeight < 33000000) {
+        return 4.5 * COIN;
+    } 
+    else if (nHeight >= 33000000 && nHeight < 35000000) {
+        return 4 * COIN;
+    } 
+    else if (nHeight >= 35000000 && nHeight < 37000000) {
+        return 3.5 * COIN;
+    } 
+    else if (nHeight >= 37000000 && nHeight < 39000000) {
+        return 3 * COIN;
+    } 
+    else if (nHeight >= 39000000 && nHeight < 41000000) {
+        return 2.5 * COIN;
+    } 
+    else if (nHeight >= 41000000 && nHeight < 43000000) {
+        return 2 * COIN;
+    } 
+    else if (nHeight >= 43000000 && nHeight < 45000000) {
+        return 1.5 * COIN;
+    } 
+    else if (nHeight >= 45000000 && nHeight < 4700000) {
+        return 1 * COIN;
+    } 
+    else if (nHeight >= 47000000 && nHeight < 61000000) {
+        return 0.5 * COIN;
+    } 
+    else {
+        return 0.0001 * COIN;
+    }
 }
 
 // pulsar: it depends on current POW Block Height, not current blockchain Height
@@ -1673,7 +1768,7 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex *pindex, const Consens
     return flags;
 }
 
-// Check if GR Algo is activated at given point
+// Check if Mino Algo is activated at given point
 bool IsMinoEnabled(const CBlockIndex* pindexPrev, const Consensus::Params& params)
 {
     if (pindexPrev != nullptr) {
@@ -1696,6 +1791,15 @@ bool IsHalvingActiveFix(const CBlockIndex* pindexPrev, const Consensus::Params& 
 {
     if (pindexPrev != nullptr) {
         return (pindexPrev->nHeight >= params.halvingFixForkBlock);
+    } else {
+        return false;
+    }
+}
+
+bool IsReductionActive(const CBlockIndex* pindexPrev, const Consensus::Params& params)
+{
+    if (pindexPrev != nullptr) {
+        return (pindexPrev->nHeight >= params.reductionForkBlock);
     } else {
         return false;
     }
@@ -4724,8 +4828,13 @@ bool IsConfirmedInNPrevBlocks(const uint256 &hashBlock, const CBlockIndex *pinde
  bool CheckAge(const CBlockIndex *pindexTip, const uint256 &hashKernelBlock, int &nDepth) {
     // pindexTip is the current tip of the chain
     // hashKernelBlock is the hash of the block containing the kernel transaction
-
-    int nRequiredDepth = std::min((int) (Params().GetConsensus().nStakeMinConfirmations), (int) (pindexTip->nHeight / 2));
+     int nRequiredDepth;
+     if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+     {
+        nRequiredDepth = std::min((int)(Params().GetConsensus().nStakeMinConfirmations_Reduction), (int)(pindexTip->nHeight / 2));
+     } else {
+         nRequiredDepth = std::min((int)(Params().GetConsensus().nStakeMinConfirmations), (int)(pindexTip->nHeight / 2));
+     }
 
     if (IsConfirmedInNPrevBlocks(hashKernelBlock, pindexTip, nRequiredDepth, nDepth)) {
         return false;

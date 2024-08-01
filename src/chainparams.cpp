@@ -46,19 +46,23 @@ public:
         consensus.nCoinbaseMaturity = 40;
         consensus.nDgwPastBlocks = 30;
 
-
 	    consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
-    	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
+    	consensus.nPowTargetSpacingMino = 125; //691.2 blocks 60%
 
+        consensus.nPowTargetSpacingCurvehash_Reduction = 40;
+        consensus.nPowTargetSpacingMinotaurX_Reduction = 40;
+        consensus.nPoSTargetSpacing_Reduction = 20;
+
+        consensus.nStakeMinConfirmations_Reduction = 21;
+        consensus.nCoinbaseMaturity_Reduction = 140;
 
 	    consensus.powForkTime = 1668211200; //Saturday, 12 November 2022 00:00:00 GMT+00:00
 	    consensus.halvingForkBlock = 1400000; //current 132xxxx
         consensus.halvingFixForkBlock = 1445000;
-
+        consensus.reductionForkBlock = 2150000;
 
         consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
-
 
         consensus.nStartMiningTime = 1605440641;
 
@@ -66,12 +70,10 @@ public:
         consensus.fPowNoRetargeting = false;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000094383e20cb8020ce6");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000100aae6e02bcc980399");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        //consensus.defaultAssumeValid = uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1");
-	//consensus.defaultAssumeValid = uint256S("0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a");
-	    consensus.defaultAssumeValid = uint256S("0x069e119c5cef03b550f1edcb68b8a64f41b12a8d2c203e08080a915da364972f");
+	    consensus.defaultAssumeValid = uint256S("0x5727da923c542be81fd1e005ecad6d3e42643c8fdabfebfb59d4553b24f686fb");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -97,7 +99,6 @@ public:
         vSeeds.emplace_back("seed04.pulsarcoin.org");
         vSeeds.emplace_back("seed05.pulsarcoin.org");
         vSeeds.emplace_back("seed06.pulsarcoin.org");
-        vSeeds.emplace_back("95.154.244.51");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
         base58Prefixes[SCRIPT_ADDRESS] = {0x38};
@@ -131,8 +132,9 @@ public:
                 {250000, uint256S("0x7c3682d7dc9e2bd3fff1b97f5432f08d338e2aaf99a08bf3abc46e031d6abdf7")},
                 {350000, uint256S("0x85f0db37068b2d31f91ec2508a44699a45848493b7e50ac13d507e210b416541")},
                 {368312, uint256S("0xe9d362b2c349362f393f23701106055bf8acfb3be869da15a01f1fd031e519c1")},
-		{860000, uint256S("0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a")},
-		{1220000, uint256S("0x069e119c5cef03b550f1edcb68b8a64f41b12a8d2c203e08080a915da364972f")},
+		        {860000, uint256S("0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a")},
+		        {1220000, uint256S("0x069e119c5cef03b550f1edcb68b8a64f41b12a8d2c203e08080a915da364972f")},
+                {1990000, uint256S("0x5727da923c542be81fd1e005ecad6d3e42643c8fdabfebfb59d4553b24f686fb")},
             }
         };
 
@@ -141,9 +143,9 @@ public:
 			///* nTime    */ 1657962835,
 			///* nTxCount */ 688296,
 			///* dTxRate  */ 0.04790706240371376
-			/* nTime    */ 1691402500,
-			/* nTxCount */ 2177953,
-			/* dTxRate  */ 0.04555959642349217
+            /* nTime    */ 1721236757,
+            /* nTxCount */ 3474559,
+            /* dTxRate  */ 0.04472563063010584
         };
     }
 };
@@ -163,26 +165,38 @@ public:
         consensus.nTargetTimespan = 24 * 60;  // 24 minutes
         consensus.nStakeTargetSpacing = 1 * 60;  // 1-minute block spacing
         consensus.nTargetSpacingWorkMax = 1 * consensus.nStakeTargetSpacing; // 24-minute
-	consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
+	    consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
 
         consensus.nStakeMinConfirmations = 1;
         consensus.nCoinbaseMaturity = 6; // 6 confirmations
         consensus.nDgwPastBlocks = 30;
 
-	consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
-	consensus.nPowTargetSpacingGR = 125; //691.2 blocks 60%
+	    consensus.nPowTargetSpacingCH = 187.5; //460.8 blocks 40%
+	    consensus.nPowTargetSpacingMino = 125; //691.2 blocks 60%
 
-	consensus.powForkTime = 1666699200; // Tuesday, 25 October 2022 13:00:00 GMT+01:00
 
-	consensus.halvingForkBlock = 50;
+        consensus.nPowTargetSpacingCurvehash_Reduction = 40;
+        consensus.nPowTargetSpacingMinotaurX_Reduction = 40;
+        consensus.nPoSTargetSpacing_Reduction = 20;
+        
+
+	    consensus.powForkTime = 1666699200; // Tuesday, 25 October 2022 13:00:00 GMT+01:00
+
+	    consensus.halvingForkBlock = 50;
     	consensus.halvingFixForkBlock = 100;
+
+        consensus.reductionForkBlock = 500;
+
+        consensus.nStakeMinConfirmations_Reduction = 21;
+        consensus.nCoinbaseMaturity_Reduction = 140; // 6 confirmations
+        //consensus.nDgwPastBlocks_Reduction = 90;
 
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
 
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-	consensus.nStartMiningTime = 1605440641;
+	    consensus.nStartMiningTime = 1605440641;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -208,11 +222,8 @@ public:
         vSeeds.clear();
 
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("95.154.244.50");
-	    vSeeds.emplace_back("95.154.244.51");
+        vSeeds.emplace_back("testnet1.pulsarcoin.org");
 	    vSeeds.emplace_back("95.154.244.52");
-	    vSeeds.emplace_back("95.154.244.3");
-        vSeeds.emplace_back("212.159.68.18");
 
         base58Prefixes[PUBKEY_ADDRESS] = {0x80}; // t
         base58Prefixes[SCRIPT_ADDRESS] = {0x7a};
@@ -233,7 +244,6 @@ public:
         checkpointData = {
                 {
                         {0, uint256S("0xf035a8cda8f5aaf9592ffcab28c3c08a245fd236adb82432c242b4ad364b9d4e")},
-			{1000, uint256S("0xcd6f94e1b5c3015954d46059a878bbad40071bd16637e7770d1f121a7dc9acfa")},
             }
         };
 

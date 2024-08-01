@@ -70,7 +70,7 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
         assert (pb->pprev);
         pb = pb->pprev;
     }
-    // We have either stepped back to before gr fork, or the requested powType block
+    // We have either stepped back to before mino fork, or the requested powType block
     // If we have stepped back to (or started looking up from) pre mino, but requested mino pow type, then there are no hashes
     if (!IsMinoEnabled(pb, Params().GetConsensus()) && powType == POW_TYPE_MINOTAURX) {
         return 0;
@@ -94,7 +94,7 @@ UniValue GetNetworkHashPS(int lookup, int height, POW_TYPE powType) {
             break;
         }
 
-	int64_t time = pb->GetBlockTime();
+	    int64_t time = pb->GetBlockTime();
         minTime = std::min(time, minTime);
         maxTime = std::max(time, maxTime);
         workDiff += GetBlockProof(*pb, powType); 
@@ -283,83 +283,89 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
 
 UniValue getmininginfo(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getmininginfo\n"
-            "\nReturns a json object containing mining-related information."
-            "\nResult:\n"
-            "{\n"
-            "  \"blocks\": nnn,             (numeric) The current block\n"
-            "  \"currentblockweight\": nnn, (numeric) The last block weight\n"
-            "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
-            "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
-            "  \"difficulty_algorithm\": x.x (numeric) the current difficulty for GR once activated per algorithm\n"
-            "  \"networkhashps\": nnn,      (numeric) The network hashes per second\n"
-            "  \"pooledtx\": n              (numeric) The size of the mempool\n"
-            "  \"chain\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
-            "  \"warnings\": \"...\"          (string) any network and blockchain warnings\n"
-            "  \"errors\": \"...\"            (string) DEPRECATED. Same as warnings. Only shown when pulsard is started with -deprecatedrpc=getmininginfo\n"
-            "}\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getmininginfo", "")
-            + HelpExampleRpc("getmininginfo", "")
-        );
+    try
+    {
+        if (request.fHelp || request.params.size() != 0)
+            throw std::runtime_error(
+                "getmininginfo\n"
+                "\nReturns a json object containing mining-related information."
+                "\nResult:\n"
+                "{\n"
+                "  \"blocks\": nnn,             (numeric) The current block\n"
+                "  \"currentblockweight\": nnn, (numeric) The last block weight\n"
+                "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
+                "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
+                "  \"difficulty_algorithm\": x.x (numeric) the current difficulty for mino once activated per algorithm\n"
+                "  \"networkhashps\": nnn,      (numeric) The network hashes per second\n"
+                "  \"pooledtx\": n              (numeric) The size of the mempool\n"
+                "  \"chain\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
+                "  \"warnings\": \"...\"          (string) any network and blockchain warnings\n"
+                "  \"errors\": \"...\"            (string) DEPRECATED. Same as warnings. Only shown when pulsard is started with -deprecatedrpc=getmininginfo\n"
+                "}\n"
+                "\nExamples:\n"
+                + HelpExampleCli("getmininginfo", "")
+                + HelpExampleRpc("getmininginfo", "")
+            );
 
 
-    LOCK(cs_main);
+        LOCK(cs_main);
 
-    std::string strAlgo = gArgs.GetArg("-powalgo", DEFAULT_POW_TYPE);
+        std::string strAlgo = gArgs.GetArg("-powalgo", DEFAULT_POW_TYPE);
 
-    bool algoFound = false;
-    POW_TYPE powType;
-    for (unsigned int i = 0; i < NUM_BLOCK_TYPES; i++) {
-        if (strAlgo == POW_TYPE_NAMES[i]) {
-            powType = (POW_TYPE)i;
-            algoFound = true;
-            break;
+        bool algoFound = false;
+        POW_TYPE powType;
+        for (unsigned int i = 0; i < NUM_BLOCK_TYPES; i++) {
+            if (strAlgo == POW_TYPE_NAMES[i]) {
+                powType = (POW_TYPE)i;
+                algoFound = true;
+                break;
+            }
         }
+        if (!algoFound)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid pow algorithm requested");
+
+
+
+        uint64_t nWeight = 0;
+        CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+        if (pwallet)
+            nWeight = pwallet->GetStakeWeight();
+
+        UniValue obj(UniValue::VOBJ);
+        UniValue weight(UniValue::VOBJ);
+        obj.push_back(Pair("blocks",           (int)chainActive.Height()));
+        obj.push_back(Pair("currentblockweight", (uint64_t)nLastBlockWeight));
+        obj.push_back(Pair("currentblocktx",   (uint64_t)nLastBlockTx));
+        //obj.push_back(Pair("difficulty",       (double)GetDifficulty()));
+        obj.push_back(Pair("difficulty",       (double)GetDifficulty(nullptr, powType)));
+        if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus())) {
+            obj.push_back(Pair("difficulty_curvehash", GetDifficulty(nullptr, POW_TYPE_CURVEHASH)));
+            obj.push_back(Pair("difficulty_minotaurx", GetDifficulty(nullptr, POW_TYPE_MINOTAURX)));
+        }
+        obj.push_back(Pair("networkhashps", GetNetworkHashPS(5, -1, powType)));
+        if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus())) {
+            obj.push_back(Pair("networkhashps_curvehash", GetNetworkHashPS(5, -1, POW_TYPE_CURVEHASH)));
+            obj.push_back(Pair("networkhashps_minotaurx", GetNetworkHashPS(5, -1, POW_TYPE_MINOTAURX)));
+        }
+        obj.push_back(Pair("networkhashps",    getnetworkhashps(request)));
+        obj.push_back(Pair("networkghps",      getnetworkghps(request)));
+        obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
+        obj.push_back(Pair("chain",            Params().NetworkIDString()));
+        weight.push_back(Pair("minimum",    (uint64_t)nWeight));
+        weight.push_back(Pair("maximum",    (uint64_t)0));
+        weight.push_back(Pair("combined",  (uint64_t)nWeight));
+        obj.push_back(Pair("stakeweight", weight));
+
+        if (IsDeprecatedRPCEnabled("getmininginfo")) {
+            obj.push_back(Pair("errors",       GetWarnings("statusbar")));
+        } else {
+            obj.push_back(Pair("warnings",     GetWarnings("statusbar")));
+        }
+        return obj;
+    } catch (const std::exception& e) {
+        LogPrintf("Error in getmininginfo: %s\n", e.what());
+        throw;
     }
-    if (!algoFound)
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid pow algorithm requested");
-
-
-
-    uint64_t nWeight = 0;
-    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
-    if (pwallet)
-        nWeight = pwallet->GetStakeWeight();
-
-    UniValue obj(UniValue::VOBJ);
-    UniValue weight(UniValue::VOBJ);
-    obj.push_back(Pair("blocks",           (int)chainActive.Height()));
-    obj.push_back(Pair("currentblockweight", (uint64_t)nLastBlockWeight));
-    obj.push_back(Pair("currentblocktx",   (uint64_t)nLastBlockTx));
-    //obj.push_back(Pair("difficulty",       (double)GetDifficulty()));
-    obj.push_back(Pair("difficulty",       (double)GetDifficulty(nullptr, powType)));
-    if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus())) {
-        obj.push_back(Pair("difficulty_curvehash", GetDifficulty(nullptr, POW_TYPE_CURVEHASH)));
-        obj.push_back(Pair("difficulty_minotaurx", GetDifficulty(nullptr, POW_TYPE_MINOTAURX)));
-    }
-    obj.push_back(Pair("networkhashps", GetNetworkHashPS(5, -1, powType)));
-    if (IsMinoEnabled(chainActive.Tip(), Params().GetConsensus())) {
-        obj.push_back(Pair("networkhashps_curvehash", GetNetworkHashPS(5, -1, POW_TYPE_CURVEHASH)));
-        obj.push_back(Pair("networkhashps_minotaurx", GetNetworkHashPS(5, -1, POW_TYPE_MINOTAURX)));
-    }
-    obj.push_back(Pair("networkhashps",    getnetworkhashps(request)));
-    obj.push_back(Pair("networkghps",      getnetworkghps(request)));
-    obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
-    obj.push_back(Pair("chain",            Params().NetworkIDString()));
-    weight.push_back(Pair("minimum",    (uint64_t)nWeight));
-    weight.push_back(Pair("maximum",    (uint64_t)0));
-    weight.push_back(Pair("combined",  (uint64_t)nWeight));
-    obj.push_back(Pair("stakeweight", weight));
-
-    if (IsDeprecatedRPCEnabled("getmininginfo")) {
-        obj.push_back(Pair("errors",       GetWarnings("statusbar")));
-    } else {
-        obj.push_back(Pair("warnings",     GetWarnings("statusbar")));
-    }
-    return obj;
 }
 
 

@@ -174,7 +174,15 @@ int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& fr
         r = from.nChainTrust - to.nChainTrust;
         sign = -1;
     }
-    r = r * arith_uint256(params.nPowTargetSpacing) / GetBlockProof(tip);
+
+    if (IsReductionActive(chainActive.Tip(), Params().GetConsensus()))
+    {
+        r = r * arith_uint256(params.nPowTargetSpacingCurvehash_Reduction) / GetBlockProof(tip); //??
+    }
+    else
+    {
+        r = r * arith_uint256(params.nPowTargetSpacing) / GetBlockProof(tip);
+    }
     if (r.bits() > 63) {
         return sign * std::numeric_limits<int64_t>::max();
     }

@@ -10,16 +10,24 @@
     font-family: "NotoSans-Regular";
     color: #666666;
 }
-
+/*
 QMainWindow {
-  /*  border-image: url(:/images/logomask) 0 0 0 0 stretch stretch; */
-    border-image: url(:/images/logomask);
+    border-image: url(:/images/logomask) 0 0 0 0 stretch stretch;
+    border-width: 100px;
+    border-height: 100px;
     border-size: cover;
     border-repeat: no-repeat;
     border-top:0px solid #000;
     margin:0;
     padding-top:0px;
     padding-bottom: 0px;
+}*/
+
+QMainWindow {
+    background: url(:/images/logomask) no-repeat center;
+    background-size: 200px 200px;  /* Set the fixed size of the image */
+    margin: 0;
+    padding: 0;
 }
 
 /* Global Styles - Buttons */
@@ -335,13 +343,24 @@ QTabWidget::pane {
     background: transparent;
 }
 
+
 QWidget#contentWidget {
 border-image: url(':/images/logomask2') 0 0 0 0 stretch stretch;
 border-top:0px solid #000;
 margin:0;
-padding-top:20px;
+padding-top: 20px;
 padding-bottom: 20px;
 }
+
+/*
+QWidget#contentWidget {
+    background: url(':/images/logomask2') no-repeat center;
+    background-size: 200px 200px;  /* Set the fixed size of the image */
+    border-top: 0px solid #000;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}*/
 
 QScrollBar:vertical {
     border: none;

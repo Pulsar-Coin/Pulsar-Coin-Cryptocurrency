@@ -39,8 +39,18 @@ struct Params {
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
 
-    int64_t nPowTargetSpacingGR;
+    int64_t nPowTargetSpacingMino;
     int64_t nPowTargetSpacingCH;
+
+    int64_t nPowTargetSpacingCurvehash_Reduction;
+    int64_t nPowTargetSpacingMinotaurX_Reduction;
+    int64_t nPoSTargetSpacing_Reduction;
+    uint32_t reductionForkBlock;
+
+    int64_t nStakeMinConfirmations_Reduction;
+    int nCoinbaseMaturity_Reduction; // Coinbase transaction outputs can only be spent after this number of new blocks (network rule)
+    int nDgwPastBlocks_Reduction;    // number of blocks to average in Dark Gravity Wave
+
 
 
     uint256 nMinimumChainWork;

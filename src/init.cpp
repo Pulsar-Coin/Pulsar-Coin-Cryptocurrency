@@ -505,19 +505,25 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/Pulsar-Coin/Pulsar-Coin-Cryptocurrency>";
     const std::string URL_WEBSITE = "<https://pulsarcoin.info>";
-    const std::string URL_EXPLORER = "<https://explorer.pulsarcoin.org>";
+    const std::string URL_EXPLORER = "<https://explorer.pulsarcoin.info>";
     const std::string URL_OFFICIALPOOL = "<https://miningpools.pro>";
-    const std::string URL_WALLETS = "<https://github.com/PulsarCoin/Pulsar-Coin-Cryptocurrency/releases/latest>";
+    const std::string URL_WALLETS = "<https://github.com/Pulsar-Coin/Pulsar-Coin-Cryptocurrency/releases/latest>";
     const std::string URL_DISCORD = "<https://discord.gg/tPfB7REgNe>";
-    const std::string URL_TWITTER = "<https://twitter.com/PulsarCoin>";
-    const std::string URL_INSTAGRAM = "<https://www.instagram.com/pulsar_coin/>";
+    const std::string URL_TWITTER = "<https://twitter.com/TeamPulsarCoin>";
+    const std::string URL_INSTAGRAM = "<https://www.instagram.com/teampulsarcoin>";
+    const std::string URL_YOUTUBE = "<https://www.youtube.com/@TeamPulsarCoin>";
+    const std::string URL_LINKTREE = "<https://linktr.ee/teampulsarcoin>";
 
 
 //    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2022, COPYRIGHT_YEAR) + " ") + "\n" +
     return
            "\n" +
+           strprintf(_("LinkTree: %s"), +"\n" +
+               URL_LINKTREE) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
            strprintf(_("Website: %s"), + "\n" +
                URL_WEBSITE) +
            "\n" +
@@ -526,10 +532,10 @@ std::string LicenseInfo()
                URL_EXPLORER) +
            "\n" +
            _("--------------------------------------------") + "\n" +
-           //strprintf(_("Official Pool: %s"), + "\n" +
-           //    URL_OFFICIALPOOL) +
-           //"\n" +
-           //_("--------------------------------------------") + "\n" +
+           strprintf(_("Official Pool: %s"), + "\n" +
+               URL_OFFICIALPOOL) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
            strprintf(_("Source code: %s"), + "\n" +
                URL_SOURCE_CODE) +
            "\n" +
@@ -548,6 +554,10 @@ std::string LicenseInfo()
            _("--------------------------------------------") + "\n" +
            strprintf(_("Instagram: %s"), + "\n" +
                URL_INSTAGRAM) +
+           "\n" +
+           _("--------------------------------------------") + "\n" +
+           strprintf(_("YouTube: %s"), +"\n" +
+               URL_YOUTUBE) +
            "\n" +
            _("----------------------------------------------------------------------------------------") + "\n" +
            "\n" +
