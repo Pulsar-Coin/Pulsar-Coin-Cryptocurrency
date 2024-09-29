@@ -8,7 +8,10 @@
 #### Launch Supply: 450,000,000 (450 Million PLSR | 90%)
 #### Block Maturity: 141
 #### Block Time: 10 Seconds
-#### Block Rewards (Proof of Stake): 45 PLSR
+#### Block Rewards (Proof of Stake): 12 PLSR
+#### Curvehash PoW 25%
+#### MinotaurX PoW 25%
+#### PoS 50%
 #### P2P Port: 5995
 #### RPC Port: 5996
 #### Total POS & POW rewards phase: 202.2 years
