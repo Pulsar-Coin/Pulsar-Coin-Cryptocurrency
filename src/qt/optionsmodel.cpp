@@ -466,7 +466,7 @@ void OptionsModel::setDisplayUnit(const QVariant &value)
         Q_EMIT displayUnitChanged(nDisplayUnit);
     }
 }
-
+/*
 bool OptionsModel::getProxySettings(QNetworkProxy& proxy) const
 {
     // Directly query current base proxy, because
@@ -484,6 +484,7 @@ bool OptionsModel::getProxySettings(QNetworkProxy& proxy) const
 
     return false;
 }
+*/
 
 void OptionsModel::setRestartRequired(bool fRequired)
 {

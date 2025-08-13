@@ -61,6 +61,8 @@ private:
 
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
+    QWidget *masternodesPage;
+    QWidget *statsPage;
     MultisigDialog *multisigPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
@@ -77,6 +79,8 @@ public Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    void gotoMasternodesPage();
+    void gotoStatsPage();
     /** Switch to multisig page */
     void gotoMultisigPage();
     /** Switch to receive coins page */

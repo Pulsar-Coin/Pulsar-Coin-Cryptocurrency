@@ -27,23 +27,23 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-      VERSION: "1.1.7.0"
+      VERSION: "1.1.7.1"
 
 
     strategy:
       fail-fast: false
       matrix:
         name:
-          - x86_64-linux
+         # - x86_64-linux
           #- x86_64-macos
-          - x86_64-win
+         # - x86_64-win
           - aarch64-linux
-          - armhf-linux
+          #- armhf-linux
         include:
         
           - name: armhf-linux
             host: arm-linux-gnueabihf
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             packages: g++-arm-linux-gnueabihf
             run-tests: false
             dep-opts: ""
@@ -52,7 +52,7 @@ jobs:
             
           - name: aarch64-linux
             host: aarch64-linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             packages: g++-aarch64-linux-gnu
             run-tests: false
             dep-opts: ""
@@ -61,7 +61,7 @@ jobs:
             
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
@@ -83,7 +83,7 @@ jobs:
           - name: x86_64-win
             host: x86_64-w64-mingw32
             arch: "i386"
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             packages: python3 nsis g++-mingw-w64-x86-64 wine64 bc wine-binfmt
             postinstall: |
               sudo update-alternatives --set x86_64-w64-mingw32-gcc  /usr/bin/x86_64-w64-mingw32-gcc-posix
@@ -187,7 +187,6 @@ jobs:
         if: |
           matrix.name != 'x86_64-macos' &&
           matrix.name != 'x86_64-win'
-
         uses: actions/upload-artifact@v4
 
         with:
@@ -199,7 +198,6 @@ jobs:
         if: |
           matrix.name == 'x86_64-macos' ||
           matrix.name == 'x86_64-win'
-
         uses: actions/upload-artifact@v4
 
         with:
@@ -211,4 +209,3 @@ jobs:
             release/pulsar-cli
             release/pulsar-cli.exe
             release/Pulsar-Qt.app
-

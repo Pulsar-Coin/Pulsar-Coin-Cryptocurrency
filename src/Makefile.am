@@ -103,6 +103,7 @@ BITCOIN_CORE_H = \
   core_io.h \
   core_memusage.h \
   cuckoocache.h \
+  flat-database.h \
   fs.h \
   httprpc.h \
   httpserver.h \
@@ -155,6 +156,7 @@ BITCOIN_CORE_H = \
   txmempool.h \
   ui_interface.h \
   undo.h \
+  unordered_lru_cache.h \
   util.h \
   utilmoneystr.h \
   utiltime.h \
@@ -362,6 +364,8 @@ libbitcoin_consensus_a_SOURCES = \
   timedatadummy.cpp \
   primitives/block.cpp \
   primitives/block.h \
+  primitives/blockcache.cpp \
+  primitives/blockcache.h \
   primitives/transaction.cpp \
   primitives/transaction.h \
   pubkey.cpp \
@@ -374,6 +378,7 @@ libbitcoin_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
+  span.h \
   tinyformat.h \
   uint256.cpp \
   uint256.h \

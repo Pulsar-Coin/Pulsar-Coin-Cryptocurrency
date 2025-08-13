@@ -103,8 +103,7 @@ void *MineBlock(void *threadarg) {
         if (ScanHash(&block, nNonce, &PoWHash, endNonce)) {
             if (UintToArith256(PoWHash) <= hashTarget) {
                 block.nNonce = nNonce;
-                GetPoWHash(&block, &PoWHash);
-		//PoWHash = block.ComputePoWHash();
+                GetCurvehashHash(&block, &PoWHash);
                 // Found a solution
                 printf("SUCCESS block.nTime = %u \n", block.nTime);
                 printf("SUCCESS block.nBits = 0x%08x \n", block.nBits);

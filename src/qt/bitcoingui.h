@@ -92,6 +92,8 @@ private:
     QMenuBar *appMenuBar;
     QAction *overviewAction;
     QAction *historyAction;
+    QAction *masternodesAction;
+    QAction *statsAction;
     QAction *multisigAction;
     QAction *quitAction;
     QAction *sendCoinsAction;
@@ -199,6 +201,8 @@ private Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    void gotoMasternodesPage();
+    void gotoStatsPage();
     /** Switch to multisig page */
     void gotoMultisigPage();
     /** Switch to receive coins page */

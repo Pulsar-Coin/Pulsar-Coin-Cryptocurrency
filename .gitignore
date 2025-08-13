@@ -133,3 +133,4 @@ contrib/devtools/split-debug.sh
 .mypy_cache
 .idea
 /.vs
+/src/qt/res/RCa22780

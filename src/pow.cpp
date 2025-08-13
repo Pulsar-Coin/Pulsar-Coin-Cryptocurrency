@@ -164,59 +164,32 @@ unsigned int GetNextTargetRequired(const CBlockIndex *pindexLast, bool fProofOfS
 }
 
 
-bool CheckProofOfWork(const CBlockHeader *pblock, const Consensus::Params &params) {
+bool CheckProofOfWork(const CBlockHeader *pblock, const Consensus::Params &params, bool cache) {
 
-	if (pblock->GetBlockTime() > params.powForkTime) {
+    bool fNegative;
+    bool fOverflow;
+    arith_uint256 bnTarget;
+    bnTarget.SetCompact(pblock->nBits, &fNegative, &fOverflow);
+    uint256 PoWHash;
 
-		bool fNegative;
-		bool fOverflow;
-		arith_uint256 bnTarget;
-
-		bnTarget.SetCompact(pblock->nBits, &fNegative, &fOverflow);
-		POW_TYPE powType = pblock->GetPoWType();
-		//LogPrintf("CheckProofOfWork: powType %s ", powType);
-		// Check range
-		if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powTypeLimits[powType])) {
-			LogPrint(BCLog::ALL, "print bnTarget > UintToArith256(params.powLimit) = %s\n", bnTarget > UintToArith256(params.powTypeLimits[powType]));
-			return false;
-		}
-
-		    // Check proof of work matches claimed amount
-		    uint256 PoWHash;// = pblock->ComputePoWHash();
-			if (powType == POW_TYPE_MINOTAURX)
-				PoWHash = pblock->ComputePoWHash();
-			else
-			    	GetPoWHash(pblock, &PoWHash);
-			
-		    if (UintToArith256(PoWHash) > bnTarget) {
-			LogPrint(BCLog::ALL, "bnTarget = %s, PoWHash=%s powType=%s \n", bnTarget.ToString(), PoWHash.ToString(), powType);
-			return false;//temp fix true.?
-		    }
-
-		return true;
-	}
-	else
-	{
-	    bool fNegative;
-	    bool fOverflow;
-	    arith_uint256 bnTarget;
-
-	    bnTarget.SetCompact(pblock->nBits, &fNegative, &fOverflow);
-
-	    // Check range
-	    if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powLimit)) {
-		LogPrint(BCLog::ALL, "print bnTarget > UintToArith256(params.powLimit) = %s\n", bnTarget > UintToArith256(params.powLimit));
+	POW_TYPE powType = pblock->GetPoWType();
+	// Check range
+	if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(params.powTypeLimits[powType])) {
+		LogPrint(BCLog::ALL, "print bnTarget > UintToArith256(params.powLimit) = %s\n", bnTarget > UintToArith256(params.powTypeLimits[powType]));
+        LogPrintf("print bnTarget > UintToArith256(params.powLimit) = %s\n", bnTarget > UintToArith256(params.powTypeLimits[powType]));
 		return false;
-	    }
-
-	    // Check proof of work matches claimed amount
-	    uint256 PoWHash;// = pblock->ComputePoWHash();
-	    GetPoWHash(pblock, &PoWHash);	
-	    if (UintToArith256(PoWHash) > bnTarget) {
-		LogPrint(BCLog::ALL, "bnTarget = %s, PoWHash=%s\n", bnTarget.ToString(), PoWHash.ToString());
-		return false;
-	    }
-	    return true;
 	}
 
+    if (cache)
+        PoWHash = pblock->GetBlockHash();
+    else
+        PoWHash = pblock->GetBlockHash(false);
+
+	if (UintToArith256(PoWHash) > bnTarget) {
+		LogPrint(BCLog::ALL, "Hash > Target: bnTarget = %s, PoWHash=%s powType=%s \n", bnTarget.ToString(), PoWHash.ToString(), powType);
+        LogPrintf("Hash > Target: bnTarget = %s, PoWHash=%s powType=%s \n", bnTarget.ToString(), PoWHash.ToString(), powType);
+		return false;
+	}
+
+	return true;
 }

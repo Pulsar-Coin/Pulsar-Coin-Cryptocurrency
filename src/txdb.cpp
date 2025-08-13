@@ -18,6 +18,8 @@
 
 #include <boost/thread.hpp>
 
+#include <validation.h>
+
 static const char DB_COIN = 'C';
 static const char DB_COINS = 'c';
 static const char DB_BLOCK_FILES = 'f';
@@ -265,25 +267,18 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
 
     pcursor->Seek(std::make_pair(DB_BLOCK_INDEX, uint256()));
 
-    int64_t nNow = 0;
-    int64_t nLastNow = 0;
     int nCount = 0;
     int nLastPercent = -1;
-
     int nMax = nHighest * 1.25;
-
     // Load mapBlockIndex
     while (pcursor->Valid()) {
-        nNow = GetTime();
-        if (nNow >= nLastNow + 5) {
-            int nPercent = (100 * nCount) / nMax;
-            nPercent = std::min(nPercent, 100); // Cap it at 100%
-            if (nPercent > nLastPercent) {
-                uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), nPercent));
-                nLastPercent = nPercent;
-            }
-            nLastNow = nNow;
+        int nPercent = (100 * nCount) / nMax;
+        //nPercent = std::min(nPercent, 100); // Cap it at 100%
+        if (nPercent > nLastPercent) {
+            uiInterface.InitMessage(strprintf(_("Loading blocks... %d%%"), nPercent));
+            nLastPercent = nPercent;
         }
+
         nCount++;
         boost::this_thread::interruption_point();
         std::pair<char, uint256> key;
@@ -319,7 +314,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
 
                 CBlockHeader tmp = pindexNew->GetBlockHeader();
 
-                if (pindexNew->IsProofOfWork() && !CheckProofOfWork(&tmp, consensusParams))
+                if (pindexNew->IsProofOfWork() && !CheckPoW(tmp, consensusParams))
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());
 
                 pcursor->Next();

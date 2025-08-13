@@ -1,11 +1,7 @@
-name: Windows Only TEST
+name: x86_64-linux_selfhosted
 
 on:
   workflow_dispatch:
-  push:
-  # Sequence of patterns matched against refs/tags
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 
 jobs:
@@ -21,33 +17,29 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-      VERSION: "1.1.7.0"
+      VERSION: "1.1.7.1"
       RELEASE_NAME: "$GITHUB_WORKFLOW"
-      RELEASE_TAG: "v1.1.7.x"
+      RELEASE_TAG: "1.1.7.1"
 
     strategy:
       fail-fast: false
       matrix:
         name:
-          - x86_64-win
+          - x86_64-linux
 
         include:
-          - name: x86_64-win
-            host: x86_64-w64-mingw32
-            arch: "i386"
-            os: ubuntu-20.04
-            packages: python3 nsis g++-mingw-w64-x86-64 wine64 bc wine-binfmt
-            postinstall: |
-              sudo update-alternatives --set x86_64-w64-mingw32-gcc  /usr/bin/x86_64-w64-mingw32-gcc-posix
-              sudo update-alternatives --set x86_64-w64-mingw32-g++  /usr/bin/x86_64-w64-mingw32-g++-posix
-              sudo update-binfmts --import /usr/share/binfmts/wine
+          - name: x86_64-linux
+            host: x86_64-unknown-linux-gnu
+            os: ubuntu-22.04
+            packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
-            config-opts: "--disable-shared --enable-gui=qt5"
+            config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports BDB_LIBS=\"-L${BDB_PREFIX}/lib -ldb_cxx-4.8\" BDB_CFLAGS=\"-I${BDB_PREFIX}/include\""
             goal: install
-            strip-cmd: "x86_64-w64-mingw32-strip"
+            strip-cmd: "strip"
 
     runs-on: self-hosted
+    #runs-on: ${{ matrix.os }}
 
     steps:
       - name: Add architecture
@@ -107,6 +99,7 @@ jobs:
 
       - name: Build Pulsar Core
         run: |
+          export BDB_PREFIX='/home/jason/actions-runner/db4'
           ./autogen.sh
           ./configure --prefix=`pwd`/depends/${{ matrix.host }} ${{ matrix.config-opts }} || ( cat config.log && false)
           make ${{ env.MAKEJOBS }} ${{ matrix.goal }} || ( echo "Build failure. Verbose build follows." && make ${{ matrix.goal }} V=1 ; false )
@@ -124,70 +117,15 @@ jobs:
           cp src/pulsar-cli* release/
           cp src/pulsar-tx* release/
         continue-on-error: true
-            
-      - name: Upload artifacts WIN/OSX
-        if: |
-          matrix.name == 'x86_64-macos' ||
-          matrix.name == 'x86_64-win'
+      
+      - name: Chmod & Tar
+        run: |
+          chmod -R +x release/
+          tar -cvf Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar -C release/ .
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
-            release/pulsard*
-            release/pulsar-qt
-            release/pulsar-qt.exe
-            release/pulsar-cli
-            release/pulsar-cli.exe
-            release/Pulsar-Qt.app
-      
-#TESTING
-
-      - name: Set enviroment for github-release
-        run: |
-          - name: Save state
-          run: echo "RELEASE_TAG=${{ env.RELEASE_TAG }}" >> $GITHUB_STATE
-
-          - name: Set output
-          run: echo "RELEASE_NAME={$GITHUB_WORKFLOW}" >> $GITHUB_OUTPUT
-        continue-on-error: true
-      
-      - uses: meeDamian/github-release@2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.RELEASE_TAG }}
-          name: ${{ env.RELEASE_TAG }}
-          body: >
-            testing.....  
-          gzip: false
-          files: >
-            ./release/Pulsar-${{ env.VERSION }}-${{ matrix.name }}.zip
-        continue-on-error: true
-
-
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip --junk-paths my-artifact README.md
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: ${{ env.VERSION }}
-          draft: true
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./my-artifact.zip
-          asset_name: my-artifact.zip
-          asset_content_type: application/zip
-
+            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar

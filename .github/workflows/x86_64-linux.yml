@@ -9,7 +9,7 @@ jobs:
     name: ${{ matrix.name }}
 
     env:
-      MAKEJOBS: "-j20"
+      MAKEJOBS: "-j3"
       CHECK_DOC: "0"
       CCACHE_SIZE: "100M"
       CCACHE_TEMPDIR: /tmp/.ccache-temp
@@ -17,9 +17,9 @@ jobs:
       PYTHON_DEBUG: "1"
       WINEDEBUG: fixme-all
       SDK_URL: https://bitcoincore.org/depends-sources/sdks
-      VERSION: "1.1.7"
+      VERSION: "1.1.7.1"
       RELEASE_NAME: "$GITHUB_WORKFLOW"
-      RELEASE_TAG: "1.1.7"
+      RELEASE_TAG: "1.1.7.1"
 
     strategy:
       fail-fast: false
@@ -30,15 +30,16 @@ jobs:
         include:
           - name: x86_64-linux
             host: x86_64-unknown-linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             packages: bc python3-zmq
             run-tests: false
             dep-opts: ""
-            config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports"
+            config-opts: "--enable-gui=qt5 --enable-zmq --enable-glibc-back-compat --enable-reduce-exports BDB_LIBS=\"-L${BDB_PREFIX}/lib -ldb_cxx-4.8\" BDB_CFLAGS=\"-I${BDB_PREFIX}/include\""
             goal: install
             strip-cmd: "strip"
 
-    runs-on: self-hosted
+    #runs-on: self-hosted
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Add architecture
@@ -126,27 +127,4 @@ jobs:
         with:
           name: Pulsar-${{ env.VERSION }}-${{ matrix.name }}
           path: |
-            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar            
-      
-#TESTING
-
-      - name: Set enviroment for github-release
-        run: |
-          - name: Save state
-          run: echo "RELEASE_TAG=${{ env.VERSION }}" >> $GITHUB_STATE
-
-          - name: Set output
-          run: echo "RELEASE_NAME={$GITHUB_WORKFLOW}" >> $GITHUB_OUTPUT
-        continue-on-error: true
-      
-      - uses: meeDamian/github-release@2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.VERSION }}
-          name: ${{ env.VERSION }}
-          body: >
-            testing.....  
-          gzip: false
-          files: >
-            release-v1.0.0-windows:release/Pulsar-${{ env.VERSION }}-${{ matrix.name }}
-        continue-on-error: true
+            Pulsar-${{ env.VERSION }}-${{ matrix.name }}.tar

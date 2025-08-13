@@ -42,6 +42,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     overviewPage = new OverviewPage(platformStyle);
 
     transactionsPage = new QWidget(this);
+    masternodesPage = new QWidget(this);
+    statsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
     transactionView = new TransactionView(platformStyle, this);
@@ -56,6 +58,18 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
+
+   QLabel* masternodeLabel = new QLabel(tr("Masternodes Overview"), this);
+    QLabel* masternodeLabel2 = new QLabel(tr("Coming in PulsarCoin v2.0!"), this);
+
+    // Set up a layout for masternodesPage
+    QVBoxLayout* masternodeLayout = new QVBoxLayout();
+
+    masternodeLayout->addWidget(masternodeLabel);
+    masternodeLayout->addWidget(masternodeLabel2);
+
+    masternodesPage->setLayout(masternodeLayout);
+
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
     multisigPage = new MultisigDialog(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
@@ -68,6 +82,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(multisigPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
+    addWidget(masternodesPage);
+    addWidget(statsPage);
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -183,6 +199,16 @@ void WalletView::gotoOverviewPage()
 void WalletView::gotoHistoryPage()
 {
     setCurrentWidget(transactionsPage);
+}
+
+void WalletView::gotoMasternodesPage()
+{
+    setCurrentWidget(masternodesPage);
+}
+
+void WalletView::gotoStatsPage()
+{
+    setCurrentWidget(statsPage);
 }
 
 void WalletView::gotoMultisigPage()

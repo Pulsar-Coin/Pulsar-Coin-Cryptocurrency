@@ -135,7 +135,7 @@ private:
     void fetchRequest(const QUrl& url);
 
     // Setup networking
-    void initNetManager();
+    //void initNetManager();
 
     bool saveURIs;                      // true during startup
     QLocalServer* uriServer;

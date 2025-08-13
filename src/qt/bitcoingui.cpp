@@ -322,6 +322,20 @@ void BitcoinGUI::createActions()
     historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
+    masternodesAction = new QAction(QIcon(":/icons/overview"), tr("&Masternodes"), this);
+    masternodesAction->setStatusTip(tr("Show masternode info"));
+    masternodesAction->setToolTip(masternodesAction->statusTip());
+    masternodesAction->setCheckable(true);
+    masternodesAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    tabGroup->addAction(masternodesAction);
+
+    statsAction = new QAction(QIcon(":/icons/overview"), tr("&Stats"), this);
+    statsAction->setStatusTip(tr("Show stats"));
+    statsAction->setToolTip(statsAction->statusTip());
+    statsAction->setCheckable(true);
+    statsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(statsAction);
+
 /*
     multisigAction = new QAction(QIcon(":/icons/multisig"), tr("&Multisig"), this);
     multisigAction->setStatusTip(tr("UI to create multisig addresses"));
@@ -346,6 +360,10 @@ void BitcoinGUI::createActions()
     connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
+    connect(masternodesAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(masternodesAction, SIGNAL(triggered()), this, SLOT(gotoMasternodesPage()));
+    connect(statsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(statsAction, SIGNAL(triggered()), this, SLOT(gotoStatsPage()));
 //    connect(multisigAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
 //    connect(multisigAction, SIGNAL(triggered()), this, SLOT(gotoMultisigPage()));
 #endif // ENABLE_WALLET
@@ -505,6 +523,8 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
+        toolbar->addAction(masternodesAction);
+        toolbar->addAction(statsAction);
         overviewAction->setChecked(true);
     }
 }
@@ -604,6 +624,8 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     receiveCoinsAction->setEnabled(enabled);
     receiveCoinsMenuAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
+    masternodesAction->setEnabled(enabled);
+    statsAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     unlockWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
@@ -734,6 +756,18 @@ void BitcoinGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
     if (walletFrame) walletFrame->gotoHistoryPage();
+}
+
+void BitcoinGUI::gotoMasternodesPage()
+{
+    masternodesAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoMasternodesPage();
+}
+
+void BitcoinGUI::gotoStatsPage()
+{
+    statsAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoStatsPage();
 }
 
 void BitcoinGUI::gotoMultisigPage()

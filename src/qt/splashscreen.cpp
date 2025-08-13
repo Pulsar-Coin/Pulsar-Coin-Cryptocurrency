@@ -43,10 +43,11 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
 
     // set reference point, paddings
+    int paddingLeft             = 10;
     int paddingRight            = 14;
     int paddingTop              = 470;
     int titleVersionVSpace      = 17;
-    int titleCopyrightVSpace    = 22;
+    int titleCopyrightVSpace    = 0;
 
     float fontFactor            = 1.0;
     float devicePixelRatio      = 1.0;
@@ -55,9 +56,9 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 #endif
 
     // define text to place
-   // QString titleText       = tr(PACKAGE_NAME);
+    QString titleText       = tr(PACKAGE_NAME);
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2012, COPYRIGHT_YEAR)).c_str());
+    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2022, COPYRIGHT_YEAR)).c_str());
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();
@@ -95,35 +96,51 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 33*fontFactor));
     QFontMetrics fm = pixPaint.fontMetrics();
-    // int titleTextWidth = fm.width(titleText);
-   // if (titleTextWidth > 176) {
-   //     fontFactor = fontFactor * 176 / titleTextWidth;
-  //  }
+    int titleTextWidth = fm.width(titleText);
+    if (titleTextWidth > 176) {
+        fontFactor = fontFactor * 176 / titleTextWidth;
+    }
 
     pixPaint.setFont(QFont(font, 33*fontFactor));
     fm = pixPaint.fontMetrics();
-   // titleTextWidth  = fm.width(titleText);
-  //  pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
+    titleTextWidth  = fm.width(titleText);
+    //pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
 
     pixPaint.setFont(QFont(font, 15*fontFactor));
 
     // if the version string is to long, reduce size
     fm = pixPaint.fontMetrics();
-    int versionTextWidth  = fm.width(versionText);
-   // if(versionTextWidth > titleTextWidth+paddingRight-10) {
-   //     pixPaint.setFont(QFont(font, 10*fontFactor));
-    //    titleVersionVSpace -= 5;
-   // }
-   // pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight+2,paddingTop+titleVersionVSpace,versionText);
+    int versionTextWidth = fm.width(versionText);
+    if(versionTextWidth > titleTextWidth+paddingRight-10) {
+        pixPaint.setFont(QFont(font, 10*fontFactor));
+        titleVersionVSpace -= 5;
+    }
+    
+    //pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight+2,paddingTop+titleVersionVSpace,versionText);
+
+
+    // Common dimensions
+    const int rectWidth = pixmap.width() - paddingLeft - paddingRight;
+
+    // Draw versionText first
+    int versionTextHeight = fm.height();
+    const int versionY = 10;
+    QRect versionRect(paddingLeft, versionY, rectWidth, versionTextHeight);
+    pixPaint.drawText(versionRect, Qt::AlignLeft | Qt::AlignTop, versionText);
 
     // draw copyright stuff
-    {
-        pixPaint.setFont(QFont(font, 10*fontFactor));
-        const int x = pixmap.width()/devicePixelRatio-paddingRight;
-        const int y = paddingTop+titleCopyrightVSpace;
-        QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
-        pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
-    }
+    //{
+    pixPaint.setFont(QFont(font, 10*fontFactor));
+    const int copyrightY = versionY + versionTextHeight + titleCopyrightVSpace;
+
+    const int copyrightRectHeight = pixmap.height() - copyrightY;
+
+    QRect copyrightRect(paddingLeft, copyrightY, rectWidth, copyrightRectHeight);
+    pixPaint.drawText(
+        copyrightRect,
+        Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap,
+        copyrightText);
+    //}
 
     // draw additional text if special network
     if(!titleAddText.isEmpty()) {

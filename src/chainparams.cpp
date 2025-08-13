@@ -61,7 +61,7 @@ public:
         consensus.halvingFixForkBlock = 1445000;
         consensus.reductionForkBlock = 2150000;
 
-        consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // curvehash limit
+        consensus.powTypeLimits.emplace_back(uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")); // curvehash limit
         consensus.powTypeLimits.emplace_back(uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));   // Minox limit
 
         consensus.nStartMiningTime = 1605440641;
@@ -135,6 +135,7 @@ public:
 		        {860000, uint256S("0x0000000020bd0fad10e0d9a82814dc48f1da3c8036452c3ee50ffbff16f6f32a")},
 		        {1220000, uint256S("0x069e119c5cef03b550f1edcb68b8a64f41b12a8d2c203e08080a915da364972f")},
                 {1990000, uint256S("0x5727da923c542be81fd1e005ecad6d3e42643c8fdabfebfb59d4553b24f686fb")},
+                {2220000, uint256S("0x9139870f62209096e83722a384a40d7c4373e8d9a2b462d8cf91107dfedc36a2")},
             }
         };
 
@@ -143,9 +144,9 @@ public:
 			///* nTime    */ 1657962835,
 			///* nTxCount */ 688296,
 			///* dTxRate  */ 0.04790706240371376
-            /* nTime    */ 1721236757,
-            /* nTxCount */ 3474559,
-            /* dTxRate  */ 0.04472563063010584
+            /* nTime    */ 1728326856,
+            /* nTxCount */ 3863692,
+            /* dTxRate  */ 0.04560086064530978
         };
     }
 };

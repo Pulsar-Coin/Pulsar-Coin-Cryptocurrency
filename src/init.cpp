@@ -52,6 +52,9 @@
 #include <stdio.h>
 #include <memory>
 
+#include "primitives/blockcache.h"
+#include "flat-database.h"
+
 #ifndef WIN32
 #include <signal.h>
 #endif
@@ -190,12 +193,31 @@ void Shutdown()
     GeneratePulsar(false, 0, Params());
     FlushWallets();
 #endif
+
+    // fRPCInWarmup should be `false` if we completed the loading sequence
+    // before a shutdown request was received
+    std::string statusmessage;
+    bool fRPCInWarmup = RPCIsInWarmup(&statusmessage);
+
     MapPort(false);
 
     // Because these depend on each-other, we make sure that neither can be
     // using the other before destroying them.
     if (peerLogic) UnregisterValidationInterface(peerLogic.get());
     if (g_connman) g_connman->Stop();
+
+    // After there are no more peers/RPC left to give us new data which may generate
+    // CValidationInterface callbacks, flush them...
+    //GetMainSignals().FlushBackgroundCallbacks();
+
+    if (!fRPCInWarmup) {
+        CFlatDB<CBlockCache> flatdb7("blockcache.dat", "blockCache");
+        flatdb7.Dump(CBlockCache::Instance());
+    }
+
+    // After the threads that potentially access these pointers have been stopped,
+    // destruct and reset all to nullptr.
+
     peerLogic.reset();
     g_connman.reset();
 
@@ -1174,6 +1196,25 @@ bool AppInitMain()
     if (!VerifyWallets())
         return false;
 #endif
+
+
+    // ********************************************************* Step 5.5: Load cache data
+
+    fs::path pathDB = GetDataDir();
+    std::string strDBName = "blockcache.dat";
+
+    // Always load the blockcache if available:
+    uiInterface.InitMessage(_("Loading Block Cache..."));
+    fs::path blockCacheFile = pathDB / strDBName;
+    if (!fs::exists(blockCacheFile)) {
+        uiInterface.InitMessage("Loading Block cache for the first time. This could take a while...");
+    }
+
+    CFlatDB<CBlockCache> flatdb7(strDBName, "blockCache");
+    if (!flatdb7.Load(CBlockCache::Instance())) {
+        return InitError(_("Failed to load Block cache from") + "\n" + (pathDB / strDBName).string() + "\n\n" + "Delete this file and it will be recreated.");
+    }
+
     // ********************************************************* Step 6: network initialization
     // Note that we absolutely cannot open any actual connections
     // until the very end ("start node") as the UTXO/block state
@@ -1487,6 +1528,12 @@ bool AppInitMain()
     // Note that setting NODE_WITNESS is never required: the only downside from not
     // doing so is that after activation, no upgraded nodes will fetch from you.
     nLocalServices = ServiceFlags(nLocalServices | NODE_WITNESS);
+
+    // ********************************************************* Step 9.5: Schedule PoW cache flush
+
+    // Periodic flush of PoW Cache if cache has grown enough
+    scheduler.scheduleEvery(std::bind(&CBlockCache::DoMaintenance, &CBlockCache::Instance()), 60 * 1000);
+
 
     // ********************************************************* Step 10: import blocks
 

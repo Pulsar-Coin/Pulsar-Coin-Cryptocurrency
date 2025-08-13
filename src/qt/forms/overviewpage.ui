@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>897</width>
+    <width>950</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>897</width>
+    <width>950</width>
     <height>600</height>
    </size>
   </property>
@@ -74,7 +74,6 @@
              <widget class="QLabel" name="label_5">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -147,7 +146,6 @@
              <widget class="QLabel" name="labelBalance">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -221,7 +219,6 @@
              <widget class="QLabel" name="labelWatchImmature">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -246,7 +243,6 @@
              <widget class="QLabel" name="labelImmature">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -278,7 +274,6 @@
              <widget class="QLabel" name="labelWatchAvailable">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -303,7 +298,6 @@
              <widget class="QLabel" name="labelWatchPending">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -328,7 +322,6 @@
              <widget class="QLabel" name="labelUnconfirmed">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -377,7 +370,6 @@
              <widget class="QLabel" name="labelTotal">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -402,7 +394,6 @@
              <widget class="QLabel" name="labelWatchTotal">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -460,7 +451,6 @@
              <widget class="QLabel" name="label_4">
               <property name="font">
                <font>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>

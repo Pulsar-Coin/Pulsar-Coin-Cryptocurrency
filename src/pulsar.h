@@ -4,6 +4,4 @@
 // Pulsar PoW
 void Pulsar(const CBlockHeader *pblock, uint32_t nNonce, uint256 *phash);
 
-void GetPoWHash(const CBlockHeader *pblock, uint256 *thash);
-
-void GetPowHash();
+void GetCurvehashHash(const CBlockHeader *pblock, uint256 *thash);

@@ -34,6 +34,7 @@
 
 #include <checkpointsync.h>
 
+
 #if defined(NDEBUG)
 # error "Pulsar cannot be compiled without assertions."
 #endif
@@ -2408,7 +2409,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         // workaround to fix invalid nFlags for PoS-Blocks
         bool flagPoS = cmpctblock.header.nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
 
-        if (!flagPoS && (cmpctblock.header.nNonce == 0) && !CheckProofOfWork(&cmpctblock.header, chainparams.GetConsensus())) {
+        if (!flagPoS && (cmpctblock.header.nNonce == 0) && !CheckPoW(cmpctblock.header, chainparams.GetConsensus())) {
         	flagPoS = CBlockIndex::BLOCK_PROOF_OF_STAKE;
         	cmpctblock.header.nFlags |= CBlockIndex::BLOCK_PROOF_OF_STAKE;
         }
@@ -2723,7 +2724,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             bool fPoS = headers[n].nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
 
             // workaround to fix invalid nFlags for PoS
-            if (!fPoS && (headers[n].nNonce == 0) && !CheckProofOfWork(&headers[n], chainparams.GetConsensus())) {
+            if (!fPoS && (headers[n].nNonce == 0) && !CheckPoW(headers[n], chainparams.GetConsensus())) {
             	fPoS = CBlockIndex::BLOCK_PROOF_OF_STAKE;
             	headers[n].nFlags |= CBlockIndex::BLOCK_PROOF_OF_STAKE;
             }

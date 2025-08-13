@@ -695,7 +695,6 @@ bool static ScanHash(const CBlockHeader *pblock, uint32_t &nNonce, uint256 *phas
     }
 }
 
-//void static PulsarMiner(const CChainParams &chainparams, void *parg) {
 void static PulsarMiner(const CChainParams &chainparams, void *parg, const POW_TYPE powType) {
     LogPrintf("PulsarMiner started\n");
     RenameThread("pulsar-miner");
@@ -738,10 +737,6 @@ void static PulsarMiner(const CChainParams &chainparams, void *parg, const POW_T
             //
             nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
             CBlockIndex *pindexPrev = chainActive.Tip();
-          //  if (pindexPrev->nPOWBlockHeight >= Params().GetConsensus().nTotalPOWBlock) {
-            //    LogPrintf("POW ENDED, Stop mining!");
-              //  break;
-          //  }
 
             std::unique_ptr <CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript, true, nullptr, nullptr, powType));
             if (!pblocktemplate.get()) {
@@ -766,9 +761,8 @@ void static PulsarMiner(const CChainParams &chainparams, void *parg, const POW_T
                     if (UintToArith256(hash) <= hashTarget) {
                         // Found a solution
                         pblock->nNonce = nNonce;
-			//hash = pblock->ComputePoWHash();
-                        GetPoWHash(pblock, &hash);
-//                        GetPoWHash();
+
+                        GetCurvehashHash(pblock, &hash);
 
 //                        LOCK2(cs_main, pwallet->cs_wallet);
                         if (!SignBlock(*pblock, *pwallet)) {

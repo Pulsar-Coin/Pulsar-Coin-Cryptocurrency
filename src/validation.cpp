@@ -939,6 +939,16 @@ static bool WriteBlockToDisk(const CBlock& block, CDiskBlockPos& pos, const CMes
     return true;
 }
 
+bool CheckPoW(const CBlockHeader& block, const Consensus::Params& consensusParams)
+{
+    if (!CheckProofOfWork(&block, consensusParams)) {
+        LogPrintf("CheckPoW: CheckProofOfWork failed for (SHA256), retesting without POW cache\n");
+        // Retest without POW cache in case cache was corrupted:
+        return CheckProofOfWork(&block, consensusParams, false);
+    }
+    return true;
+}
+
 bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus::Params& consensusParams)
 {
     block.SetNull();
@@ -957,9 +967,11 @@ bool ReadBlockFromDisk(CBlock& block, const CDiskBlockPos& pos, const Consensus:
     }
 
     // Check the header
-    if (block.IsProofOfWork() && !CheckProofOfWork(&block, consensusParams))
+    //if (block.IsProofOfWork() && !CheckProofOfWork(&block, consensusParams))
+    const CBlockHeader& blockHeader = block.GetBlockHeader();
+    if (block.IsProofOfWork() && !CheckPoW(blockHeader, consensusParams))
 	{
-	LogPrintf("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+	    LogPrintf("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
 	}
 
@@ -3033,7 +3045,8 @@ static bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, 
 static bool CheckBlockHeader(const CBlockHeader &block, CValidationState &state, const Consensus::Params &consensusParams, bool fCheckPOW = true, bool fOldClient = false) {
     // Check proof of work matches claimed amount
 
-    if (fCheckPOW && !CheckProofOfWork(&block, consensusParams))
+    //if (fCheckPOW && !CheckProofOfWork(&block, consensusParams))
+    if (fCheckPOW && !CheckPoW(block, consensusParams))
     {
         if (fOldClient)
             return false;
@@ -3213,20 +3226,23 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, bool fProofOfS
 
     // Check proof of work
      // Handle pow type
-POW_TYPE powType = block.GetPoWType();
-        if (IsMinoEnabled(pindexPrev, consensusParams) && !fProofOfStake) {
-            if (powType >= NUM_BLOCK_TYPES)
-                return state.DoS(100, false, REJECT_INVALID, "bad-algo-id", false, "unrecognised pow type in block version");
+    POW_TYPE powType = block.GetPoWType();
+    if (IsMinoEnabled(pindexPrev, consensusParams) && !fProofOfStake)
+    {
+        if (powType >= NUM_BLOCK_TYPES)
+            return state.DoS(100, false, REJECT_INVALID, "bad-algo-id", false, "unrecognised pow type in block version");
 
             //if (block.nBits != GetNextTargetRequired(pindexPrev, &block, consensusParams, powType))
 	    if (block.nBits != GetNextTargetRequired(pindexPrev, false, consensusParams, powType))
                 return state.DoS(100, false, REJECT_INVALID, "bad-diff", false, "incorrect pow difficulty");
 
-    } else if (block.nBits != GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams, powType)) {
+    }
+    else if (block.nBits != GetNextTargetRequired(pindexPrev, fProofOfStake, consensusParams, powType))
+    {
 		//if (block.nTime > consensusParams.isValid)
 		if (!IsInitialBlockDownload())
 	        	return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
-    	}
+    }
 
     //check block time (start)
     if (GetTime() < consensusParams.nStartMiningTime) {
@@ -3853,11 +3869,17 @@ bool static LoadBlockIndexDB(const CChainParams &chainparams) {
 	    //uiInterface.InitMessage(_("Loading block index..."));
 	            // Calculate completion percentage
 		    double completionPercentage = static_cast<double>(nFile + 1) / (nLastBlockFile + 1) * 100;
+
+            //completionPercentage = static_cast<int>(completionPercentage * 100 + 0.5) / 100.0;
 		
 		    // Update the loading message with the completion percentage
 
-		    std::string loadingMessage = _("Loading block index DB.. ") + std::to_string(completionPercentage) + "%";
-		    uiInterface.InitMessage(loadingMessage);
+		    //std::string loadingMessage = _("Loading block index DB.. ") + std::to_string(completionPercentage) + "%";
+		    //uiInterface.InitMessage(loadingMessage);
+
+            std::ostringstream oss;
+            oss << "Loading block index DB.. " << completionPercentage << "%";
+            uiInterface.InitMessage(oss.str());
     }
     LogPrintf("%s: last block file info: %s\n", __func__, vinfoBlockFile[nLastBlockFile].ToString());
     for (int nFile = nLastBlockFile + 1; true; nFile++) {

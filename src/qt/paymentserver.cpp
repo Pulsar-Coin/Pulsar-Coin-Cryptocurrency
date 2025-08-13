@@ -358,7 +358,7 @@ bool PaymentServer::eventFilter(QObject *object, QEvent *event)
 
     return QObject::eventFilter(object, event);
 }
-
+/*
 void PaymentServer::initNetManager()
 {
     if (!optionsModel)
@@ -384,10 +384,10 @@ void PaymentServer::initNetManager()
     connect(netManager, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> &)),
             this, SLOT(reportSslErrors(QNetworkReply*, const QList<QSslError> &)));
 }
-
+*/
 void PaymentServer::uiReady()
 {
-    initNetManager();
+    //initNetManager();
 
     saveURIs = false;
     for (const QString& s : savedPaymentRequests)

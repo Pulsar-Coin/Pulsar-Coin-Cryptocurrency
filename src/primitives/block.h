@@ -12,6 +12,9 @@
 #include <string>
 #include <crypto/minotaurx/yespower/yespower.h>
 
+#include "unordered_lru_cache.h"
+#include "util.h"
+
 const uint256 HIGH_HASH = uint256S("0x0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 // Default value for -powalgo argument
 const std::string DEFAULT_POW_TYPE = "curvehash";
@@ -92,8 +95,11 @@ public:
         return (nBits == 0);
     }
 
-    uint256 GetHash() const;
+    uint256 GetSHA256Hash() const;
+    uint256 GetHash(bool readCache = true) const;
     uint256 ComputePoWHash() const;
+    uint256 GetBlockHash(bool readCache = true) const;
+    uint256 ComputeBlockHash() const;
 
     int64_t GetBlockTime() const
     {

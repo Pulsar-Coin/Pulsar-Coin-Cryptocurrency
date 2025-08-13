@@ -68,6 +68,8 @@ public Q_SLOTS:
     void gotoMultisigPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    void gotoMasternodesPage();
+    void gotoStatsPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
